@@ -28,7 +28,7 @@ export default function AdminLayout({ children, title }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50/30 to-slate-100">
+        <div className="min-h-screen bg-gradient-to-br from-slate-100 via-emerald-50/30 to-slate-100">
             {/* Mobile sidebar backdrop */}
             {sidebarOpen && (
                 <div

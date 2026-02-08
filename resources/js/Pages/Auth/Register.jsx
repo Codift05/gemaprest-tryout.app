@@ -33,13 +33,13 @@ export default function Register() {
             <div className="min-h-screen flex relative overflow-hidden bg-slate-50">
                 {/* Decorative Background Elements */}
                 <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-cyan-300/20 rounded-full blur-3xl" />
-                    <div className="absolute top-1/3 -right-40 w-80 h-80 bg-gradient-to-br from-violet-400/15 to-purple-300/15 rounded-full blur-3xl" />
-                    <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-gradient-to-br from-emerald-400/10 to-teal-300/10 rounded-full blur-3xl" />
+                    <div className="absolute -top-40 -left-40 w-96 h-96 bg-gradient-to-br from-emerald-400/20 to-teal-300/20 rounded-full blur-3xl" />
+                    <div className="absolute top-1/3 -right-40 w-80 h-80 bg-gradient-to-br from-green-400/15 to-emerald-300/15 rounded-full blur-3xl" />
+                    <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-gradient-to-br from-teal-400/10 to-cyan-300/10 rounded-full blur-3xl" />
                 </div>
 
                 {/* Left Side - Visual */}
-                <div className="hidden lg:flex flex-1 bg-gradient-to-br from-blue-600 via-blue-700 to-violet-700 items-center justify-center p-12 relative">
+                <div className="hidden lg:flex flex-1 bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 items-center justify-center p-12 relative">
                     {/* Decorative elements */}
                     <div className="absolute top-10 left-10 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                     <div className="absolute bottom-20 right-10 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
@@ -52,7 +52,7 @@ export default function Register() {
                         <h2 className="text-4xl font-bold text-white mb-6">
                             Bergabung Sekarang
                         </h2>
-                        <p className="text-blue-100 text-lg leading-relaxed mb-10">
+                        <p className="text-emerald-100 text-lg leading-relaxed mb-10">
                             Akses ribuan soal tryout UTBK dengan penilaian otomatis dan pembahasan lengkap.
                         </p>
 
@@ -86,7 +86,7 @@ export default function Register() {
                             <h1 className="text-2xl font-bold text-gray-900">Buat akun baru</h1>
                             <p className="mt-2 text-gray-600">
                                 Sudah punya akun?{' '}
-                                <Link href={route('login')} className="text-blue-600 hover:text-blue-700 font-medium">
+                                <Link href={route('login')} className="text-emerald-600 hover:text-emerald-700 font-medium">
                                     Masuk
                                 </Link>
                             </p>

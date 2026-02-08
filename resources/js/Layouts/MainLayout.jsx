@@ -22,7 +22,7 @@ export default function MainLayout({ children, title }) {
         ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-100">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-slate-100">
             {/* Background Pattern */}
             <div className="fixed inset-0 -z-10 overflow-hidden">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-200/30 rounded-full blur-3xl" />

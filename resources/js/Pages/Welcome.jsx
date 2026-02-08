@@ -18,37 +18,37 @@ export default function Welcome() {
             icon: BookOpenIcon,
             title: 'Soal Berkualitas',
             description: 'Ribuan soal yang disusun sesuai dengan standar UTBK terbaru oleh tim ahli pendidikan.',
-            color: 'from-blue-500 to-cyan-400'
+            color: 'from-emerald-500 to-teal-400'
         },
         {
             icon: ClockIcon,
             title: 'Simulasi Waktu Nyata',
             description: 'Latihan dengan timer yang sama persis seperti ujian sesungguhnya.',
-            color: 'from-violet-500 to-purple-400'
+            color: 'from-teal-500 to-cyan-400'
         },
         {
             icon: ChartBarIcon,
             title: 'Analisis Mendalam',
             description: 'Lihat statistik performa dan rekomendasi untuk meningkatkan skor.',
-            color: 'from-emerald-500 to-teal-400'
+            color: 'from-green-500 to-emerald-400'
         },
         {
             icon: TrophyIcon,
             title: 'Leaderboard Real-time',
             description: 'Bandingkan skormu dengan ribuan peserta lain secara real-time.',
-            color: 'from-orange-500 to-amber-400'
+            color: 'from-lime-500 to-green-400'
         },
         {
             icon: AcademicCapIcon,
             title: 'Pembahasan Lengkap',
             description: 'Setiap soal dilengkapi pembahasan detail untuk pemahaman maksimal.',
-            color: 'from-pink-500 to-rose-400'
+            color: 'from-emerald-600 to-teal-500'
         },
         {
             icon: ShieldCheckIcon,
             title: 'Anti Kecurangan',
             description: 'Sistem monitoring canggih untuk memastikan integritas ujian.',
-            color: 'from-indigo-500 to-blue-400'
+            color: 'from-teal-600 to-emerald-500'
         }
     ];
 
@@ -66,9 +66,9 @@ export default function Welcome() {
             <div className="min-h-screen bg-slate-50 overflow-hidden">
                 {/* Decorative Background Elements */}
                 <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-cyan-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-                    <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-br from-violet-400/15 to-purple-300/15 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
-                    <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-gradient-to-br from-emerald-400/10 to-teal-300/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
+                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-emerald-400/20 to-teal-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+                    <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-br from-green-400/15 to-emerald-300/15 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+                    <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-gradient-to-br from-teal-400/10 to-cyan-300/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
                 </div>
 
                 {/* Navigation */}
@@ -98,14 +98,12 @@ export default function Welcome() {
                     <div className="max-w-7xl mx-auto">
                         <div className="grid lg:grid-cols-2 gap-12 items-center">
                             <div className="text-center lg:text-left">
-                                <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-8 border border-blue-100">
-                                    <SparklesIcon className="h-4 w-4" />
-                                    UTBK 2025 Ready
+                                <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-8 border border-emerald-100">
                                 </div>
                                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-8 leading-tight">
                                     Persiapan UTBK
                                     <br />
-                                    <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">Terbaik untuk</span>
+                                    <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">Terbaik untuk</span>
                                     <br />
                                     Masa Depanmu
                                 </h1>
@@ -144,7 +142,7 @@ export default function Welcome() {
 
                             {/* Hero Visual - Floating Cards */}
                             <div className="relative hidden lg:block">
-                                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-violet-500/5 rounded-3xl" />
+                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 rounded-3xl" />
                                 
                                 {/* Main Card */}
                                 <div className="floating-card relative z-10 p-8 animate-float">
@@ -198,13 +196,13 @@ export default function Welcome() {
                 <section id="features" className="py-24 px-4 relative">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-16">
-                            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-blue-100">
+                            <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-emerald-100">
                                 Fitur Unggulan
                             </div>
                             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
                                 Semua yang kamu butuhkan
                                 <br />
-                                <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">dalam satu platform</span>
+                                <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">dalam satu platform</span>
                             </h2>
                             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                                 Platform tryout paling lengkap untuk persiapan UTBK dengan fitur-fitur canggih
@@ -235,7 +233,7 @@ export default function Welcome() {
                 {/* Stats Section */}
                 <section className="py-24 px-4 relative">
                     <div className="max-w-7xl mx-auto">
-                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-violet-700 p-12 lg:p-16">
+                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 p-12 lg:p-16">
                             {/* Decorative */}
                             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
                             <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
@@ -249,7 +247,7 @@ export default function Welcome() {
                                 ].map((stat, index) => (
                                     <div key={index} className="p-4">
                                         <div className="text-3xl sm:text-5xl font-bold mb-3">{stat.value}</div>
-                                        <div className="text-blue-200 font-medium">{stat.label}</div>
+                                        <div className="text-emerald-200 font-medium">{stat.label}</div>
                                     </div>
                                 ))}
                             </div>
@@ -262,8 +260,8 @@ export default function Welcome() {
                     <div className="max-w-4xl mx-auto">
                         <div className="glass-card p-12 lg:p-16 text-center relative overflow-hidden">
                             {/* Decorative */}
-                            <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-blue-500/20 to-cyan-400/20 rounded-full blur-3xl" />
-                            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-violet-500/20 to-purple-400/20 rounded-full blur-3xl" />
+                            <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-emerald-500/20 to-teal-400/20 rounded-full blur-3xl" />
+                            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-green-500/20 to-emerald-400/20 rounded-full blur-3xl" />
                             
                             <div className="relative">
                                 <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">

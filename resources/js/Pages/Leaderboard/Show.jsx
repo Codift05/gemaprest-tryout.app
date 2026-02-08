@@ -55,20 +55,20 @@ export default function Show({ tryout, entries: initialEntries, currentUserRank 
                         Kembali ke Dashboard
                     </Link>
 
-                    <div className="card bg-gradient-to-br from-indigo-500 to-purple-600 text-white">
+                    <div className="card bg-gradient-to-br from-emerald-500 to-teal-600 text-white">
                         <div className="p-6">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <h1 className="text-2xl font-bold mb-2">Leaderboard</h1>
-                                    <p className="text-indigo-100">{tryout.title}</p>
+                                    <p className="text-emerald-100">{tryout.title}</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <span
                                         className={`w-2 h-2 rounded-full ${
-                                            isConnected ? 'bg-emerald-400' : 'bg-red-400'
+                                            isConnected ? 'bg-green-400' : 'bg-red-400'
                                         }`}
                                     />
-                                    <span className="text-sm text-indigo-100">
+                                    <span className="text-sm text-emerald-100">
                                         {isConnected ? 'Live' : 'Offline'}
                                     </span>
                                 </div>
@@ -78,13 +78,13 @@ export default function Show({ tryout, entries: initialEntries, currentUserRank 
                             <div className="grid grid-cols-3 gap-4 mt-6">
                                 <div className="bg-white/10 rounded-xl p-4 text-center">
                                     <p className="text-3xl font-bold">{entries.length}</p>
-                                    <p className="text-sm text-indigo-100">Peserta</p>
+                                    <p className="text-sm text-emerald-100">Peserta</p>
                                 </div>
                                 <div className="bg-white/10 rounded-xl p-4 text-center">
                                     <p className="text-3xl font-bold">
                                         {entries.length > 0 ? entries[0].percentage : 0}%
                                     </p>
-                                    <p className="text-sm text-indigo-100">Nilai Tertinggi</p>
+                                    <p className="text-sm text-emerald-100">Nilai Tertinggi</p>
                                 </div>
                                 <div className="bg-white/10 rounded-xl p-4 text-center">
                                     <p className="text-3xl font-bold">
@@ -95,7 +95,7 @@ export default function Show({ tryout, entries: initialEntries, currentUserRank 
                                               )
                                             : 0}%
                                     </p>
-                                    <p className="text-sm text-indigo-100">Rata-rata</p>
+                                    <p className="text-sm text-emerald-100">Rata-rata</p>
                                 </div>
                             </div>
                         </div>

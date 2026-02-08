@@ -27,7 +27,7 @@ const TryoutCard = ({ tryout }) => {
             className="card group hover:shadow-lg transition-all"
         >
             {/* Thumbnail */}
-            <div className="h-36 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-t-xl relative overflow-hidden">
+            <div className="h-36 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-t-xl relative overflow-hidden">
                 {tryout.thumbnail && (
                     <img
                         src={`/storage/${tryout.thumbnail}`}
@@ -58,7 +58,7 @@ const TryoutCard = ({ tryout }) => {
                     ))}
                 </div>
 
-                <h3 className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-2 mb-3">
+                <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors line-clamp-2 mb-3">
                     {tryout.title}
                 </h3>
 
@@ -172,7 +172,7 @@ export default function Index({ tryouts, categories, filters }) {
                                 href={link.url || '#'}
                                 className={`px-3 py-2 rounded text-sm ${
                                     link.active
-                                        ? 'bg-indigo-600 text-white'
+                                        ? 'bg-emerald-600 text-white'
                                         : link.url
                                         ? 'bg-white text-gray-600 hover:bg-gray-50'
                                         : 'bg-gray-100 text-gray-400 cursor-not-allowed'

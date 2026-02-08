@@ -23,9 +23,9 @@ export default function Login() {
             <div className="min-h-screen flex relative overflow-hidden bg-slate-50">
                 {/* Decorative Background Elements */}
                 <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-cyan-300/20 rounded-full blur-3xl" />
-                    <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-br from-violet-400/15 to-purple-300/15 rounded-full blur-3xl" />
-                    <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-gradient-to-br from-emerald-400/10 to-teal-300/10 rounded-full blur-3xl" />
+                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-emerald-400/20 to-teal-300/20 rounded-full blur-3xl" />
+                    <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-br from-green-400/15 to-emerald-300/15 rounded-full blur-3xl" />
+                    <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-gradient-to-br from-teal-400/10 to-cyan-300/10 rounded-full blur-3xl" />
                 </div>
 
                 {/* Left Side - Form */}
@@ -43,7 +43,7 @@ export default function Login() {
                             <h1 className="text-2xl font-bold text-gray-900">Masuk ke akun Anda</h1>
                             <p className="mt-2 text-gray-600">
                                 Belum punya akun?{' '}
-                                <Link href={route('register')} className="text-blue-600 hover:text-blue-700 font-medium">
+                                <Link href={route('register')} className="text-emerald-600 hover:text-emerald-700 font-medium">
                                     Daftar sekarang
                                 </Link>
                             </p>
@@ -108,13 +108,13 @@ export default function Login() {
                                             type="checkbox"
                                             checked={data.remember}
                                             onChange={(e) => setData('remember', e.target.checked)}
-                                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                            className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
                                         />
                                         <span className="text-sm text-gray-600">Ingat saya</span>
                                     </label>
                                     <Link
                                         href="#"
-                                        className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                                        className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
                                     >
                                         Lupa password?
                                     </Link>
@@ -134,7 +134,7 @@ export default function Login() {
                 </div>
 
                 {/* Right Side - Visual */}
-                <div className="hidden lg:flex flex-1 bg-gradient-to-br from-blue-600 via-blue-700 to-violet-700 items-center justify-center p-12 relative">
+                <div className="hidden lg:flex flex-1 bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 items-center justify-center p-12 relative">
                     {/* Decorative elements */}
                     <div className="absolute top-10 right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
                     <div className="absolute bottom-20 left-10 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
@@ -147,7 +147,7 @@ export default function Login() {
                         <h2 className="text-4xl font-bold text-white mb-6">
                             Persiapkan UTBK Anda
                         </h2>
-                        <p className="text-blue-100 text-lg leading-relaxed">
+                        <p className="text-emerald-100 text-lg leading-relaxed">
                             Latihan soal lengkap dengan pembahasan dan leaderboard untuk mengukur kemampuan Anda bersama ribuan peserta lainnya.
                         </p>
 
@@ -155,15 +155,15 @@ export default function Login() {
                         <div className="mt-12 grid grid-cols-3 gap-6">
                             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
                                 <div className="text-2xl font-bold text-white">50K+</div>
-                                <div className="text-sm text-blue-200">Pengguna</div>
+                                <div className="text-sm text-emerald-200">Pengguna</div>
                             </div>
                             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
                                 <div className="text-2xl font-bold text-white">10K+</div>
-                                <div className="text-sm text-blue-200">Soal</div>
+                                <div className="text-sm text-emerald-200">Soal</div>
                             </div>
                             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
                                 <div className="text-2xl font-bold text-white">4.9</div>
-                                <div className="text-sm text-blue-200">Rating</div>
+                                <div className="text-sm text-emerald-200">Rating</div>
                             </div>
                         </div>
                     </div>
