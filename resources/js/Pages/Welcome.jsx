@@ -147,9 +147,6 @@ export default function Welcome() {
                 <section id="features" className="py-24 px-4 relative">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-16">
-                            <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-emerald-100">
-                                Fitur Unggulan
-                            </div>
                             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
                                 Semua yang kamu butuhkan
                                 <br />
@@ -206,25 +203,95 @@ export default function Welcome() {
                 </section>
 
                 {/* Footer */}
-                <footer className="bg-gray-900 text-gray-400 py-16 px-4 relative overflow-hidden">
-                    {/* Decorative */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent" />
+                <footer className="bg-gray-900 text-gray-400 relative overflow-hidden">
+                    {/* Top Gradient Line */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
                     
-                    <div className="max-w-7xl mx-auto relative">
-                        <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-                            <div className="flex items-center gap-3">
-                                <img src="/logo.png" alt="Gemaprest Logo" className="h-10 w-auto" />
-                                <span className="text-white font-bold text-lg">Gemaprest Tryout</span>
+                    {/* Main Footer Content */}
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                            {/* Brand Column */}
+                            <div className="lg:col-span-2">
+                                <div className="flex items-center gap-3 mb-5">
+                                    <img src="/logo.png" alt="Gemaprest Logo" className="h-12 w-auto" />
+                                    <div>
+                                        <span className="text-white font-bold text-xl block">Gemaprest Tryout</span>
+                                        <span className="text-emerald-400 text-xs font-medium">Platform Tryout UTBK</span>
+                                    </div>
+                                </div>
+                                <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-md">
+                                    Platform tryout online untuk persiapan UTBK yang dirancang untuk membantu siswa Indonesia meraih PTN impian.
+                                </p>
+                                <div className="flex items-center gap-2 text-xs text-gray-500">
+                                    <span className="inline-block w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                    <span>Dikembangkan oleh</span>
+                                </div>
+                                <p className="text-gray-300 text-sm font-medium mt-1">
+                                    Lembaga Beasiswa Karya Salemba Empat
+                                </p>
+                                <p className="text-emerald-400 text-sm">
+                                    KSE Universitas Sam Ratulangi
+                                </p>
                             </div>
-                            <div className="flex gap-10 text-sm">
-                                <a href="#" className="hover:text-white transition-colors">Tentang</a>
-                                <a href="#" className="hover:text-white transition-colors">Kontak</a>
-                                <a href="#" className="hover:text-white transition-colors">Kebijakan Privasi</a>
-                                <a href="#" className="hover:text-white transition-colors">Syarat & Ketentuan</a>
+
+                            {/* Quick Links */}
+                            <div>
+                                <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-5">Navigasi</h4>
+                                <ul className="space-y-3">
+                                    <li>
+                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                            Tentang Kami
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                            Kontak
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                            FAQ
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            {/* Legal */}
+                            <div>
+                                <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-5">Legal</h4>
+                                <ul className="space-y-3">
+                                    <li>
+                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                            Kebijakan Privasi
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                            Syarat & Ketentuan
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                        <div className="border-t border-gray-800 mt-10 pt-10 text-center text-sm">
-                            &copy; {new Date().getFullYear()} Gemaprest Tryout. All rights reserved.
+                    </div>
+
+                    {/* Bottom Bar */}
+                    <div className="border-t border-gray-800">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <p className="text-gray-500 text-sm">
+                                    &copy; {new Date().getFullYear()} Gemaprest Tryout. All rights reserved.
+                                </p>
+                                <div className="flex items-center gap-2 text-gray-500 text-xs">
+                                    <span>Developer</span>
+                                    <span>Mifthsarsyd - Software Engineer</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </footer>
