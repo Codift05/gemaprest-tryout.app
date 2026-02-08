@@ -6,7 +6,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { Toaster } from 'react-hot-toast';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Tryout UTBK';
+const appName = import.meta.env.VITE_APP_NAME || 'Gemaprest Tryout';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,

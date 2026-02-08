@@ -6,8 +6,8 @@ export default function SettingsIndex({ settings = {} }) {
     const [activeTab, setActiveTab] = useState('general');
 
     const { data, setData, post, processing, errors } = useForm({
-        site_name: settings.site_name || 'Tryout UTBK',
-        site_description: settings.site_description || 'Platform Tryout UTBK Online',
+        site_name: settings.site_name || 'Gemaprest Tryout',
+        site_description: settings.site_description || 'Platform Tryout UTBK Online - Gemaprest',
         contact_email: settings.contact_email || '',
         max_violations: settings.max_violations || 3,
         enable_proctoring: settings.enable_proctoring ?? true,
