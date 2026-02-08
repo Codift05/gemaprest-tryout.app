@@ -1,49 +1,170 @@
-# Web Tryout UTBK
+<p align="center">
+  <a href="https://laravel.com" target="_blank">
+    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+  </a>
+</p>
 
-Platform tryout online untuk persiapan UTBK SNBT yang stabil, ringan, dan aman.
+<p align="center">
+  <img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
+  <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+  <img src="https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/Inertia.js-1.2-9553E9?style=for-the-badge&logo=inertia&logoColor=white" alt="Inertia.js">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/Vite-5.0-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/Status-Active-success?style=flat-square" alt="Status">
+</p>
+
+---
+
+# Gemaprest Tryout UTBK
+
+Platform tryout online untuk persiapan UTBK SNBT. Dibangun dengan arsitektur modern menggunakan Laravel sebagai backend dan React sebagai frontend, terintegrasi melalui Inertia.js untuk pengalaman Single Page Application tanpa kompleksitas API terpisah.
+
+---
 
 ## Fitur Utama
 
-### 🎓 Untuk Siswa
-- **Dashboard Personal** - Statistik belajar, tryout tersedia, dan riwayat ujian
-- **Exam Engine** - Interface ujian dengan timer server-side yang akurat
-- **Anti-Cheating System** - Deteksi pelanggaran (tab switch, copy-paste, dll)
-- **Auto-Save** - Jawaban tersimpan otomatis setiap kali menjawab
-- **Review Pembahasan** - Lihat jawaban dan penjelasan setelah ujian
-- **Realtime Leaderboard** - Peringkat live menggunakan WebSocket
+### Untuk Siswa
+| Fitur | Deskripsi |
+|-------|-----------|
+| Dashboard Personal | Statistik belajar, tryout tersedia, dan riwayat ujian |
+| Exam Engine | Interface ujian dengan timer server-side yang akurat |
+| Anti-Cheating System | Deteksi pelanggaran (tab switch, copy-paste, dll) |
+| Auto-Save | Jawaban tersimpan otomatis setiap kali menjawab |
+| Review Pembahasan | Lihat jawaban dan penjelasan setelah ujian |
+| Realtime Leaderboard | Peringkat live menggunakan WebSocket |
 
-### 👨‍💼 Untuk Admin
-- **Manajemen Tryout** - CRUD tryout dengan pengaturan lengkap
-- **Bank Soal** - Pengelolaan soal dengan kategori dan tingkat kesulitan
-- **Kategori & Subkategori** - Organisasi materi dengan warna
-- **Manajemen User** - Kelola siswa dan admin
-- **Dashboard Analytics** - Statistik platform dan aktivitas
+### Untuk Admin
+| Fitur | Deskripsi |
+|-------|-----------|
+| Manajemen Tryout | CRUD tryout dengan pengaturan lengkap |
+| Bank Soal | Pengelolaan soal dengan kategori dan tingkat kesulitan |
+| Kategori dan Subkategori | Organisasi materi dengan sistem warna |
+| Manajemen User | Kelola siswa dan admin |
+| Dashboard Analytics | Statistik platform dan aktivitas |
+
+---
 
 ## Tech Stack
 
-- **Backend**: Laravel 11 + PHP 8.2+
-- **Frontend**: React 18 + Inertia.js
-- **State Management**: Zustand (lightweight)
-- **Realtime**: Laravel Reverb (WebSocket)
-- **Styling**: Tailwind CSS 3.4
-- **Database**: MySQL 8.0+
-- **Queue**: Database driver (low-cost hosting)
+### Backend
 
-## Persyaratan
+| Technology | Version | Description |
+|------------|---------|-------------|
+| **Laravel** | 11.x | PHP framework dengan fitur routing, ORM, queue, dan broadcasting |
+| **PHP** | 8.2+ | Server-side scripting language |
+| **Laravel Reverb** | 1.0 | First-party WebSocket server untuk realtime broadcasting |
+| **Laravel Sanctum** | 4.0 | Lightweight authentication system untuk SPA |
+| **Ziggy** | 2.0 | Laravel routes di JavaScript |
 
-- PHP 8.2+
-- Composer 2.x
-- Node.js 18+
-- MySQL 8.0+ atau MariaDB 10.5+
-- Ekstensi PHP: BCMath, Ctype, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML
+### Frontend
+
+| Technology | Version | Description |
+|------------|---------|-------------|
+| **React** | 18.3 | JavaScript library untuk building user interfaces |
+| **Inertia.js** | 1.2 | Modern monolith tanpa API, server-side routing dengan client-side rendering |
+| **Tailwind CSS** | 3.4 | Utility-first CSS framework |
+| **Headless UI** | 2.1 | Unstyled, accessible UI components untuk React |
+| **Heroicons** | 2.1 | Hand-crafted SVG icons dari Tailwind CSS team |
+
+### State Management dan Utilities
+
+| Technology | Version | Description |
+|------------|---------|-------------|
+| **Zustand** | 4.5 | Lightweight state management, alternatif Redux yang lebih simpel |
+| **Axios** | 1.7 | Promise-based HTTP client |
+| **date-fns** | 3.6 | Modern JavaScript date utility library |
+| **clsx** | 2.1 | Utility untuk constructing className strings |
+| **react-hot-toast** | 2.4 | Notifikasi toast yang ringan |
+
+### Development Tools
+
+| Technology | Version | Description |
+|------------|---------|-------------|
+| **Vite** | 5.0 | Next generation frontend build tool |
+| **Laravel Pint** | 1.13 | PHP code style fixer |
+| **PHPUnit** | 11.0 | PHP testing framework |
+| **Laravel Breeze** | 2.0 | Authentication scaffolding |
+
+### Database
+
+| Technology | Version | Description |
+|------------|---------|-------------|
+| **MySQL** | 8.0+ | Primary database |
+| **MariaDB** | 10.5+ | Alternative database (compatible) |
+
+---
+
+## Arsitektur
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         CLIENT BROWSER                          │
+│                                                                 │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐ │
+│  │    React    │  │  Zustand    │  │     Laravel Echo        │ │
+│  │  Components │  │   Stores    │  │  (WebSocket Client)     │ │
+│  └──────┬──────┘  └──────┬──────┘  └───────────┬─────────────┘ │
+└─────────┼────────────────┼─────────────────────┼───────────────┘
+          │                │                     │
+          │  Inertia.js    │                     │ WebSocket
+          │                │                     │
+┌─────────┼────────────────┼─────────────────────┼───────────────┐
+│         ▼                ▼                     ▼               │
+│  ┌─────────────────────────────┐  ┌─────────────────────────┐ │
+│  │      Laravel Router         │  │    Laravel Reverb       │ │
+│  │      + Controllers          │  │   (WebSocket Server)    │ │
+│  └──────────────┬──────────────┘  └───────────┬─────────────┘ │
+│                 │                             │               │
+│  ┌──────────────┼─────────────────────────────┼─────────────┐ │
+│  │              ▼                             ▼             │ │
+│  │  ┌─────────────────┐  ┌─────────────────────────────┐   │ │
+│  │  │  Eloquent ORM   │  │    Broadcasting Events      │   │ │
+│  │  │    + Models     │  │  (Leaderboard, Exam, etc)   │   │ │
+│  │  └────────┬────────┘  └─────────────────────────────┘   │ │
+│  │           │                                              │ │
+│  │           ▼                     LARAVEL                  │ │
+│  │  ┌─────────────────┐                                     │ │
+│  │  │  MySQL/MariaDB  │                                     │ │
+│  │  └─────────────────┘                                     │ │
+│  └──────────────────────────────────────────────────────────┘ │
+│                          SERVER                               │
+└───────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## Persyaratan Sistem
+
+### Server Requirements
+
+| Requirement | Minimum | Recommended |
+|-------------|---------|-------------|
+| PHP | 8.2 | 8.3 |
+| Composer | 2.x | Latest |
+| Node.js | 18.x | 20.x |
+| MySQL | 8.0 | 8.0+ |
+| MariaDB | 10.5 | 10.11+ |
+
+### PHP Extensions
+
+```
+BCMath, Ctype, JSON, Mbstring, OpenSSL, PDO, PDO_MySQL, Tokenizer, XML, cURL, Fileinfo
+```
+
+---
 
 ## Instalasi
 
 ### 1. Clone Repository
 
 ```bash
-git clone <repository-url>
-cd tryout-utbk
+git clone https://github.com/Codift05/gemaprest-tryout.app.git
+cd gemaprest-tryout.app
 ```
 
 ### 2. Install Dependencies
@@ -140,17 +261,19 @@ php artisan queue:work
 
 ## Anti-Cheating System
 
-Sistem anti-kecurangan mendeteksi:
+Sistem anti-kecurangan terintegrasi yang mendeteksi berbagai jenis pelanggaran:
 
-- 🔄 **Tab Switch** - Perpindahan tab browser
-- 👁️ **Blur** - Kehilangan fokus window
-- 📺 **Fullscreen Exit** - Keluar dari mode fullscreen
-- 📋 **Copy/Paste** - Percobaan copy atau paste
-- 🖱️ **Right Click** - Klik kanan pada halaman ujian
-- ⌨️ **Devtools** - Membuka developer tools (F12)
-- 🖨️ **Print** - Percobaan mencetak halaman
+| Violation Type | Detection Method |
+|----------------|------------------|
+| Tab Switch | Mendeteksi perpindahan tab browser menggunakan `visibilitychange` event |
+| Window Blur | Mendeteksi kehilangan fokus window |
+| Fullscreen Exit | Mendeteksi keluar dari mode fullscreen |
+| Copy/Paste | Intercept clipboard events pada halaman ujian |
+| Right Click | Mencegah context menu untuk menghindari inspect element |
+| DevTools | Mendeteksi pembukaan developer tools (F12) |
+| Print | Mencegah percobaan mencetak halaman ujian |
 
-Jika pelanggaran melebihi batas, ujian otomatis diserahkan.
+Setiap pelanggaran dicatat dengan timestamp dan jenis pelanggaran. Jika total pelanggaran melebihi batas yang ditentukan per tryout, sistem akan otomatis menyerahkan ujian (auto-submit).
 
 ## Deployment (Low-Cost Hosting)
 
@@ -197,10 +320,26 @@ Edit `app/Models/Tryout.php` atau melalui admin panel
 
 Sesuaikan `max_violations` di setiap tryout melalui admin panel
 
+---
+
 ## Lisensi
 
-MIT License
+Proyek ini dilisensikan di bawah [MIT License](LICENSE).
+
+---
 
 ## Kontribusi
 
-Pull requests welcome! Untuk perubahan besar, buka issue terlebih dahulu.
+Kontribusi sangat diterima. Untuk perubahan besar, silakan buka issue terlebih dahulu untuk mendiskusikan perubahan yang diinginkan.
+
+1. Fork repository
+2. Buat branch fitur (`git checkout -b feature/AmazingFeature`)
+3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
+4. Push ke branch (`git push origin feature/AmazingFeature`)
+5. Buat Pull Request
+
+---
+
+<p align="center">
+  <sub>Built with Laravel and React by <a href="https://github.com/Codift05">Gemaprest</a></sub>
+</p>
