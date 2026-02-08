@@ -1,0 +1,172 @@
+@startuml state-exam-session
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 11
+
+skinparam state {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+    FontColor #374151
+    StartColor #10B981
+    EndColor #DC2626
+}
+
+skinparam note {
+    BackgroundColor #FEF3C7
+    BorderColor #F59E0B
+}
+
+title **Gemaprest Tryout - State Machine Diagram**\n//Exam Session Lifecycle//
+
+' ========================================
+' STATES
+' ========================================
+[*] --> Initialized : User clicks\n"Start Exam"
+
+state Initialized #E8F5E9 {
+    Initialized : entry / Create session record
+    Initialized : entry / Generate question order
+    Initialized : entry / Calculate end time
+    Initialized : entry / Initialize answers
+}
+
+Initialized --> InProgress : Session created\nsuccessfully
+
+state InProgress #E0F2FE {
+    InProgress : entry / Start timer
+    InProgress : entry / Enable violation detection
+    InProgress : do / Monitor user activity
+    InProgress : do / Auto-save answers
+    InProgress : exit / Stop timer
+}
+
+state "Answering Questions" as Answering #ECFDF5 {
+    state "Viewing Question" as Viewing
+    state "Selecting Answer" as Selecting
+    state "Saving Answer" as Saving
+    state "Navigating" as Navigating
+    
+    [*] --> Viewing
+    Viewing --> Selecting : User selects option
+    Selecting --> Saving : Debounce timer elapsed
+    Saving --> Viewing : Save successful
+    Viewing --> Navigating : User clicks nav
+    Navigating --> Viewing : Load question
+}
+
+InProgress --> Answering
+Answering --> InProgress
+
+state "Violation Detected" as ViolationState #FEF3C7 {
+    ViolationState : entry / Log violation
+    ViolationState : entry / Increment counter
+    ViolationState : entry / Show warning
+}
+
+InProgress --> ViolationState : Tab switch /\nFullscreen exit /\nCopy attempt
+ViolationState --> InProgress : [count < max]\n/ Resume exam
+ViolationState --> Violated : [count >= max]\n/ Force terminate
+
+state Calculating #FFF7ED {
+    Calculating : entry / Stop accepting answers
+    Calculating : do / Calculate scores
+    Calculating : do / Determine correct/wrong
+    Calculating : exit / Update leaderboard
+}
+
+InProgress --> Calculating : User submits
+InProgress --> Calculating : Timer expires
+
+state Completed #D1FAE5 {
+    Completed : entry / Set status completed
+    Completed : entry / Record finish time
+    Completed : entry / Broadcast result
+    Completed : entry / Log activity
+}
+
+state Timeout #FEE2E2 {
+    Timeout : entry / Set status timeout
+    Timeout : entry / Record finish time
+    Timeout : entry / Log activity
+}
+
+state Violated #FEE2E2 {
+    Violated : entry / Set status violated
+    Violated : entry / Record finish time
+    Violated : entry / Log violation
+    Violated : entry / Notify admin
+}
+
+Calculating --> Completed : Submitted by user
+Calculating --> Timeout : Timer expired
+Calculating --> Violated : Max violations reached
+
+state "Result Available" as ResultState #E8F5E9 {
+    state "Viewing Score" as ViewingScore
+    state "Reviewing Answers" as ReviewingAnswers
+    state "Checking Leaderboard" as CheckingLeaderboard
+    
+    [*] --> ViewingScore
+    ViewingScore --> ReviewingAnswers : Click review
+    ReviewingAnswers --> ViewingScore : Back to result
+    ViewingScore --> CheckingLeaderboard : View leaderboard
+    CheckingLeaderboard --> ViewingScore : Back to result
+}
+
+Completed --> ResultState
+Timeout --> ResultState
+Violated --> ResultState
+
+ResultState --> [*] : User exits
+
+' ========================================
+' NOTES
+' ========================================
+note right of InProgress
+    **Active State:**
+    • Timer running
+    • Answers saveable
+    • Violations tracked
+    • WebSocket connected
+end note
+
+note left of ViolationState
+    **Violation Types:**
+    • TAB_SWITCH
+    • FULLSCREEN_EXIT
+    • COPY_PASTE
+    • RIGHT_CLICK
+    • SCREENSHOT
+end note
+
+note right of Calculating
+    **Scoring Process:**
+    1. Get all answers
+    2. Check each answer
+    3. Calculate score
+    4. Update session
+    5. Update leaderboard
+end note
+
+note bottom of Completed
+    **Final States:**
+    • COMPLETED: Normal finish
+    • TIMEOUT: Time expired
+    • VIOLATED: Too many violations
+end note
+
+' ========================================
+' LEGEND
+' ========================================
+legend right
+    |= Color |= Meaning |
+    | <#E8F5E9> | Success/Start state |
+    | <#E0F2FE> | Active/In progress |
+    | <#FEF3C7> | Warning |
+    | <#FEE2E2> | Error/Abnormal |
+    | <#D1FAE5> | Completed |
+endlegend
+
+@enduml

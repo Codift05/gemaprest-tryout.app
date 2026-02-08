@@ -1,0 +1,378 @@
+@startuml class-diagram
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 11
+skinparam classBorderColor #10B981
+skinparam classBackgroundColor #ECFDF5
+skinparam classHeaderBackgroundColor #10B981
+skinparam classFontColor #FFFFFF
+skinparam classAttributeFontColor #374151
+skinparam stereotypeFontColor #059669
+skinparam arrowColor #374151
+skinparam packageBorderColor #047857
+skinparam packageBackgroundColor #F0FDF4
+skinparam noteBorderColor #10B981
+skinparam noteBackgroundColor #ECFDF5
+
+title **Gemaprest Tryout - Class Diagram**\n//Domain Model//
+
+' ========================================
+' ENUMERATIONS
+' ========================================
+package "Enumerations" as EnumPkg #F5F5F5 {
+    enum UserRole {
+        ADMIN
+        SISWA
+    }
+    
+    enum ExamStatus {
+        IN_PROGRESS
+        COMPLETED
+        TIMEOUT
+        VIOLATED
+    }
+    
+    enum QuestionType {
+        SINGLE
+        MULTIPLE
+    }
+    
+    enum ViolationType {
+        TAB_SWITCH
+        FULLSCREEN_EXIT
+        COPY_PASTE
+        RIGHT_CLICK
+        SCREENSHOT
+    }
+    
+    enum Difficulty {
+        EASY
+        MEDIUM
+        HARD
+    }
+}
+
+' ========================================
+' CORE DOMAIN CLASSES
+' ========================================
+package "Core Domain" as CorePkg {
+    
+    class User {
+        - id: int
+        - name: string
+        - email: string
+        - password: string
+        - role: UserRole
+        - phone: string
+        - school: string
+        - avatar: string
+        - is_active: boolean
+        - email_verified_at: datetime
+        - created_at: datetime
+        - updated_at: datetime
+        --
+        + isAdmin(): boolean
+        + isSiswa(): boolean
+        + createdTryouts(): Collection<Tryout>
+        + createdQuestions(): Collection<Question>
+        + examSessions(): Collection<ExamSession>
+        + leaderboardEntries(): Collection<Leaderboard>
+        + activityLogs(): Collection<ActivityLog>
+    }
+    
+    class Category {
+        - id: int
+        - name: string
+        - slug: string
+        - description: string
+        - color: string
+        - sort_order: int
+        - is_active: boolean
+        - created_at: datetime
+        - updated_at: datetime
+        --
+        + subcategories(): Collection<Subcategory>
+        + questions(): Collection<Question>
+        + scopeActive(query): Builder
+        + scopeOrdered(query): Builder
+    }
+    
+    class Subcategory {
+        - id: int
+        - category_id: int
+        - name: string
+        - slug: string
+        - description: string
+        - sort_order: int
+        - is_active: boolean
+        - created_at: datetime
+        - updated_at: datetime
+        --
+        + category(): Category
+        + questions(): Collection<Question>
+        + getFullNameAttribute(): string
+        + scopeActive(query): Builder
+    }
+    
+    class Question {
+        - id: int
+        - subcategory_id: int
+        - content: text
+        - image: string
+        - type: QuestionType
+        - options: json
+        - correct_answer: string
+        - explanation: text
+        - explanation_image: string
+        - score: decimal
+        - negative_score: decimal
+        - difficulty: Difficulty
+        - is_active: boolean
+        - created_by: int
+        - created_at: datetime
+        - updated_at: datetime
+        - deleted_at: datetime
+        --
+        + subcategory(): Subcategory
+        + category(): Category
+        + creator(): User
+        + tryouts(): Collection<Tryout>
+        + isCorrect(answer: string): boolean
+        + calculateScore(answer: string): float
+    }
+    
+    class Tryout {
+        - id: int
+        - title: string
+        - slug: string
+        - description: text
+        - thumbnail: string
+        - duration_minutes: int
+        - total_questions: int
+        - passing_score: decimal
+        - start_time: datetime
+        - end_time: datetime
+        - is_published: boolean
+        - is_randomized: boolean
+        - show_result_immediately: boolean
+        - show_leaderboard: boolean
+        - max_attempts: int
+        - max_violations: int
+        - created_by: int
+        - created_at: datetime
+        - updated_at: datetime
+        - deleted_at: datetime
+        --
+        + creator(): User
+        + categories(): Collection<Category>
+        + questions(): Collection<Question>
+        + examSessions(): Collection<ExamSession>
+        + leaderboardEntries(): Collection<Leaderboard>
+        + getStatusAttribute(): string
+        + isAvailable(): boolean
+        + hasUserAttempted(userId): boolean
+        + getUserAttemptCount(userId): int
+    }
+}
+
+' ========================================
+' EXAM DOMAIN CLASSES
+' ========================================
+package "Exam Domain" as ExamPkg {
+    
+    class ExamSession {
+        - id: int
+        - user_id: int
+        - tryout_id: int
+        - started_at: datetime
+        - finished_at: datetime
+        - server_end_time: datetime
+        - status: ExamStatus
+        - violation_count: int
+        - score: decimal
+        - max_score: decimal
+        - percentage: decimal
+        - correct_count: int
+        - wrong_count: int
+        - unanswered_count: int
+        - question_order: json
+        - ip_address: string
+        - user_agent: string
+        - created_at: datetime
+        - updated_at: datetime
+        --
+        + user(): User
+        + tryout(): Tryout
+        + answers(): Collection<ExamAnswer>
+        + violations(): Collection<ExamViolation>
+        + leaderboard(): Leaderboard
+        + isActive(): boolean
+        + getRemainingTimeAttribute(): int
+        + getProgressAttribute(): array
+    }
+    
+    class ExamAnswer {
+        - id: int
+        - exam_session_id: int
+        - question_id: int
+        - answer: string
+        - is_correct: boolean
+        - score_obtained: decimal
+        - time_spent: int
+        - answered_at: datetime
+        - created_at: datetime
+        - updated_at: datetime
+        --
+        + examSession(): ExamSession
+        + question(): Question
+    }
+    
+    class ExamViolation {
+        - id: int
+        - exam_session_id: int
+        - type: ViolationType
+        - description: string
+        - metadata: json
+        - created_at: datetime
+        --
+        + examSession(): ExamSession
+    }
+}
+
+' ========================================
+' LEADERBOARD & LOGGING
+' ========================================
+package "Analytics Domain" as AnalyticsPkg {
+    
+    class Leaderboard {
+        - id: int
+        - tryout_id: int
+        - user_id: int
+        - exam_session_id: int
+        - score: decimal
+        - percentage: decimal
+        - correct_count: int
+        - time_taken: int
+        - rank: int
+        - created_at: datetime
+        - updated_at: datetime
+        --
+        + tryout(): Tryout
+        + user(): User
+        + examSession(): ExamSession
+        + getFormattedTimeAttribute(): string
+        {static} + updateRanks(tryoutId: int): void
+        {static} + updateEntry(session: ExamSession): Leaderboard
+    }
+    
+    class ActivityLog {
+        - id: int
+        - user_id: int
+        - action: string
+        - description: string
+        - loggable_type: string
+        - loggable_id: int
+        - metadata: json
+        - ip_address: string
+        - user_agent: string
+        - created_at: datetime
+        --
+        + user(): User
+        + loggable(): Model
+        {static} + log(action, description, loggable, metadata): ActivityLog
+    }
+}
+
+' ========================================
+' SERVICES
+' ========================================
+package "Services" as ServicePkg #FFF7ED {
+    
+    class ExamScoringService <<Service>> {
+        --
+        + finishExam(session: ExamSession, status: string): void
+        + calculateScores(session: ExamSession): array
+        - broadcastResults(session: ExamSession): void
+    }
+}
+
+' ========================================
+' EVENTS
+' ========================================
+package "Events" as EventPkg #EFF6FF {
+    
+    class ExamFinished <<Event>> {
+        + session: ExamSession
+        --
+        + broadcastOn(): Channel
+        + broadcastWith(): array
+    }
+    
+    class LeaderboardUpdated <<Event>> {
+        + tryoutId: int
+        + entry: Leaderboard
+        --
+        + broadcastOn(): Channel
+        + broadcastWith(): array
+    }
+}
+
+' ========================================
+' RELATIONSHIPS
+' ========================================
+' User relationships
+User "1" -- "0..*" Tryout : creates >
+User "1" -- "0..*" Question : creates >
+User "1" -- "0..*" ExamSession : takes >
+User "1" -- "0..*" Leaderboard : has entries >
+User "1" -- "0..*" ActivityLog : has >
+
+' Category relationships
+Category "1" -- "1..*" Subcategory : contains >
+Subcategory "1" -- "0..*" Question : contains >
+
+' Tryout relationships
+Tryout "0..*" -- "0..*" Category : includes >
+Tryout "0..*" -- "0..*" Question : contains >
+Tryout "1" -- "0..*" ExamSession : has >
+Tryout "1" -- "0..*" Leaderboard : has >
+
+' ExamSession relationships
+ExamSession "1" -- "0..*" ExamAnswer : contains >
+ExamSession "1" -- "0..*" ExamViolation : has >
+ExamSession "1" -- "0..1" Leaderboard : produces >
+ExamAnswer "0..*" -- "1" Question : references >
+
+' Service relationships
+ExamScoringService ..> ExamSession : processes
+ExamScoringService ..> Leaderboard : updates
+ExamScoringService ..> ExamFinished : broadcasts
+ExamScoringService ..> LeaderboardUpdated : broadcasts
+
+' ========================================
+' NOTES
+' ========================================
+note top of User
+  **Roles:**
+  • Admin: Full access
+  • Siswa: Student access
+end note
+
+note right of ExamSession
+  **Status Flow:**
+  in_progress → completed
+  in_progress → timeout
+  in_progress → violated
+end note
+
+note bottom of ExamScoringService
+  **Responsibilities:**
+  • Calculate scores
+  • Update leaderboard
+  • Broadcast events
+  • Log activities
+end note
+
+@enduml

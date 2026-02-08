@@ -1,0 +1,284 @@
+@startuml component-diagram
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 11
+skinparam componentStyle uml2
+skinparam linetype ortho
+
+skinparam component {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+    FontColor #374151
+}
+
+skinparam package {
+    BackgroundColor #F0FDF4
+    BorderColor #047857
+    FontColor #374151
+}
+
+skinparam interface {
+    BackgroundColor #10B981
+    BorderColor #059669
+}
+
+skinparam database {
+    BackgroundColor #F5F5F5
+    BorderColor #6B7280
+}
+
+skinparam cloud {
+    BackgroundColor #EFF6FF
+    BorderColor #3B82F6
+}
+
+skinparam node {
+    BackgroundColor #FEF3C7
+    BorderColor #F59E0B
+}
+
+skinparam note {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+}
+
+title **Gemaprest Tryout - Component Diagram**\n//System Architecture//
+
+' ========================================
+' CLIENT LAYER
+' ========================================
+package "Client Layer" as ClientLayer #E0F2FE {
+    
+    component "Web Browser" as Browser {
+        component "React SPA" as ReactApp #ECFDF5 {
+            component "Pages" as Pages {
+                [Welcome]
+                [Dashboard]
+                [Tryouts]
+                [Exam Take]
+                [Result]
+                [Leaderboard]
+                [Admin Pages]
+            }
+            
+            component "Layouts" as Layouts {
+                [MainLayout]
+                [AdminLayout]
+            }
+            
+            component "Hooks" as Hooks {
+                [useExamStore]
+                [useTimer]
+                [useWebSocket]
+            }
+            
+            component "UI Components" as UIComponents {
+                [Glass Cards]
+                [Buttons]
+                [Forms]
+                [Alerts]
+            }
+        }
+        
+        component "Inertia.js Client" as InertiaClient #E0F2FE
+        
+        component "State Management" as StateManage {
+            [Zustand Store]
+            [Local Storage]
+        }
+    }
+}
+
+' ========================================
+' APPLICATION LAYER
+' ========================================
+package "Application Layer" as AppLayer #F0FDF4 {
+    
+    component "Laravel Backend" as LaravelApp {
+        
+        component "HTTP Layer" as HTTPLayer {
+            component "Middleware" as Middleware {
+                [Authentication]
+                [Admin Check]
+                [CSRF]
+                [Rate Limiting]
+            }
+            
+            component "Controllers" as Controllers {
+                [AuthController]
+                [DashboardController]
+                [TryoutController]
+                [ExamController]
+                [LeaderboardController]
+                [ProfileController]
+            }
+            
+            component "Admin Controllers" as AdminControllers {
+                [CategoryController]
+                [QuestionController]
+                [TryoutController]
+                [UserController]
+            }
+        }
+        
+        component "Inertia.js Server" as InertiaServer #E0F2FE
+        
+        component "Business Logic" as BusinessLogic {
+            component "Services" as Services {
+                [ExamScoringService]
+            }
+            
+            component "Events" as Events {
+                [ExamFinished]
+                [LeaderboardUpdated]
+            }
+        }
+        
+        component "Data Layer" as DataLayer {
+            component "Models" as Models {
+                [User]
+                [Category]
+                [Subcategory]
+                [Question]
+                [Tryout]
+                [ExamSession]
+                [ExamAnswer]
+                [ExamViolation]
+                [Leaderboard]
+                [ActivityLog]
+            }
+            
+            component "Query Builder" as QueryBuilder {
+                [Eloquent ORM]
+            }
+        }
+    }
+}
+
+' ========================================
+' INFRASTRUCTURE LAYER
+' ========================================
+package "Infrastructure Layer" as InfraLayer #FFF7ED {
+    
+    component "WebSocket Server" as WSServer {
+        component "Laravel Reverb" as Reverb #ECFDF5 {
+            [Channel Manager]
+            [Event Broadcaster]
+        }
+    }
+    
+    database "MySQL Database" as MySQL {
+        [users]
+        [categories]
+        [questions]
+        [tryouts]
+        [exam_sessions]
+        [exam_answers]
+        [leaderboards]
+    }
+    
+    component "File Storage" as FileStorage {
+        [Question Images]
+        [Thumbnails]
+        [Avatars]
+    }
+    
+    component "Cache Layer" as CacheLayer {
+        [Redis/File Cache]
+        [Session Store]
+    }
+}
+
+' ========================================
+' EXTERNAL SERVICES
+' ========================================
+cloud "External Services" as ExternalServices {
+    component "Email Service" as EmailSvc {
+        [SMTP/Mailgun]
+    }
+}
+
+' ========================================
+' INTERFACES
+' ========================================
+interface "HTTP/HTTPS" as HTTP
+interface "WebSocket" as WS
+interface "REST API" as REST
+
+' ========================================
+' CONNECTIONS
+' ========================================
+' Client to Server
+Browser -down-> HTTP
+HTTP -down-> LaravelApp
+
+' Inertia communication
+InertiaClient <--> InertiaServer : "Inertia Protocol"
+
+' React internal
+ReactApp --> StateManage
+Pages --> Layouts
+Pages --> UIComponents
+Pages --> Hooks
+
+' Laravel internal
+Controllers --> Services
+Controllers --> Models
+AdminControllers --> Models
+Services --> Models
+Services --> Events
+Middleware --> Controllers
+Models --> QueryBuilder
+
+' Database
+QueryBuilder --> MySQL
+
+' WebSocket
+Browser <--> WS
+WS <--> Reverb
+Events --> Reverb : "Broadcast"
+
+' Cache
+LaravelApp --> CacheLayer
+
+' File Storage
+LaravelApp --> FileStorage
+
+' External
+LaravelApp --> EmailSvc
+
+' ========================================
+' NOTES
+' ========================================
+note right of ReactApp
+    **Frontend Stack:**
+    • React 18.3
+    • Tailwind CSS 3.4
+    • Heroicons
+    • Zustand (State)
+end note
+
+note left of LaravelApp
+    **Backend Stack:**
+    • Laravel 11.x
+    • PHP 8.2+
+    • Inertia.js 1.2
+end note
+
+note bottom of Reverb
+    **Real-time Features:**
+    • Leaderboard updates
+    • Exam status
+    • Notifications
+end note
+
+note right of MySQL
+    **Database:**
+    • MySQL 8.0
+    • InnoDB Engine
+    • UTF8MB4
+end note
+
+@enduml

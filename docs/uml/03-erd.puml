@@ -1,0 +1,302 @@
+@startuml erd-diagram
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 10
+skinparam linetype ortho
+
+title **Gemaprest Tryout - Entity Relationship Diagram**\n//Database Schema//
+
+' ========================================
+' STYLING
+' ========================================
+skinparam class {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+    ArrowColor #374151
+    HeaderBackgroundColor #10B981
+    FontColor #FFFFFF
+    AttributeFontColor #374151
+    StereotypeFontColor #059669
+}
+
+hide circle
+hide methods
+
+' ========================================
+' ENTITIES
+' ========================================
+
+entity "users" as users {
+    * **id** : bigint <<PK>>
+    --
+    * name : varchar(255)
+    * email : varchar(255) <<unique>>
+    * password : varchar(255)
+    * role : enum('admin', 'siswa')
+      phone : varchar(20)
+      school : varchar(255)
+      avatar : varchar(255)
+    * is_active : boolean = true
+      email_verified_at : timestamp
+      remember_token : varchar(100)
+    * created_at : timestamp
+    * updated_at : timestamp
+}
+
+entity "categories" as categories {
+    * **id** : bigint <<PK>>
+    --
+    * name : varchar(255)
+    * slug : varchar(255) <<unique>>
+      description : text
+      color : varchar(20)
+    * sort_order : int = 0
+    * is_active : boolean = true
+    * created_at : timestamp
+    * updated_at : timestamp
+}
+
+entity "subcategories" as subcategories {
+    * **id** : bigint <<PK>>
+    --
+    * //category_id// : bigint <<FK>>
+    * name : varchar(255)
+    * slug : varchar(255)
+      description : text
+    * sort_order : int = 0
+    * is_active : boolean = true
+    * created_at : timestamp
+    * updated_at : timestamp
+}
+
+entity "questions" as questions {
+    * **id** : bigint <<PK>>
+    --
+    * //subcategory_id// : bigint <<FK>>
+    * content : longtext
+      image : varchar(255)
+    * type : enum('single', 'multiple')
+    * options : json
+    * correct_answer : varchar(255)
+      explanation : longtext
+      explanation_image : varchar(255)
+    * score : decimal(8,2) = 4.00
+    * negative_score : decimal(8,2) = 0.00
+    * difficulty : enum('easy', 'medium', 'hard')
+    * is_active : boolean = true
+      //created_by// : bigint <<FK>>
+    * created_at : timestamp
+    * updated_at : timestamp
+      deleted_at : timestamp
+}
+
+entity "tryouts" as tryouts {
+    * **id** : bigint <<PK>>
+    --
+    * title : varchar(255)
+    * slug : varchar(255) <<unique>>
+      description : text
+      thumbnail : varchar(255)
+    * duration_minutes : int
+    * total_questions : int
+    * passing_score : decimal(5,2) = 60.00
+      start_time : timestamp
+      end_time : timestamp
+    * is_published : boolean = false
+    * is_randomized : boolean = true
+    * show_result_immediately : boolean = true
+    * show_leaderboard : boolean = true
+    * max_attempts : int = 1
+    * max_violations : int = 3
+      //created_by// : bigint <<FK>>
+    * created_at : timestamp
+    * updated_at : timestamp
+      deleted_at : timestamp
+}
+
+entity "tryout_categories" as tryout_categories {
+    * **id** : bigint <<PK>>
+    --
+    * //tryout_id// : bigint <<FK>>
+    * //category_id// : bigint <<FK>>
+    * question_count : int = 0
+    * sort_order : int = 0
+    * created_at : timestamp
+    * updated_at : timestamp
+}
+
+entity "tryout_questions" as tryout_questions {
+    * **id** : bigint <<PK>>
+    --
+    * //tryout_id// : bigint <<FK>>
+    * //question_id// : bigint <<FK>>
+    * sort_order : int = 0
+    * created_at : timestamp
+    * updated_at : timestamp
+}
+
+entity "exam_sessions" as exam_sessions {
+    * **id** : bigint <<PK>>
+    --
+    * //user_id// : bigint <<FK>>
+    * //tryout_id// : bigint <<FK>>
+    * started_at : timestamp
+      finished_at : timestamp
+    * server_end_time : timestamp
+    * status : enum('in_progress', 'completed', 'timeout', 'violated')
+    * violation_count : int = 0
+      score : decimal(10,2)
+      max_score : decimal(10,2)
+      percentage : decimal(5,2)
+      correct_count : int
+      wrong_count : int
+      unanswered_count : int
+      question_order : json
+      ip_address : varchar(45)
+      user_agent : text
+    * created_at : timestamp
+    * updated_at : timestamp
+}
+
+entity "exam_answers" as exam_answers {
+    * **id** : bigint <<PK>>
+    --
+    * //exam_session_id// : bigint <<FK>>
+    * //question_id// : bigint <<FK>>
+      answer : varchar(255)
+      is_correct : boolean
+      score_obtained : decimal(8,2)
+      time_spent : int
+      answered_at : timestamp
+    * created_at : timestamp
+    * updated_at : timestamp
+}
+
+entity "exam_violations" as exam_violations {
+    * **id** : bigint <<PK>>
+    --
+    * //exam_session_id// : bigint <<FK>>
+    * type : varchar(50)
+      description : text
+      metadata : json
+    * created_at : timestamp
+}
+
+entity "leaderboards" as leaderboards {
+    * **id** : bigint <<PK>>
+    --
+    * //tryout_id// : bigint <<FK>>
+    * //user_id// : bigint <<FK>>
+    * //exam_session_id// : bigint <<FK>>
+    * score : decimal(10,2)
+    * percentage : decimal(5,2)
+    * correct_count : int
+    * time_taken : int
+    * rank : int
+    * created_at : timestamp
+    * updated_at : timestamp
+}
+
+entity "activity_logs" as activity_logs {
+    * **id** : bigint <<PK>>
+    --
+      //user_id// : bigint <<FK>>
+    * action : varchar(100)
+    * description : text
+      loggable_type : varchar(255)
+      loggable_id : bigint
+      metadata : json
+      ip_address : varchar(45)
+      user_agent : text
+    * created_at : timestamp
+}
+
+entity "cache" as cache {
+    * **key** : varchar(255) <<PK>>
+    --
+    * value : mediumtext
+    * expiration : int
+}
+
+entity "sessions" as sessions {
+    * **id** : varchar(255) <<PK>>
+    --
+      //user_id// : bigint <<FK>> <<index>>
+      ip_address : varchar(45)
+      user_agent : text
+    * payload : longtext
+    * last_activity : int <<index>>
+}
+
+entity "jobs" as jobs {
+    * **id** : bigint <<PK>>
+    --
+    * queue : varchar(255) <<index>>
+    * payload : longtext
+    * attempts : tinyint
+      reserved_at : int
+    * available_at : int
+    * created_at : int
+}
+
+' ========================================
+' RELATIONSHIPS
+' ========================================
+
+' User relationships
+users ||--o{ tryouts : "created_by"
+users ||--o{ questions : "created_by"
+users ||--o{ exam_sessions : "user_id"
+users ||--o{ leaderboards : "user_id"
+users ||--o{ activity_logs : "user_id"
+users ||--o{ sessions : "user_id"
+
+' Category hierarchy
+categories ||--|{ subcategories : "category_id"
+subcategories ||--o{ questions : "subcategory_id"
+
+' Tryout relationships
+tryouts ||--o{ tryout_categories : "tryout_id"
+categories ||--o{ tryout_categories : "category_id"
+tryouts ||--o{ tryout_questions : "tryout_id"
+questions ||--o{ tryout_questions : "question_id"
+tryouts ||--o{ exam_sessions : "tryout_id"
+tryouts ||--o{ leaderboards : "tryout_id"
+
+' Exam relationships
+exam_sessions ||--o{ exam_answers : "exam_session_id"
+exam_sessions ||--o{ exam_violations : "exam_session_id"
+exam_sessions ||--o| leaderboards : "exam_session_id"
+questions ||--o{ exam_answers : "question_id"
+
+' ========================================
+' NOTES
+' ========================================
+note right of users
+  **Indexes:**
+  • email (unique)
+  • role
+  • is_active
+end note
+
+note bottom of exam_sessions
+  **Indexes:**
+  • user_id, tryout_id (composite)
+  • status
+  • started_at
+end note
+
+note right of leaderboards
+  **Indexes:**
+  • tryout_id, user_id (unique)
+  • tryout_id, rank
+end note
+
+note bottom of tryout_questions
+  **Indexes:**
+  • tryout_id, question_id (unique)
+end note
+
+@enduml

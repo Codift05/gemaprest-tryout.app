@@ -1,0 +1,260 @@
+@startuml sequence-auth
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 11
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam maxmessagesize 200
+
+skinparam participant {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+    FontColor #374151
+}
+
+skinparam sequence {
+    LifeLineBorderColor #10B981
+    LifeLineBackgroundColor #F0FDF4
+    ArrowColor #374151
+    DividerBackgroundColor #10B981
+    DividerFontColor #FFFFFF
+    GroupBorderColor #047857
+    GroupBackgroundColor #ECFDF5
+}
+
+skinparam note {
+    BackgroundColor #FEF3C7
+    BorderColor #F59E0B
+}
+
+title **Gemaprest Tryout - Sequence Diagram**\n//Autentikasi (Register, Login, Logout)//
+
+' ========================================
+' PARTICIPANTS
+' ========================================
+actor "User" as User #E8F5E9
+participant "Browser\n(React)" as Browser #ECFDF5
+participant "Inertia.js" as Inertia #E0F2FE
+participant "AuthController" as AuthCtrl #ECFDF5
+participant "User Model" as UserModel #ECFDF5
+participant "Session\nHandler" as Session #ECFDF5
+database "MySQL" as DB #F5F5F5
+
+' ========================================
+' REGISTRATION
+' ========================================
+== User Registration ==
+
+User -> Browser : Buka halaman register
+activate Browser
+Browser -> Inertia : GET /register
+activate Inertia
+Inertia -> AuthCtrl : showRegister()
+activate AuthCtrl
+AuthCtrl --> Inertia : Inertia::render('Auth/Register')
+deactivate AuthCtrl
+Inertia --> Browser : Render Register Form
+deactivate Inertia
+
+User -> Browser : Isi form:\n• Nama\n• Email\n• Password\n• Konfirmasi Password
+Browser -> Browser : Client-side validation
+
+User -> Browser : Submit form
+Browser -> Inertia : POST /register
+activate Inertia
+note right of Browser
+    Payload:
+    - name: "John Doe"
+    - email: "john@example.com"
+    - password: "********"
+    - password_confirmation: "********"
+end note
+
+Inertia -> AuthCtrl : register(request)
+activate AuthCtrl
+
+AuthCtrl -> AuthCtrl : Validate input:\n• Name required\n• Email unique\n• Password min 8 chars\n• Password confirmed
+
+alt Validation Failed
+    AuthCtrl --> Inertia : Redirect back\nwith errors
+    Inertia --> Browser : Show validation errors
+else Validation Passed
+    AuthCtrl -> UserModel : Create user
+    activate UserModel
+    
+    UserModel -> UserModel : Hash password\n(bcrypt)
+    UserModel -> DB : INSERT INTO users
+    note right
+        - role: 'siswa'
+        - is_active: true
+    end note
+    DB --> UserModel : User created
+    UserModel --> AuthCtrl : User object
+    deactivate UserModel
+    
+    AuthCtrl -> Session : Login user\n(Auth::login)
+    activate Session
+    Session -> DB : Create session
+    Session --> AuthCtrl : Session created
+    deactivate Session
+    
+    AuthCtrl -> DB : Log activity\n'register'
+    
+    AuthCtrl --> Inertia : Redirect to /dashboard
+end
+deactivate AuthCtrl
+Inertia --> Browser : Redirect to Dashboard
+deactivate Inertia
+deactivate Browser
+
+' ========================================
+' LOGIN
+' ========================================
+== User Login ==
+
+User -> Browser : Buka halaman login
+activate Browser
+Browser -> Inertia : GET /login
+activate Inertia
+Inertia -> AuthCtrl : showLogin()
+activate AuthCtrl
+AuthCtrl --> Inertia : Inertia::render('Auth/Login')
+deactivate AuthCtrl
+Inertia --> Browser : Render Login Form
+deactivate Inertia
+
+User -> Browser : Isi credentials:\n• Email\n• Password\n• Remember me (optional)
+
+User -> Browser : Submit form
+Browser -> Inertia : POST /login
+activate Inertia
+note right of Browser
+    Payload:
+    - email: "john@example.com"
+    - password: "********"
+    - remember: true/false
+end note
+
+Inertia -> AuthCtrl : login(request)
+activate AuthCtrl
+
+AuthCtrl -> AuthCtrl : Validate input
+
+AuthCtrl -> UserModel : Find by email
+activate UserModel
+UserModel -> DB : SELECT * FROM users\nWHERE email = ?
+DB --> UserModel : User or null
+UserModel --> AuthCtrl : User object
+deactivate UserModel
+
+alt User Not Found or Invalid Password
+    AuthCtrl --> Inertia : Redirect back\nwith error:\n"Invalid credentials"
+    Inertia --> Browser : Show error
+else User Found & Valid Password
+    AuthCtrl -> AuthCtrl : Check if user is active
+    
+    alt User Inactive
+        AuthCtrl --> Inertia : Redirect back\nwith error:\n"Account disabled"
+        Inertia --> Browser : Show error
+    else User Active
+        AuthCtrl -> Session : Auth::login(user, remember)
+        activate Session
+        Session -> DB : Create/update session
+        note right
+            If remember = true:
+            Create remember_token
+        end note
+        Session --> AuthCtrl : Session created
+        deactivate Session
+        
+        AuthCtrl -> DB : Log activity\n'login'
+        
+        AuthCtrl -> AuthCtrl : Determine redirect:\n• Admin → /admin\n• Siswa → /dashboard
+        
+        AuthCtrl --> Inertia : Redirect to\nappropriate dashboard
+    end
+end
+deactivate AuthCtrl
+Inertia --> Browser : Redirect
+deactivate Inertia
+deactivate Browser
+
+' ========================================
+' LOGOUT
+' ========================================
+== User Logout ==
+
+User -> Browser : Klik "Logout"
+activate Browser
+Browser -> Inertia : POST /logout
+activate Inertia
+
+Inertia -> AuthCtrl : logout(request)
+activate AuthCtrl
+
+AuthCtrl -> DB : Log activity\n'logout'
+
+AuthCtrl -> Session : Auth::logout()
+activate Session
+Session -> DB : DELETE session
+Session -> Session : Invalidate session\nRegenerate token
+Session --> AuthCtrl : Logged out
+deactivate Session
+
+AuthCtrl --> Inertia : Redirect to /
+deactivate AuthCtrl
+Inertia --> Browser : Redirect to Home
+deactivate Inertia
+deactivate Browser
+
+' ========================================
+' SESSION VALIDATION (MIDDLEWARE)
+' ========================================
+== Session Validation (On Every Request) ==
+
+User -> Browser : Access protected route
+activate Browser
+Browser -> Inertia : GET /dashboard
+activate Inertia
+
+Inertia -> Session : Check authentication
+activate Session
+Session -> DB : Validate session token
+DB --> Session : Session data
+
+alt Session Invalid or Expired
+    Session --> Inertia : Not authenticated
+    Inertia --> Browser : Redirect to /login
+else Session Valid
+    Session -> UserModel : Get user from session
+    UserModel -> DB : SELECT user
+    DB --> UserModel : User data
+    UserModel --> Session : User object
+    Session --> Inertia : Authenticated user
+    deactivate Session
+    
+    Inertia -> Inertia : Continue to\nrequested controller
+    Inertia --> Browser : Render page
+end
+deactivate Inertia
+deactivate Browser
+
+' ========================================
+' NOTES
+' ========================================
+note over AuthCtrl
+    **Rate Limiting:**
+    Max 5 login attempts
+    per minute per IP
+end note
+
+note over Session
+    **Session Security:**
+    • CSRF token validation
+    • Session regeneration on login
+    • Secure cookie flags
+end note
+
+@enduml

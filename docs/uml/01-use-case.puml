@@ -1,0 +1,124 @@
+@startuml use-case-diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam usecaseBorderColor #10B981
+skinparam usecaseBackgroundColor #D1FAE5
+skinparam actorBorderColor #059669
+skinparam packageBorderColor #6B7280
+skinparam packageBackgroundColor #F9FAFB
+skinparam arrowColor #374151
+skinparam shadowing false
+skinparam ranksep 20
+skinparam nodesep 10
+
+title Gemaprest Tryout Platform\nUse Case Diagram
+
+' ========================================
+' ACTORS
+' ========================================
+:Siswa: as Student
+:Admin: as Admin
+:Sistem: as System
+
+' ========================================
+' SYSTEM BOUNDARY
+' ========================================
+rectangle "Gemaprest Tryout Platform" {
+    
+    (Registrasi) as UC01
+    (Login) as UC02
+    (Logout) as UC03
+    (Edit Profil) as UC04
+    
+    (Lihat Daftar Tryout) as UC05
+    (Lihat Detail Tryout) as UC06
+    (Filter Tryout) as UC07
+    
+    (Mulai Tryout) as UC08
+    (Mengerjakan Soal) as UC09
+    (Simpan Jawaban) as UC10
+    (Submit Ujian) as UC11
+    (Lihat Hasil) as UC12
+    (Review Pembahasan) as UC13
+    
+    (Lihat Leaderboard) as UC14
+    (Lihat Riwayat) as UC16
+    
+    (CRUD Soal) as UC17
+    (Import Soal Bulk) as UC18
+    
+    (CRUD Tryout) as UC20
+    (Assign Soal) as UC21
+    (Publish Tryout) as UC23
+    
+    (CRUD Kategori) as UC24
+    (CRUD Subkategori) as UC25
+    
+    (CRUD Pengguna) as UC26
+    (Toggle Status User) as UC27
+    
+    (Dashboard Admin) as UC28
+    (Statistik Tryout) as UC29
+    
+    (Deteksi Pelanggaran) as UC31
+    (Hitung Skor) as UC32
+    (Update Leaderboard) as UC33
+}
+
+' ========================================
+' STUDENT RELATIONSHIPS
+' ========================================
+Student --> UC01
+Student --> UC02
+Student --> UC03
+Student --> UC04
+Student --> UC05
+Student --> UC06
+Student --> UC08
+Student --> UC09
+Student --> UC11
+Student --> UC12
+Student --> UC13
+Student --> UC14
+Student --> UC16
+
+' ========================================
+' ADMIN RELATIONSHIPS
+' ========================================
+Admin --> UC02
+Admin --> UC03
+Admin --> UC17
+Admin --> UC18
+Admin --> UC20
+Admin --> UC21
+Admin --> UC23
+Admin --> UC24
+Admin --> UC25
+Admin --> UC26
+Admin --> UC27
+Admin --> UC28
+Admin --> UC29
+
+' ========================================
+' SYSTEM RELATIONSHIPS
+' ========================================
+System --> UC31
+System --> UC32
+System --> UC33
+
+' ========================================
+' INCLUDE/EXTEND RELATIONSHIPS
+' ========================================
+UC06 ..> UC07 : <<extend>>
+UC09 ..> UC10 : <<include>>
+UC11 ..> UC32 : <<include>>
+UC32 ..> UC33 : <<include>>
+UC12 ..> UC13 : <<extend>>
+UC09 ..> UC31 : <<include>>
+
+@enduml

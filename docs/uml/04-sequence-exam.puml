@@ -1,0 +1,317 @@
+@startuml sequence-exam
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 11
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 10
+skinparam maxmessagesize 200
+skinparam sequenceParticipant underline
+
+skinparam participant {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+    FontColor #374151
+}
+
+skinparam sequence {
+    LifeLineBorderColor #10B981
+    LifeLineBackgroundColor #F0FDF4
+    ArrowColor #374151
+    ArrowFontColor #374151
+    DividerBackgroundColor #10B981
+    DividerFontColor #FFFFFF
+    GroupBorderColor #047857
+    GroupBackgroundColor #ECFDF5
+    GroupHeaderFontColor #047857
+    BoxBorderColor #10B981
+    BoxBackgroundColor #F0FDF4
+}
+
+skinparam note {
+    BackgroundColor #FEF3C7
+    BorderColor #F59E0B
+}
+
+title **Gemaprest Tryout - Sequence Diagram**\n//Alur Mengerjakan Ujian (Exam Flow)//
+
+' ========================================
+' PARTICIPANTS
+' ========================================
+actor "Siswa" as Student #E8F5E9
+participant "Browser\n(React)" as Browser #ECFDF5
+participant "Inertia.js\nMiddleware" as Inertia #E0F2FE
+participant "ExamController" as ExamCtrl #ECFDF5
+participant "TryoutController" as TryoutCtrl #ECFDF5
+participant "ExamSession\nModel" as SessionModel #ECFDF5
+participant "ExamScoringService" as ScoringService #FFF7ED
+participant "Leaderboard\nModel" as LeaderboardModel #ECFDF5
+participant "WebSocket\n(Reverb)" as WebSocket #ECFDF5
+database "MySQL\nDatabase" as DB #F5F5F5
+
+' ========================================
+' BROWSE TRYOUT
+' ========================================
+== Browse & Select Tryout ==
+
+Student -> Browser : Buka halaman tryout
+activate Browser
+Browser -> Inertia : GET /tryouts
+activate Inertia
+Inertia -> TryoutCtrl : index()
+activate TryoutCtrl
+TryoutCtrl -> DB : Query published tryouts
+DB --> TryoutCtrl : Tryout list
+TryoutCtrl --> Inertia : Inertia response
+deactivate TryoutCtrl
+Inertia --> Browser : Render Tryouts/Index
+deactivate Inertia
+
+Student -> Browser : Pilih tryout
+Browser -> Inertia : GET /tryout/{slug}
+activate Inertia
+Inertia -> TryoutCtrl : show(tryout)
+activate TryoutCtrl
+TryoutCtrl -> DB : Get tryout details\n+ check user attempts
+DB --> TryoutCtrl : Tryout + attempt count
+TryoutCtrl --> Inertia : Inertia response
+deactivate TryoutCtrl
+Inertia --> Browser : Render Tryout/Show
+deactivate Inertia
+deactivate Browser
+
+' ========================================
+' START EXAM
+' ========================================
+== Start Exam ==
+
+Student -> Browser : Klik "Mulai Tryout"
+activate Browser
+Browser -> Inertia : POST /exam/{tryout}/start
+activate Inertia
+Inertia -> ExamCtrl : start(tryout)
+activate ExamCtrl
+
+ExamCtrl -> ExamCtrl : Validate:\n• Tryout available\n• User eligible\n• Attempts remaining
+
+alt Validation Failed
+    ExamCtrl --> Inertia : Redirect with error
+    Inertia --> Browser : Show error message
+else Validation Passed
+    ExamCtrl -> SessionModel : Create new session
+    activate SessionModel
+    
+    SessionModel -> DB : INSERT exam_session
+    note right
+        - status: 'in_progress'
+        - started_at: now()
+        - server_end_time: now() + duration
+        - question_order: randomized
+    end note
+    DB --> SessionModel : Session created
+    
+    SessionModel -> DB : INSERT exam_answers\n(placeholder for each question)
+    DB --> SessionModel : Answers initialized
+    
+    SessionModel --> ExamCtrl : Session object
+    deactivate SessionModel
+    
+    ExamCtrl -> DB : Log activity\n'exam_start'
+    
+    ExamCtrl --> Inertia : Redirect to exam.take
+end
+deactivate ExamCtrl
+
+Inertia --> Browser : Redirect /exam/session/{id}
+deactivate Inertia
+deactivate Browser
+
+' ========================================
+' TAKE EXAM
+' ========================================
+== Take Exam (Loop) ==
+
+Student -> Browser : Load exam page
+activate Browser
+Browser -> Inertia : GET /exam/session/{id}
+activate Inertia
+Inertia -> ExamCtrl : take(session)
+activate ExamCtrl
+
+ExamCtrl -> SessionModel : Check session validity
+SessionModel -> DB : Get session + answers
+DB --> SessionModel : Session data
+SessionModel --> ExamCtrl : Session + questions
+
+alt Session Expired or Invalid
+    ExamCtrl --> Inertia : Redirect to result
+else Session Active
+    ExamCtrl --> Inertia : Inertia response
+    Inertia --> Browser : Render Exam/Take
+end
+deactivate ExamCtrl
+deactivate Inertia
+
+Browser -> WebSocket : Subscribe to\nexam.{sessionId}
+activate WebSocket
+WebSocket --> Browser : Connection established
+deactivate WebSocket
+
+loop Untuk Setiap Soal
+    Student -> Browser : Pilih/input jawaban
+    
+    Browser -> ExamCtrl : POST /exam/session/{id}/answer
+    activate ExamCtrl
+    note right of Browser
+        Payload:
+        - question_id
+        - answer
+        - time_spent
+    end note
+    
+    ExamCtrl -> SessionModel : Validate session active
+    
+    alt Session Expired
+        ExamCtrl -> ScoringService : finishExam(session, 'timeout')
+        ExamCtrl --> Browser : JSON {timeout: true}
+    else Session Active
+        ExamCtrl -> DB : UPDATE exam_answer\nSET answer = ?
+        DB --> ExamCtrl : Answer saved
+        ExamCtrl --> Browser : JSON {success: true}
+    end
+    deactivate ExamCtrl
+    
+    Browser -> Browser : Update UI\n(mark answered)
+end
+
+' ========================================
+' VIOLATION DETECTION
+' ========================================
+== Violation Detection (Parallel) ==
+
+Browser -> Browser : Monitor:\n• Tab visibility\n• Fullscreen state\n• Keyboard shortcuts
+
+alt Violation Detected
+    Browser -> ExamCtrl : POST /exam/session/{id}/violation
+    activate ExamCtrl
+    note right of Browser
+        Payload:
+        - type: 'tab_switch'|'fullscreen_exit'|...
+        - description
+        - metadata
+    end note
+    
+    ExamCtrl -> DB : INSERT exam_violation
+    ExamCtrl -> SessionModel : Increment violation_count
+    SessionModel -> DB : UPDATE session\nviolation_count += 1
+    
+    alt violation_count >= max_violations
+        ExamCtrl -> ScoringService : finishExam(session, 'violated')
+        ExamCtrl --> Browser : JSON {terminated: true}
+    else
+        ExamCtrl --> Browser : JSON {\n  warning: true,\n  remaining: n\n}
+    end
+    deactivate ExamCtrl
+    
+    Browser -> Student : Show warning
+end
+
+' ========================================
+' SUBMIT EXAM
+' ========================================
+== Submit Exam ==
+
+Student -> Browser : Klik "Submit Ujian"
+activate Browser
+Browser -> Browser : Confirm dialog
+Student -> Browser : Konfirmasi submit
+
+Browser -> Inertia : POST /exam/session/{id}/submit
+activate Inertia
+Inertia -> ExamCtrl : submit(session)
+activate ExamCtrl
+
+ExamCtrl -> ScoringService : finishExam(session, 'completed')
+activate ScoringService
+
+ScoringService -> SessionModel : Get all answers
+SessionModel -> DB : SELECT answers WITH questions
+DB --> SessionModel : Answers + Questions
+
+ScoringService -> ScoringService : Calculate scores:\n• Check each answer\n• Sum correct/wrong\n• Calculate percentage
+
+loop For Each Answer
+    ScoringService -> DB : UPDATE exam_answer\nSET is_correct, score_obtained
+end
+
+ScoringService -> SessionModel : Update session results
+SessionModel -> DB : UPDATE exam_session\nSET status, score, percentage...
+
+ScoringService -> LeaderboardModel : Update leaderboard
+activate LeaderboardModel
+LeaderboardModel -> DB : UPSERT leaderboard entry
+LeaderboardModel -> DB : Recalculate ranks\n(ORDER BY score DESC, time)
+LeaderboardModel --> ScoringService : Rank updated
+deactivate LeaderboardModel
+
+ScoringService -> DB : INSERT activity_log\n'exam_finish'
+
+ScoringService -> WebSocket : Broadcast ExamFinished
+activate WebSocket
+WebSocket --> Browser : Notify exam completed
+deactivate WebSocket
+
+ScoringService -> WebSocket : Broadcast LeaderboardUpdated
+activate WebSocket
+WebSocket --> Browser : New leaderboard data
+deactivate WebSocket
+
+ScoringService --> ExamCtrl : Exam finished
+deactivate ScoringService
+
+ExamCtrl --> Inertia : Redirect to result
+deactivate ExamCtrl
+Inertia --> Browser : Redirect /exam/session/{id}/result
+deactivate Inertia
+deactivate Browser
+
+' ========================================
+' VIEW RESULT
+' ========================================
+== View Result ==
+
+Student -> Browser : Load result page
+activate Browser
+Browser -> Inertia : GET /exam/session/{id}/result
+activate Inertia
+Inertia -> ExamCtrl : result(session)
+activate ExamCtrl
+
+ExamCtrl -> DB : Get session + stats
+DB --> ExamCtrl : Complete result data
+
+ExamCtrl --> Inertia : Inertia response
+deactivate ExamCtrl
+Inertia --> Browser : Render Exam/Result
+deactivate Inertia
+
+note over Browser
+    Display:
+    • Score & Percentage
+    • Correct/Wrong/Unanswered
+    • Rank in leaderboard
+    • Time taken
+end note
+
+opt Review Pembahasan
+    Student -> Browser : Klik "Review"
+    Browser -> Inertia : GET /exam/session/{id}/review
+    Inertia -> ExamCtrl : review(session)
+    ExamCtrl --> Inertia : Questions + explanations
+    Inertia --> Browser : Render Exam/Review
+end
+
+deactivate Browser
+
+@enduml

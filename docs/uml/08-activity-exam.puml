@@ -1,0 +1,329 @@
+@startuml activity-exam
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 11
+
+skinparam activity {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+    FontColor #374151
+    DiamondBackgroundColor #FEF3C7
+    DiamondBorderColor #F59E0B
+}
+
+skinparam activityBar {
+    Color #10B981
+}
+
+skinparam swimlane {
+    BorderColor #10B981
+    TitleFontColor #374151
+}
+
+skinparam partition {
+    BackgroundColor #F0FDF4
+    BorderColor #047857
+}
+
+skinparam note {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+}
+
+title **Gemaprest Tryout - Activity Diagram**\n//Proses Mengerjakan Ujian//
+
+|#E8F5E9| Siswa |
+|#E0F2FE| Sistem Frontend |
+|#ECFDF5| Sistem Backend |
+|#F5F5F5| Database |
+
+' ========================================
+' START
+' ========================================
+|Siswa|
+start
+
+:Buka halaman daftar tryout;
+
+|Sistem Frontend|
+:Load daftar tryout\nyang tersedia;
+
+|Sistem Backend|
+:Query tryouts\n(published, dalam periode);
+
+|Database|
+:Return tryout list;
+
+|Sistem Frontend|
+:Tampilkan daftar tryout\ndengan status & info;
+
+|Siswa|
+:Pilih tryout yang\ningin dikerjakan;
+
+|Sistem Frontend|
+:Load detail tryout;
+
+|Sistem Backend|
+:Cek eligibilitas user:\n• Tryout published?\n• Dalam periode?\n• Sisa attempt?;
+
+|Database|
+:Query user attempts\n& tryout config;
+
+|Sistem Backend|
+if (User Eligible?) then (Ya)
+    :Return tryout detail\n+ can_start: true;
+else (Tidak)
+    :Return error message\n(tidak bisa mengerjakan);
+    |Sistem Frontend|
+    :Tampilkan pesan error;
+    |Siswa|
+    stop
+endif
+
+|Sistem Frontend|
+:Tampilkan detail tryout:\n• Jumlah soal\n• Durasi\n• Aturan;
+
+|Siswa|
+:Baca aturan & konfirmasi;
+:Klik "Mulai Tryout";
+
+' ========================================
+' START EXAM
+' ========================================
+partition "Inisialisasi Ujian" #F0FDF4 {
+    |Sistem Backend|
+    :Generate exam session;
+    
+    :Randomize urutan soal\n(jika enabled);
+    
+    :Hitung server_end_time:\nnow() + duration_minutes;
+    
+    |Database|
+    :INSERT exam_session\n(status: in_progress);
+    
+    :INSERT exam_answers\n(placeholder untuk setiap soal);
+    
+    :INSERT activity_log\n(action: exam_start);
+    
+    |Sistem Backend|
+    :Return session ID;
+}
+
+|Sistem Frontend|
+:Load halaman ujian\n(fullscreen mode);
+
+:Initialize:\n• Timer countdown\n• Violation detector\n• Auto-save;
+
+:Tampilkan soal pertama;
+
+' ========================================
+' EXAM LOOP
+' ========================================
+|Siswa|
+partition "Loop Mengerjakan Soal" #E0F2FE {
+    
+    repeat
+        :Baca soal;
+        
+        if (Pilih jawaban?) then (Ya)
+            :Pilih/ketik jawaban;
+            
+            |Sistem Frontend|
+            :Auto-save jawaban\n(debounced);
+            
+            |Sistem Backend|
+            :Validate session\nmasih aktif;
+            
+            if (Session masih aktif?) then (Ya)
+                |Database|
+                :UPDATE exam_answer\nSET answer = ?;
+                
+                |Sistem Frontend|
+                :Update UI:\nmark answered;
+            else (Tidak - Timeout)
+                :Trigger auto-submit;
+                break
+            endif
+            
+        else (Skip)
+            :Tandai ragu-ragu\n(opsional);
+        endif
+        
+        |Siswa|
+        :Navigasi ke soal lain\natau submit;
+        
+        ' Parallel: Violation checking
+        |Sistem Frontend|
+        fork
+            :Monitor tab visibility;
+        fork again
+            :Monitor fullscreen;
+        fork again
+            :Monitor keyboard shortcuts;
+        end fork
+        
+        if (Violation detected?) then (Ya)
+            :Log violation;
+            
+            |Sistem Backend|
+            |Database|
+            :INSERT exam_violation;
+            :UPDATE session\nviolation_count++;
+            
+            |Sistem Backend|
+            if (violation_count >= max?) then (Ya)
+                :Force terminate exam;
+                break
+            else (Tidak)
+                |Sistem Frontend|
+                :Show warning\n(remaining attempts);
+            endif
+        endif
+        
+        |Siswa|
+        
+    repeat while (Submit atau waktu habis?) is (Lanjut) not (Submit/Timeout)
+}
+
+' ========================================
+' SUBMIT & SCORING
+' ========================================
+|Sistem Frontend|
+:Trigger submit\n(manual atau timeout);
+
+:Show loading:\n"Menghitung skor...";
+
+|Sistem Backend|
+partition "Proses Penilaian" #FEF3C7 {
+    
+    :Get all answers\nwith questions;
+    
+    |Database|
+    :SELECT answers\nJOIN questions;
+    
+    |Sistem Backend|
+    :Loop through answers:;
+    
+    while (Ada answer?) is (Ya)
+        :Cek jawaban benar/salah;
+        
+        if (Jawaban benar?) then (Ya)
+            :score += question.score;
+            :correct_count++;
+        else (Tidak)
+            if (Ada jawaban?) then (Ya)
+                :score += negative_score;
+                :wrong_count++;
+            else (Tidak)
+                :unanswered_count++;
+            endif
+        endif
+        
+        |Database|
+        :UPDATE exam_answer\nSET is_correct, score_obtained;
+    endwhile (Selesai)
+    
+    |Sistem Backend|
+    :Hitung percentage:\n(score / max_score) * 100;
+    
+    |Database|
+    :UPDATE exam_session\nSET status: completed,\nscore, percentage, dll;
+}
+
+partition "Update Leaderboard" #E0F2FE {
+    |Sistem Backend|
+    :Check if best score\nfor this user-tryout;
+    
+    |Database|
+    :UPSERT leaderboard entry;
+    
+    :Recalculate ranks\n(ORDER BY score DESC, time ASC);
+    
+    :UPDATE leaderboard\nSET rank = ?;
+}
+
+|Sistem Backend|
+:Broadcast events:\n• ExamFinished\n• LeaderboardUpdated;
+
+|Database|
+:INSERT activity_log\n(action: exam_finish);
+
+' ========================================
+' RESULT
+' ========================================
+|Sistem Frontend|
+:Receive broadcast;
+
+:Load halaman hasil;
+
+:Tampilkan hasil:\n• Score & Percentage\n• Benar/Salah/Kosong\n• Peringkat\n• Waktu pengerjaan;
+
+|Siswa|
+:Lihat hasil ujian;
+
+if (Lihat pembahasan?) then (Ya)
+    :Klik "Review Pembahasan";
+    
+    |Sistem Frontend|
+    :Load halaman review;
+    
+    |Sistem Backend|
+    |Database|
+    :Query questions\nwith user answers\n& explanations;
+    
+    |Sistem Frontend|
+    :Tampilkan:\n• Soal + jawaban user\n• Jawaban benar\n• Pembahasan;
+    
+    |Siswa|
+    :Baca pembahasan;
+    
+else (Tidak)
+endif
+
+|Siswa|
+if (Cek Leaderboard?) then (Ya)
+    :Buka leaderboard;
+    
+    |Sistem Frontend|
+    :Load realtime leaderboard\n(WebSocket);
+    
+    :Highlight posisi user;
+    
+    |Siswa|
+    :Lihat peringkat;
+else (Tidak)
+endif
+
+:Selesai;
+
+stop
+
+' ========================================
+' NOTES
+' ========================================
+note right of "Loop Mengerjakan Soal"
+    **Anti-Cheat Measures:**
+    • Tab switch detection
+    • Fullscreen enforcement
+    • Copy-paste blocking
+    • Screenshot prevention
+    • Right-click disabled
+end note
+
+note right of "Proses Penilaian"
+    **Scoring System:**
+    • Benar: +4 poin (default)
+    • Salah: 0 atau -1 poin
+    • Kosong: 0 poin
+end note
+
+note right of "Update Leaderboard"
+    **Ranking Rules:**
+    1. Score tertinggi
+    2. Waktu tercepat
+    3. Benar terbanyak
+end note
+
+@enduml

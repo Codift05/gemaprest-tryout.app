@@ -1,0 +1,286 @@
+@startuml deployment-diagram
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 11
+skinparam linetype ortho
+
+skinparam node {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+    FontColor #374151
+}
+
+skinparam component {
+    BackgroundColor #F0FDF4
+    BorderColor #047857
+}
+
+skinparam database {
+    BackgroundColor #F5F5F5
+    BorderColor #6B7280
+}
+
+skinparam cloud {
+    BackgroundColor #EFF6FF
+    BorderColor #3B82F6
+}
+
+skinparam artifact {
+    BackgroundColor #FEF3C7
+    BorderColor #F59E0B
+}
+
+skinparam note {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+}
+
+title **Gemaprest Tryout - Deployment Diagram**\n//Infrastructure Architecture//
+
+' ========================================
+' CLIENT DEVICES
+' ========================================
+node "Client Devices" as ClientNode #E0F2FE {
+    
+    node "Desktop Browser" as Desktop {
+        artifact "Chrome/Firefox/Edge" as DesktopBrowser
+        artifact "JavaScript Runtime" as JSRuntime
+        artifact "WebSocket Client" as WSClient
+    }
+    
+    node "Mobile Browser" as Mobile {
+        artifact "Mobile Chrome/Safari" as MobileBrowser
+        artifact "Responsive UI" as ResponsiveUI
+    }
+}
+
+' ========================================
+' LOAD BALANCER / CDN
+' ========================================
+cloud "CDN / Edge Network" as CDN #EFF6FF {
+    artifact "Static Assets" as StaticAssets {
+        file "app.css"
+        file "app.js"
+        file "vendor.js"
+        file "images/"
+    }
+    
+    artifact "SSL Termination" as SSL
+}
+
+' ========================================
+' WEB SERVER CLUSTER
+' ========================================
+node "Web Server Cluster" as WebCluster #F0FDF4 {
+    
+    node "Nginx Reverse Proxy" as Nginx {
+        artifact "nginx.conf" as NginxConf
+        artifact "Load Balancer" as LB
+        artifact "SSL Handler" as SSLHandler
+    }
+    
+    node "Application Server 1" as AppServer1 {
+        component "PHP-FPM 8.2" as PHP1 {
+            artifact "Laravel 11.x" as Laravel1
+            artifact "Inertia.js" as Inertia1
+            artifact "Vite Build" as Vite1
+        }
+    }
+    
+    node "Application Server 2" as AppServer2 {
+        component "PHP-FPM 8.2" as PHP2 {
+            artifact "Laravel 11.x" as Laravel2
+            artifact "Inertia.js" as Inertia2
+            artifact "Vite Build" as Vite2
+        }
+    }
+    
+    node "WebSocket Server" as WSServer {
+        component "Laravel Reverb" as Reverb {
+            artifact "Long Polling Fallback"
+            artifact "WebSocket Handler"
+        }
+    }
+}
+
+' ========================================
+' DATA LAYER
+' ========================================
+node "Data Layer" as DataLayer #FFF7ED {
+    
+    node "Primary Database" as PrimaryDB {
+        database "MySQL 8.0\nPrimary" as MySQLPrimary {
+            storage "users"
+            storage "tryouts"
+            storage "questions"
+            storage "exam_sessions"
+            storage "leaderboards"
+        }
+    }
+    
+    node "Read Replica" as ReplicaDB {
+        database "MySQL 8.0\nReplica" as MySQLReplica
+    }
+    
+    node "Cache Server" as CacheServer {
+        database "Redis 7.x" as Redis {
+            storage "Session Store"
+            storage "Cache Store"
+            storage "Queue"
+        }
+    }
+    
+    node "File Storage" as FileServer {
+        database "Local/S3 Storage" as Storage {
+            folder "question_images/"
+            folder "thumbnails/"
+            folder "avatars/"
+            folder "exports/"
+        }
+    }
+}
+
+' ========================================
+' MONITORING & LOGGING
+' ========================================
+node "Monitoring Stack" as MonitoringNode #EDE9FE {
+    
+    component "Application Monitoring" as AppMonitor {
+        artifact "Laravel Telescope" as Telescope
+        artifact "Error Tracking" as ErrorTracker
+    }
+    
+    component "Infrastructure Monitoring" as InfraMonitor {
+        artifact "Server Metrics" as ServerMetrics
+        artifact "Database Metrics" as DBMetrics
+    }
+    
+    component "Log Aggregation" as LogAgg {
+        artifact "Laravel Logs" as LaravelLogs
+        artifact "Nginx Access Logs" as NginxLogs
+    }
+}
+
+' ========================================
+' EXTERNAL SERVICES
+' ========================================
+cloud "External Services" as External #FEE2E2 {
+    component "Email Provider" as EmailProvider {
+        artifact "SMTP/Mailgun/SES"
+    }
+    
+    component "Backup Service" as BackupService {
+        artifact "Daily DB Backup"
+        artifact "File Backup"
+    }
+}
+
+' ========================================
+' CONNECTIONS
+' ========================================
+' Client to CDN
+Desktop --> CDN : "HTTPS (443)"
+Mobile --> CDN : "HTTPS (443)"
+
+' CDN to Web Server
+CDN --> Nginx : "HTTP/2"
+
+' Nginx to App Servers
+Nginx --> AppServer1 : "FastCGI"
+Nginx --> AppServer2 : "FastCGI"
+Nginx --> WSServer : "WebSocket (6001)"
+
+' Client WebSocket
+Desktop ..> WSServer : "WSS (6001)"
+Mobile ..> WSServer : "WSS (6001)"
+
+' App to Database
+AppServer1 --> MySQLPrimary : "TCP (3306)"
+AppServer2 --> MySQLPrimary : "TCP (3306)"
+AppServer1 --> MySQLReplica : "TCP (3306) READ"
+AppServer2 --> MySQLReplica : "TCP (3306) READ"
+
+' App to Cache
+AppServer1 --> Redis : "TCP (6379)"
+AppServer2 --> Redis : "TCP (6379)"
+WSServer --> Redis : "TCP (6379)"
+
+' App to Storage
+AppServer1 --> Storage
+AppServer2 --> Storage
+
+' Database Replication
+MySQLPrimary --> MySQLReplica : "Replication"
+
+' Monitoring
+AppServer1 --> AppMonitor
+AppServer2 --> AppMonitor
+MySQLPrimary --> InfraMonitor
+Redis --> InfraMonitor
+
+' External
+AppServer1 --> EmailProvider : "SMTP/API"
+MySQLPrimary --> BackupService : "Daily Backup"
+
+' ========================================
+' NOTES
+' ========================================
+note right of Nginx
+    **Nginx Configuration:**
+    • Reverse proxy
+    • SSL/TLS termination
+    • Gzip compression
+    • Static file serving
+    • WebSocket upgrade
+end note
+
+note bottom of MySQLPrimary
+    **Database Specs:**
+    • MySQL 8.0
+    • InnoDB storage
+    • UTF8MB4 charset
+    • Point-in-time recovery
+    • Daily backups
+end note
+
+note right of Redis
+    **Redis Usage:**
+    • Session storage
+    • Cache (query, views)
+    • Queue driver
+    • WebSocket pub/sub
+end note
+
+note bottom of Reverb
+    **WebSocket Features:**
+    • Real-time leaderboard
+    • Exam status updates
+    • Auto-reconnection
+    • Fallback: long polling
+end note
+
+note left of WebCluster
+    **Scaling Strategy:**
+    • Horizontal scaling
+    • Stateless app servers
+    • Centralized sessions
+    • Read replicas for DB
+end note
+
+' ========================================
+' DEPLOYMENT INFO BOX
+' ========================================
+legend right
+    |= Deployment Info |= Value |
+    | Environment | Production |
+    | Region | Asia Pacific |
+    | PHP Version | 8.2+ |
+    | Laravel Version | 11.x |
+    | Node Version | 18+ |
+    | MySQL Version | 8.0+ |
+    | Redis Version | 7.x |
+endlegend
+
+@enduml
