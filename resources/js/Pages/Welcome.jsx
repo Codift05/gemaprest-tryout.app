@@ -18,37 +18,31 @@ export default function Welcome() {
             icon: BookOpenIcon,
             title: 'Soal Berkualitas',
             description: 'Ribuan soal yang disusun sesuai dengan standar UTBK terbaru oleh tim ahli pendidikan.',
-            color: 'from-emerald-500 to-teal-400'
         },
         {
             icon: ClockIcon,
             title: 'Simulasi Waktu Nyata',
             description: 'Latihan dengan timer yang sama persis seperti ujian sesungguhnya.',
-            color: 'from-teal-500 to-cyan-400'
         },
         {
             icon: ChartBarIcon,
             title: 'Analisis Mendalam',
             description: 'Lihat statistik performa dan rekomendasi untuk meningkatkan skor.',
-            color: 'from-green-500 to-emerald-400'
         },
         {
             icon: TrophyIcon,
             title: 'Leaderboard Real-time',
             description: 'Bandingkan skormu dengan ribuan peserta lain secara real-time.',
-            color: 'from-lime-500 to-green-400'
         },
         {
             icon: AcademicCapIcon,
             title: 'Pembahasan Lengkap',
             description: 'Setiap soal dilengkapi pembahasan detail untuk pemahaman maksimal.',
-            color: 'from-emerald-600 to-teal-500'
         },
         {
             icon: ShieldCheckIcon,
             title: 'Anti Kecurangan',
             description: 'Sistem monitoring canggih untuk memastikan integritas ujian.',
-            color: 'from-teal-600 to-emerald-500'
         }
     ];
 
@@ -215,7 +209,7 @@ export default function Welcome() {
                                     key={index}
                                     className="feature-card group"
                                 >
-                                    <div className={`feature-icon bg-gradient-to-br ${feature.color} mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                                    <div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-emerald-500/25">
                                         <feature.icon className="h-7 w-7 text-white" />
                                     </div>
                                     <h3 className="text-xl font-bold text-gray-900 mb-3">
