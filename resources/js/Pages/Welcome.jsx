@@ -114,24 +114,6 @@ export default function Welcome() {
                                         Pelajari Lebih Lanjut
                                     </a>
                                 </div>
-
-                                {/* Trust Indicators */}
-                                <div className="mt-12 flex items-center justify-center lg:justify-start gap-8">
-                                    <div className="text-center">
-                                        <div className="text-2xl font-bold text-gray-900">50K+</div>
-                                        <div className="text-sm text-gray-500">Pengguna</div>
-                                    </div>
-                                    <div className="w-px h-10 bg-gray-200" />
-                                    <div className="text-center">
-                                        <div className="text-2xl font-bold text-gray-900">10K+</div>
-                                        <div className="text-sm text-gray-500">Soal</div>
-                                    </div>
-                                    <div className="w-px h-10 bg-gray-200" />
-                                    <div className="text-center">
-                                        <div className="text-2xl font-bold text-gray-900">4.9</div>
-                                        <div className="text-sm text-gray-500">Rating</div>
-                                    </div>
-                                </div>
                             </div>
 
                             {/* Hero Visual - Floating Cards */}
@@ -154,31 +136,6 @@ export default function Welcome() {
                                                 <span className="text-sm">{benefit}</span>
                                             </div>
                                         ))}
-                                    </div>
-                                </div>
-
-                                {/* Floating Mini Cards */}
-                                <div className="absolute -top-4 -right-4 floating-card p-4 animate-float" style={{ animationDelay: '0.5s' }}>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-400 flex items-center justify-center">
-                                            <ChartBarIcon className="h-5 w-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <div className="text-lg font-bold text-gray-900">750</div>
-                                            <div className="text-xs text-gray-500">Skor Rata-rata</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="absolute -bottom-4 -left-4 floating-card p-4 animate-float" style={{ animationDelay: '1s' }}>
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-400 flex items-center justify-center">
-                                            <UserGroupIcon className="h-5 w-5 text-white" />
-                                        </div>
-                                        <div>
-                                            <div className="text-lg font-bold text-gray-900">1,234</div>
-                                            <div className="text-xs text-gray-500">Online Sekarang</div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -220,31 +177,6 @@ export default function Welcome() {
                                     </p>
                                 </div>
                             ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* Stats Section */}
-                <section className="py-24 px-4 relative">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 p-12 lg:p-16">
-                            {/* Decorative */}
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-                            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
-                            
-                            <div className="relative grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 text-center text-white">
-                                {[
-                                    { value: '50,000+', label: 'Pengguna Aktif' },
-                                    { value: '10,000+', label: 'Soal Tersedia' },
-                                    { value: '95%', label: 'Tingkat Kepuasan' },
-                                    { value: '500+', label: 'Lolos PTN Favorit' }
-                                ].map((stat, index) => (
-                                    <div key={index} className="p-4">
-                                        <div className="text-3xl sm:text-5xl font-bold mb-3">{stat.value}</div>
-                                        <div className="text-emerald-200 font-medium">{stat.label}</div>
-                                    </div>
-                                ))}
-                            </div>
                         </div>
                     </div>
                 </section>
