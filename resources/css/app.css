@@ -5,10 +5,12 @@
 @layer base {
     html {
         scroll-behavior: smooth;
+        overscroll-behavior: none;
     }
 
     body {
-        @apply bg-slate-50 text-gray-900;
+        @apply bg-gray-900 text-gray-900;
+        overscroll-behavior: none;
     }
 }
 
