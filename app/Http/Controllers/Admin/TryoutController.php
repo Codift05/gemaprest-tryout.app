@@ -20,8 +20,8 @@ class TryoutController extends Controller
      */
     public function index(Request $request): Response
     {
-        $query = Tryout::with('creator:id,name')
-            ->withCount(['questions', 'examSessions']);
+        $query = Tryout::with(['creator:id,name', 'categories:id,name,color'])
+            ->withCount(['questions', 'examSessions as sessions_count']);
 
         // Search
         if ($request->filled('search')) {

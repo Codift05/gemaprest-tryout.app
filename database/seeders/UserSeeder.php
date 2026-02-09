@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@tryout.test',
             'phone' => '081234567890',
-            'password' => Hash::make('password'),
+            'password' => 'password',
             'role' => 'admin',
             'email_verified_at' => now(),
         ]);
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
                 'email' => $student['email'],
                 'phone' => $student['phone'],
                 'school' => $student['school'],
-                'password' => Hash::make('password'),
+                'password' => 'password',
                 'role' => 'siswa',
                 'email_verified_at' => now(),
             ]);

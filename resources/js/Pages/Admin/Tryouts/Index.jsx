@@ -140,7 +140,7 @@ export default function Index({ tryouts, filters }) {
 
                                 {/* Categories */}
                                 <div className="flex flex-wrap gap-1 mb-4">
-                                    {tryout.categories.slice(0, 3).map((cat) => (
+                                    {(tryout.categories || []).slice(0, 3).map((cat) => (
                                         <span
                                             key={cat.id}
                                             className="px-2 py-0.5 text-xs rounded"
@@ -152,7 +152,7 @@ export default function Index({ tryouts, filters }) {
                                             {cat.name}
                                         </span>
                                     ))}
-                                    {tryout.categories.length > 3 && (
+                                    {(tryout.categories || []).length > 3 && (
                                         <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
                                             +{tryout.categories.length - 3}
                                         </span>
