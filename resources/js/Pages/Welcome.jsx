@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
-import { 
-    AcademicCapIcon, 
-    ClockIcon, 
+import {
+    AcademicCapIcon,
+    ClockIcon,
     ChartBarIcon,
     ShieldCheckIcon,
     UserGroupIcon,
@@ -57,21 +57,21 @@ export default function Welcome() {
         <>
             <Head title="Platform Tryout UTBK Online - Gemaprest" />
 
-            <div className="min-h-screen bg-slate-50 overflow-hidden">
+            <div className="min-h-screen bg-black overflow-hidden">
                 {/* Decorative Background Elements */}
                 <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-emerald-400/20 to-teal-300/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-                    <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-br from-green-400/15 to-emerald-300/15 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
-                    <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-gradient-to-br from-teal-400/10 to-cyan-300/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
+                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-red-600/20 to-red-800/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+                    <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-br from-red-700/15 to-red-900/15 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+                    <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-gradient-to-br from-red-500/10 to-red-700/10 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
                 </div>
 
                 {/* Navigation */}
-                <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/30">
+                <nav className="fixed top-0 left-0 right-0 z-50 glass-dark border-b border-gray-800/50">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between items-center h-18 py-4">
                             <Link href="/" className="flex items-center gap-3">
                                 <img src="/logo.png" alt="Gemaprest Logo" className="h-10 w-auto drop-shadow-sm" />
-                                <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                                <span className="text-xl font-black bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                                     Gemaprest Tryout
                                 </span>
                             </Link>
@@ -92,17 +92,19 @@ export default function Welcome() {
                     <div className="max-w-7xl mx-auto">
                         <div className="grid lg:grid-cols-2 gap-12 items-center">
                             <div className="text-center lg:text-left">
-                                <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-8 border border-emerald-100">
+                                <div className="inline-flex items-center gap-2 bg-red-950/50 text-red-400 px-4 py-2 rounded-full text-sm font-bold mb-8 border border-red-900/50">
+                                    <SparklesIcon className="h-4 w-4" />
+                                    Platform Tryout UTBK Terbaik
                                 </div>
-                                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-8 leading-tight">
+                                <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black text-white mb-8 leading-tight">
                                     Persiapan UTBK
                                     <br />
-                                    <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">Terbaik untuk</span>
+                                    <span className="bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent">Terbaik untuk</span>
                                     <br />
                                     Masa Depanmu
                                 </h1>
-                                <p className="text-lg text-gray-600 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                                    Platform tryout online dengan soal berkualitas, simulasi realistis, 
+                                <p className="text-lg text-gray-400 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
+                                    Platform tryout online dengan soal berkualitas, simulasi realistis,
                                     dan analisis performa mendalam untuk membantu kamu meraih PTN impian.
                                 </p>
                                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -118,21 +120,21 @@ export default function Welcome() {
 
                             {/* Hero Visual - Floating Cards */}
                             <div className="relative hidden lg:block">
-                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-teal-500/5 rounded-3xl" />
-                                
+                                <div className="absolute inset-0 bg-gradient-to-br from-red-600/5 to-red-900/5 rounded-3xl" />
+
                                 {/* Main Card */}
                                 <div className="floating-card relative z-10 p-8 animate-float">
                                     <div className="flex items-center gap-4 mb-6">
                                         <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
                                         <div>
-                                            <h3 className="font-bold text-gray-900">Tryout UTBK 2025</h3>
-                                            <p className="text-sm text-gray-500">Paket Lengkap TPS + TKA</p>
+                                            <h3 className="font-black text-white">Tryout UTBK 2025</h3>
+                                            <p className="text-sm text-gray-400">Paket Lengkap TPS + TKA</p>
                                         </div>
                                     </div>
                                     <div className="space-y-3">
                                         {benefits.map((benefit, i) => (
-                                            <div key={i} className="flex items-center gap-3 text-gray-700">
-                                                <CheckCircleIcon className="h-5 w-5 text-emerald-500 flex-shrink-0" />
+                                            <div key={i} className="flex items-center gap-3 text-gray-300">
+                                                <CheckCircleIcon className="h-5 w-5 text-red-500 flex-shrink-0" />
                                                 <span className="text-sm">{benefit}</span>
                                             </div>
                                         ))}
@@ -147,12 +149,12 @@ export default function Welcome() {
                 <section id="features" className="py-24 px-4 relative">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-16">
-                            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                            <h2 className="text-3xl sm:text-4xl font-black text-white mb-6">
                                 Semua yang kamu butuhkan
                                 <br />
-                                <span className="bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">dalam satu platform</span>
+                                <span className="bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent">dalam satu platform</span>
                             </h2>
-                            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                            <p className="text-lg text-gray-400 max-w-2xl mx-auto">
                                 Platform tryout paling lengkap untuk persiapan UTBK dengan fitur-fitur canggih
                             </p>
                         </div>
@@ -163,13 +165,13 @@ export default function Welcome() {
                                     key={index}
                                     className="feature-card group"
                                 >
-                                    <div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-emerald-500/25">
+                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-600/50">
                                         <feature.icon className="h-7 w-7 text-white" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                                    <h3 className="text-xl font-black text-white mb-3">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-gray-400 leading-relaxed">
                                         {feature.description}
                                     </p>
                                 </div>
@@ -183,14 +185,14 @@ export default function Welcome() {
                     <div className="max-w-4xl mx-auto">
                         <div className="glass-card p-12 lg:p-16 text-center relative overflow-hidden">
                             {/* Decorative */}
-                            <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-emerald-500/20 to-teal-400/20 rounded-full blur-3xl" />
-                            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-green-500/20 to-emerald-400/20 rounded-full blur-3xl" />
-                            
+                            <div className="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-red-600/20 to-red-800/20 rounded-full blur-3xl" />
+                            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-br from-red-700/20 to-red-900/20 rounded-full blur-3xl" />
+
                             <div className="relative">
-                                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                                <h2 className="text-3xl sm:text-4xl font-black text-white mb-6">
                                     Siap Raih PTN Impianmu?
                                 </h2>
-                                <p className="text-lg text-gray-600 mb-10 max-w-xl mx-auto">
+                                <p className="text-lg text-gray-400 mb-10 max-w-xl mx-auto">
                                     Bergabung dengan ribuan siswa yang sudah mempersiapkan UTBK bersama kami. Mulai perjalananmu sekarang!
                                 </p>
                                 <Link href={route('register')} className="btn btn-primary btn-lg group">
@@ -205,8 +207,8 @@ export default function Welcome() {
                 {/* Footer */}
                 <footer className="bg-gray-900 text-gray-400 relative overflow-hidden">
                     {/* Top Gradient Line */}
-                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
-                    
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-600/50 to-transparent" />
+
                     {/* Main Footer Content */}
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -216,20 +218,20 @@ export default function Welcome() {
                                     <img src="/logo.png" alt="Gemaprest Logo" className="h-12 w-auto" />
                                     <div>
                                         <span className="text-white font-bold text-xl block">Gemaprest Tryout</span>
-                                        <span className="text-emerald-400 text-xs font-medium">Platform Tryout UTBK</span>
+                                        <span className="text-red-400 text-xs font-medium">Platform Tryout UTBK</span>
                                     </div>
                                 </div>
                                 <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-md">
                                     Platform tryout online untuk persiapan UTBK yang dirancang untuk membantu siswa Indonesia meraih PTN impian.
                                 </p>
                                 <div className="flex items-center gap-2 text-xs text-gray-500">
-                                    <span className="inline-block w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                                    <span className="inline-block w-1.5 h-1.5 bg-red-500 rounded-full"></span>
                                     <span>Dikembangkan oleh</span>
                                 </div>
                                 <p className="text-gray-300 text-sm font-medium mt-1">
                                     Lembaga Beasiswa Karya Salemba Empat
                                 </p>
-                                <p className="text-emerald-400 text-sm">
+                                <p className="text-red-400 text-sm">
                                     KSE Universitas Sam Ratulangi
                                 </p>
                             </div>
@@ -239,20 +241,20 @@ export default function Welcome() {
                                 <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-5">Navigasi</h4>
                                 <ul className="space-y-3">
                                     <li>
-                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
-                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                        <a href="#" className="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-red-400 transition-colors"></span>
                                             Tentang Kami
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
-                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                        <a href="#" className="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-red-400 transition-colors"></span>
                                             Kontak
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
-                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                        <a href="#" className="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-red-400 transition-colors"></span>
                                             FAQ
                                         </a>
                                     </li>
@@ -264,14 +266,14 @@ export default function Welcome() {
                                 <h4 className="text-white font-semibold text-sm uppercase tracking-wider mb-5">Legal</h4>
                                 <ul className="space-y-3">
                                     <li>
-                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
-                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                        <a href="#" className="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-red-400 transition-colors"></span>
                                             Kebijakan Privasi
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" className="text-gray-400 hover:text-emerald-400 transition-colors text-sm flex items-center gap-2 group">
-                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-emerald-400 transition-colors"></span>
+                                        <a href="#" className="text-gray-400 hover:text-red-400 transition-colors text-sm flex items-center gap-2 group">
+                                            <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-red-400 transition-colors"></span>
                                             Syarat & Ketentuan
                                         </a>
                                     </li>
