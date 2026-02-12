@@ -9,7 +9,7 @@
     }
 
     body {
-        @apply bg-gray-900 text-gray-900;
+        @apply bg-black text-gray-100;
         overscroll-behavior: none;
     }
 }
@@ -17,15 +17,15 @@
 @layer components {
     /* Glassmorphism */
     .glass {
-        @apply bg-white/70 backdrop-blur-xl border border-white/20;
+        @apply bg-gray-900/70 backdrop-blur-xl border border-gray-700/50;
     }
 
     .glass-dark {
-        @apply bg-gray-900/70 backdrop-blur-xl border border-gray-800/50;
+        @apply bg-black/70 backdrop-blur-xl border border-gray-800/50;
     }
 
     .glass-card {
-        @apply bg-white/80 backdrop-blur-lg rounded-2xl border border-gray-100/50 shadow-soft;
+        @apply bg-gray-900/80 backdrop-blur-lg rounded-2xl border border-gray-800/50 shadow-soft;
     }
 
     /* Modern Buttons */
@@ -34,15 +34,15 @@
     }
 
     .btn-primary {
-        @apply bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700 focus:ring-emerald-500 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5;
+        @apply bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 focus:ring-red-500 shadow-lg shadow-red-600/50 hover:shadow-red-600/70 hover:-translate-y-0.5 font-bold;
     }
 
     .btn-secondary {
-        @apply bg-white text-gray-700 border border-gray-200 hover:bg-gray-50 hover:border-gray-300 focus:ring-gray-500;
+        @apply bg-gray-800 text-gray-100 border border-gray-700 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-500;
     }
 
     .btn-success {
-        @apply bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700 focus:ring-emerald-500 shadow-lg shadow-emerald-500/25;
+        @apply bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 focus:ring-red-500 shadow-lg shadow-red-500/50;
     }
 
     .btn-danger {
@@ -54,11 +54,11 @@
     }
 
     .btn-outline {
-        @apply border-2 border-emerald-500 text-emerald-600 bg-transparent hover:bg-emerald-500 hover:text-white focus:ring-emerald-500;
+        @apply border-2 border-red-500 text-red-500 bg-transparent hover:bg-red-500 hover:text-white focus:ring-red-500;
     }
 
     .btn-ghost {
-        @apply text-gray-600 hover:text-gray-900 hover:bg-gray-100/80;
+        @apply text-gray-300 hover:text-white hover:bg-gray-800/80;
     }
 
     .btn-sm {
@@ -71,7 +71,7 @@
 
     /* Modern Inputs */
     .input {
-        @apply block w-full px-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-200 placeholder:text-gray-400;
+        @apply block w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-xl shadow-sm focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all duration-200 placeholder:text-gray-500 text-gray-100;
     }
 
     .input-error {
@@ -79,16 +79,16 @@
     }
 
     .label {
-        @apply block text-sm font-semibold text-gray-700 mb-2;
+        @apply block text-sm font-bold text-gray-300 mb-2;
     }
 
     /* Modern Cards */
     .card {
-        @apply bg-white rounded-2xl shadow-soft border border-gray-100/50 overflow-hidden transition-all duration-300 hover:shadow-soft-lg;
+        @apply bg-gray-900 rounded-2xl shadow-soft border border-gray-800/50 overflow-hidden transition-all duration-300 hover:shadow-soft-lg;
     }
 
     .card-header {
-        @apply px-6 py-5 border-b border-gray-100/50 bg-gray-50/50;
+        @apply px-6 py-5 border-b border-gray-800/50 bg-gray-950/50;
     }
 
     .card-body {
@@ -97,7 +97,7 @@
 
     /* Floating Card */
     .floating-card {
-        @apply bg-white rounded-2xl shadow-soft-lg border border-gray-100/50 p-6 transition-all duration-500 hover:shadow-glow hover:-translate-y-1;
+        @apply bg-gray-900 rounded-2xl shadow-soft-lg border border-gray-800/50 p-6 transition-all duration-500 hover:shadow-red-glow hover:-translate-y-1;
     }
 
     /* Badges */
@@ -127,16 +127,16 @@
 
     /* Feature Card */
     .feature-card {
-        @apply p-8 rounded-2xl bg-white border border-gray-100 shadow-soft transition-all duration-300 hover:shadow-soft-lg hover:border-blue-100 hover:-translate-y-1;
+        @apply p-8 rounded-2xl bg-gray-900 border border-gray-800 shadow-soft transition-all duration-300 hover:shadow-red-glow hover:border-red-900 hover:-translate-y-1;
     }
 
     .feature-icon {
-        @apply w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/25;
+        @apply w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center shadow-lg shadow-red-600/50;
     }
 
     /* Stats Card */
     .stat-card {
-        @apply text-center p-8 rounded-2xl bg-white/60 backdrop-blur-sm border border-gray-100/50;
+        @apply text-center p-8 rounded-2xl bg-gray-900/60 backdrop-blur-sm border border-gray-800/50;
     }
 }
 
@@ -146,7 +146,7 @@
 }
 
 .gradient-text {
-    @apply bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent;
 }
 
 /* Custom scrollbar */
@@ -156,11 +156,11 @@
 }
 
 ::-webkit-scrollbar-track {
-    @apply bg-gray-100 rounded-full;
+    @apply bg-gray-950 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 rounded-full hover:bg-gray-400;
+    @apply bg-gray-700 rounded-full hover:bg-gray-600;
 }
 
 /* Fullscreen exam mode */
@@ -171,7 +171,7 @@
     right: 0;
     bottom: 0;
     z-index: 9999;
-    background: white;
+    background: black;
     overflow: auto;
 }
 
@@ -209,7 +209,7 @@
 
 /* Loading skeleton */
 .skeleton {
-    @apply animate-pulse bg-gray-200 rounded;
+    @apply animate-pulse bg-gray-800 rounded;
 }
 
 /* Leaderboard animation */
@@ -234,11 +234,11 @@
 }
 
 .nav-btn-unanswered {
-    @apply bg-gray-100 text-gray-600 hover:bg-gray-200;
+    @apply bg-gray-800 text-gray-300 hover:bg-gray-700;
 }
 
 .nav-btn-answered {
-    @apply bg-emerald-500 text-white hover:bg-emerald-600;
+    @apply bg-red-600 text-white hover:bg-red-700;
 }
 
 .nav-btn-marked {
