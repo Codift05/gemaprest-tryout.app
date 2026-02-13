@@ -188,8 +188,7 @@ export default function MainLayout({ children, title }) {
             <footer className="bg-white border-t border-gray-200 mt-auto">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="flex items-center gap-3">
-                            <img src="/logo.png" alt="Gemaprest" className="w-8 h-8 opacity-80" />
+                        <div className="flex items-center">
                             <p className="text-sm text-gray-500">
                                 © {new Date().getFullYear()} Gemaprest Tryout.
                             </p>
