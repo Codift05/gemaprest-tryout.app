@@ -43,17 +43,13 @@ export default function Register() {
                     {/* Organizational Logos */}
                     <div className="absolute top-8 left-8 flex items-center gap-3">
                         <img src="/unsrat.png" alt="UNSRAT" className="h-12 w-auto" />
-                        <img src="/logo.png" alt="Gemaprest" className="h-12 w-auto" />
                         <img src="/kabinet.png" alt="Kabinet" className="h-12 w-auto" />
                         <img src="/kse.png" alt="KSE" className="h-12 w-auto" />
                         <img src="/kseunsrat.png" alt="KSE UNSRAT" className="h-12 w-auto" />
                     </div>
 
+
                     <div className="max-w-lg text-center relative z-10">
-                        <div className="inline-flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full text-xs font-semibold text-blue-600 mb-8 border border-blue-100">
-                            <SparklesIcon className="h-4 w-4" />
-                            Gratis Selamanya
-                        </div>
                         <h2 className="text-3xl font-bold text-gray-900 mb-4">
                             Bergabung Sekarang
                         </h2>
