@@ -119,17 +119,17 @@ export default function Welcome() {
                         </div>
 
                         {/* CTA Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+                        <div className="flex flex-row gap-3 justify-center items-center">
                             <Link
                                 href={route('register')}
-                                className="px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-full transition-all inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl"
+                                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm md:text-base"
                             >
                                 Mulai Tryout Gratis
-                                <ArrowRightIcon className="w-5 h-5" />
+                                <ArrowRightIcon className="w-4 h-4" />
                             </Link>
                             <Link
                                 href={route('login')}
-                                className="px-10 py-4 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-full transition-all border-2 border-gray-200 hover:border-gray-300 shadow-sm"
+                                className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-full transition-all border-2 border-gray-200 hover:border-gray-300 shadow-sm text-sm md:text-base"
                             >
                                 Masuk ke Platform
                             </Link>
