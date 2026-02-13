@@ -66,7 +66,7 @@ export default function Login() {
                                         type="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className={`w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="nama@email.com"
                                         autoComplete="email"
                                         autoFocus
@@ -87,7 +87,7 @@ export default function Login() {
                                             type={showPassword ? 'text' : 'password'}
                                             value={data.password}
                                             onChange={(e) => setData('password', e.target.value)}
-                                            className={`w-full px-4 py-2.5 pr-12 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                                            className={`w-full px-4 py-2.5 pr-12 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
                                             placeholder="Masukkan password"
                                             autoComplete="current-password"
                                         />

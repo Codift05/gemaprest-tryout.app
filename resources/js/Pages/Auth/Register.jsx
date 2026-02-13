@@ -103,7 +103,7 @@ export default function Register() {
                                         type="text"
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
-                                        className={`w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="Nama lengkap Anda"
                                         autoFocus
                                     />
@@ -122,7 +122,7 @@ export default function Register() {
                                         type="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className={`w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="nama@email.com"
                                         autoComplete="email"
                                     />
@@ -142,7 +142,7 @@ export default function Register() {
                                             type="tel"
                                             value={data.phone}
                                             onChange={(e) => setData('phone', e.target.value)}
-                                            className={`w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
+                                            className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
                                             placeholder="08xxxxxxxxxx"
                                         />
                                         {errors.phone && (
@@ -158,7 +158,7 @@ export default function Register() {
                                             type="text"
                                             value={data.school}
                                             onChange={(e) => setData('school', e.target.value)}
-                                            className={`w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.school ? 'border-red-500' : 'border-gray-300'}`}
+                                            className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.school ? 'border-red-500' : 'border-gray-300'}`}
                                             placeholder="Nama sekolah"
                                         />
                                         {errors.school && (
@@ -178,7 +178,7 @@ export default function Register() {
                                             type={showPassword ? 'text' : 'password'}
                                             value={data.password}
                                             onChange={(e) => setData('password', e.target.value)}
-                                            className={`w-full px-4 py-2.5 pr-12 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                                            className={`w-full px-4 py-2.5 pr-12 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
                                             placeholder="Minimal 8 karakter"
                                             autoComplete="new-password"
                                         />
@@ -209,7 +209,7 @@ export default function Register() {
                                         type="password"
                                         value={data.password_confirmation}
                                         onChange={(e) => setData('password_confirmation', e.target.value)}
-                                        className="w-full px-4 py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                         placeholder="Ulangi password"
                                         autoComplete="new-password"
                                     />
