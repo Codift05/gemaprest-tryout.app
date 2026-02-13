@@ -103,8 +103,15 @@ class ExamSession extends Model
     /**
      * Get time taken in seconds
      */
+    /**
+     * Get time taken in seconds
+     */
     public function getTimeTakenAttribute(): int
     {
+        if (!$this->started_at) {
+            return 0;
+        }
+
         $endTime = $this->finished_at ?? now();
         return $this->started_at->diffInSeconds($endTime);
     }
@@ -153,10 +160,19 @@ class ExamSession extends Model
      */
     public function getProgressPercentageAttribute(): float
     {
-        $totalQuestions = count($this->question_order ?? []) ?: $this->tryout->total_questions;
+        if (!$this->relationLoaded('tryout') && !$this->tryout) {
+            return 0;
+        }
+
+        $totalQuestions = count($this->question_order ?? []) ?: ($this->tryout ? $this->tryout->total_questions : 0);
+
+        if ($totalQuestions === 0) {
+            return 0;
+        }
+
         $answeredCount = $this->answers()->whereNotNull('answer')->count();
 
-        return $totalQuestions > 0 ? round(($answeredCount / $totalQuestions) * 100, 1) : 0;
+        return round(($answeredCount / $totalQuestions) * 100, 1);
     }
 
     /**
@@ -164,7 +180,7 @@ class ExamSession extends Model
      */
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'in_progress' => 'Sedang Dikerjakan',
             'completed' => 'Selesai',
             'timeout' => 'Waktu Habis',
@@ -178,7 +194,7 @@ class ExamSession extends Model
      */
     public function getStatusColorAttribute(): string
     {
-        return match($this->status) {
+        return match ($this->status) {
             'in_progress' => 'yellow',
             'completed' => 'green',
             'timeout' => 'orange',

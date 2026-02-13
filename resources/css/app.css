@@ -9,12 +9,13 @@
     }
 
     body {
-        @apply bg-black text-gray-100;
+        @apply bg-gray-50 text-gray-900;
         overscroll-behavior: none;
     }
 }
 
 @layer components {
+
     /* Glassmorphism */
     .glass {
         @apply bg-gray-900/70 backdrop-blur-xl border border-gray-700/50;
@@ -195,9 +196,12 @@
 
 /* Timer animation */
 @keyframes pulse-warning {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.5;
     }
@@ -218,6 +222,7 @@
         opacity: 0;
         transform: translateY(-10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
