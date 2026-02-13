@@ -89,12 +89,9 @@ export default function Welcome() {
                         <div className="flex justify-between items-center h-20">
                             <div
                                 onClick={handleLogoClick}
-                                className="flex items-center gap-3 cursor-pointer"
+                                className="cursor-pointer"
                             >
                                 <img src="/logo.png" alt="Gemaprest Logo" className="h-10 w-auto" />
-                                <span className="text-xl font-bold text-gray-900">
-                                    Gemaprest
-                                </span>
                             </div>
                             <div className="hidden md:flex items-center gap-8">
                                 <a href="#features" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
