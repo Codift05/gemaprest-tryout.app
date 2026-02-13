@@ -1,6 +1,6 @@
 import { Head, useForm, Link } from '@inertiajs/react';
 import { useState } from 'react';
-import { EyeIcon, EyeSlashIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -16,42 +16,49 @@ export default function Login() {
         post(route('login'));
     };
 
+    const benefits = [
+        'Akses unlimited ke semua tryout',
+        'Pembahasan lengkap setiap soal',
+        'Analisis performa real-time',
+        'Leaderboard nasional'
+    ];
+
     return (
         <>
             <Head title="Masuk" />
 
-            <div className="min-h-screen flex relative overflow-hidden bg-slate-50">
-                {/* Decorative Background Elements */}
-                <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-emerald-400/20 to-teal-300/20 rounded-full blur-3xl" />
-                    <div className="absolute top-1/3 -left-40 w-80 h-80 bg-gradient-to-br from-green-400/15 to-emerald-300/15 rounded-full blur-3xl" />
-                    <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-gradient-to-br from-teal-400/10 to-cyan-300/10 rounded-full blur-3xl" />
-                </div>
+            <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+                body {
+                    font-family: 'Montserrat', sans-serif;
+                }
+            `}</style>
 
+            <div className="min-h-screen flex relative overflow-hidden bg-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>
                 {/* Left Side - Form */}
                 <div className="flex-1 flex items-center justify-center p-8 relative z-10">
                     <div className="w-full max-w-md">
                         {/* Logo */}
-                        <Link href="/" className="flex items-center gap-3 mb-10">
-                            <img src="/logo.png" alt="Gemaprest" className="h-12 w-auto drop-shadow-sm" />
-                            <span className="font-bold text-xl bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                        <Link href="/" className="flex items-center gap-3 mb-8">
+                            <img src="/logo.png" alt="Gemaprest" className="h-10 w-auto" />
+                            <span className="font-bold text-lg text-gray-900">
                                 Gemaprest Tryout
                             </span>
                         </Link>
 
-                        <div className="glass-card p-8">
-                            <h1 className="text-2xl font-bold text-gray-900">Masuk ke akun Anda</h1>
-                            <p className="mt-2 text-gray-600">
+                        <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm">
+                            <h1 className="text-xl font-bold text-gray-900">Masuk ke akun Anda</h1>
+                            <p className="mt-2 text-sm text-gray-600">
                                 Belum punya akun?{' '}
-                                <Link href={route('register')} className="text-emerald-600 hover:text-emerald-700 font-medium">
+                                <Link href={route('register')} className="text-blue-600 hover:text-blue-700 font-medium">
                                     Daftar sekarang
                                 </Link>
                             </p>
 
-                            <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                            <form onSubmit={handleSubmit} className="mt-6 space-y-4">
                                 {/* Email */}
                                 <div>
-                                    <label htmlFor="email" className="label">
+                                    <label htmlFor="email" className="block text-xs font-semibold text-gray-900 mb-2">
                                         Email
                                     </label>
                                     <input
@@ -59,19 +66,19 @@ export default function Login() {
                                         type="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className={`input ${errors.email ? 'input-error' : ''}`}
+                                        className={`w-full px-4 py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="nama@email.com"
                                         autoComplete="email"
                                         autoFocus
                                     />
                                     {errors.email && (
-                                        <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                                        <p className="mt-1 text-xs text-red-600">{errors.email}</p>
                                     )}
                                 </div>
 
                                 {/* Password */}
                                 <div>
-                                    <label htmlFor="password" className="label">
+                                    <label htmlFor="password" className="block text-xs font-semibold text-gray-900 mb-2">
                                         Password
                                     </label>
                                     <div className="relative">
@@ -80,7 +87,7 @@ export default function Login() {
                                             type={showPassword ? 'text' : 'password'}
                                             value={data.password}
                                             onChange={(e) => setData('password', e.target.value)}
-                                            className={`input pr-12 ${errors.password ? 'input-error' : ''}`}
+                                            className={`w-full px-4 py-2.5 pr-12 text-sm border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
                                             placeholder="Masukkan password"
                                             autoComplete="current-password"
                                         />
@@ -97,7 +104,7 @@ export default function Login() {
                                         </button>
                                     </div>
                                     {errors.password && (
-                                        <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                                        <p className="mt-1 text-xs text-red-600">{errors.password}</p>
                                     )}
                                 </div>
 
@@ -108,13 +115,13 @@ export default function Login() {
                                             type="checkbox"
                                             checked={data.remember}
                                             onChange={(e) => setData('remember', e.target.checked)}
-                                            className="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                                            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                                         />
-                                        <span className="text-sm text-gray-600">Ingat saya</span>
+                                        <span className="text-xs text-gray-600">Ingat saya</span>
                                     </label>
                                     <Link
                                         href="#"
-                                        className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+                                        className="text-xs text-blue-600 hover:text-blue-700 font-medium"
                                     >
                                         Lupa password?
                                     </Link>
@@ -124,7 +131,7 @@ export default function Login() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="btn btn-primary w-full btn-lg"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors text-sm mt-6"
                                 >
                                     {processing ? 'Memproses...' : 'Masuk'}
                                 </button>
@@ -133,37 +140,34 @@ export default function Login() {
                     </div>
                 </div>
 
-                {/* Right Side - Visual */}
-                <div className="hidden lg:flex flex-1 bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 items-center justify-center p-12 relative">
-                    {/* Decorative elements */}
-                    <div className="absolute top-10 right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl" />
-                    <div className="absolute bottom-20 left-10 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
-                    
+                {/* Right Side - Visual with Logos */}
+                <div className="hidden lg:flex flex-1 bg-gradient-to-br from-gray-50 to-gray-100 items-center justify-center p-12 relative border-l border-gray-200">
+                    {/* Organizational Logos */}
+                    <div className="absolute top-8 right-8 flex items-center gap-3">
+                        <img src="/unsrat.png" alt="UNSRAT" className="h-12 w-auto" />
+                        <img src="/kabinet.png" alt="Kabinet" className="h-12 w-auto" />
+                        <img src="/kse.png" alt="KSE" className="h-12 w-auto" />
+                        <img src="/kseunsrat.png" alt="KSE UNSRAT" className="h-12 w-auto" />
+                    </div>
+
                     <div className="max-w-lg text-center relative z-10">
-                        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm text-white/90 mb-8 border border-white/20">
-                            <SparklesIcon className="h-4 w-4" />
-                            Platform Tryout UTBK Terbaik
-                        </div>
-                        <h2 className="text-4xl font-bold text-white mb-6">
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">
                             Persiapkan UTBK Anda
                         </h2>
-                        <p className="text-emerald-100 text-lg leading-relaxed">
+                        <p className="text-gray-600 text-base leading-relaxed mb-10">
                             Latihan soal lengkap dengan pembahasan dan leaderboard untuk mengukur kemampuan Anda bersama ribuan peserta lainnya.
                         </p>
 
-                        {/* Stats */}
-                        <div className="mt-12 grid grid-cols-3 gap-6">
-                            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
-                                <div className="text-2xl font-bold text-white">50K+</div>
-                                <div className="text-sm text-emerald-200">Pengguna</div>
-                            </div>
-                            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
-                                <div className="text-2xl font-bold text-white">10K+</div>
-                                <div className="text-sm text-emerald-200">Soal</div>
-                            </div>
-                            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
-                                <div className="text-2xl font-bold text-white">4.9</div>
-                                <div className="text-sm text-emerald-200">Rating</div>
+                        {/* Benefits */}
+                        <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm text-left">
+                            <h3 className="font-semibold text-gray-900 mb-4 text-sm">Yang akan kamu dapatkan:</h3>
+                            <div className="space-y-3">
+                                {benefits.map((benefit, i) => (
+                                    <div key={i} className="flex items-center gap-3 text-gray-700">
+                                        <CheckCircleIcon className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                                        <span className="text-sm">{benefit}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
