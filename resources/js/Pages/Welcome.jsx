@@ -88,7 +88,7 @@ export default function Welcome() {
                 </nav>
 
                 {/* Hero Section with Blue Gradient */}
-                <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+                <section className="relative pt-40 pb-28 px-6 overflow-hidden">
                     {/* Blue Gradient Background */}
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 rounded-b-[80px]"></div>
 
@@ -99,31 +99,33 @@ export default function Welcome() {
                     </div>
 
                     <div className="max-w-7xl mx-auto relative z-10">
-                        <div className="text-center max-w-4xl mx-auto mb-16">
-                            <h1 className="text-5xl lg:text-7xl font-bold text-white mb-8 leading-tight">
+                        {/* Main Content */}
+                        <div className="text-center max-w-5xl mx-auto mb-20">
+                            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-10 leading-[1.1]">
                                 Persiapan UTBK Terbaik<br />
                                 untuk Raih PTN Impian
                             </h1>
 
-                            <p className="text-xl lg:text-2xl text-blue-100 mb-6 leading-relaxed max-w-3xl mx-auto">
-                                Platform tryout online dari <span className="font-bold text-white">Beasiswa Karya Salembah Empat (KSE) UNSRAT</span>
+                            <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed max-w-3xl mx-auto">
+                                Platform tryout online dari<br />
+                                <span className="font-bold text-white">Beasiswa Karya Salembah Empat (KSE) UNSRAT</span>
                             </p>
 
-                            <p className="text-lg lg:text-xl text-blue-50 mb-12 leading-relaxed max-w-2xl mx-auto">
+                            <p className="text-base md:text-lg text-blue-50 mb-12 leading-relaxed max-w-2xl mx-auto">
                                 Kami hadir untuk membantu adik-adik SMA dalam mempersiapkan diri menghadapi UTBK dengan menyediakan soal berkualitas, simulasi realistis, dan analisis performa mendalam
                             </p>
 
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
                                 <Link
                                     href={route('register')}
-                                    className="px-8 py-4 bg-white hover:bg-gray-50 text-blue-600 font-bold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-xl"
+                                    className="px-10 py-4 bg-white hover:bg-gray-50 text-blue-600 font-bold rounded-full transition-all inline-flex items-center justify-center gap-3 shadow-xl hover:shadow-2xl"
                                 >
                                     Mulai Tryout Gratis
                                     <ArrowRightIcon className="w-5 h-5" />
                                 </Link>
                                 <Link
                                     href={route('login')}
-                                    className="px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-full transition-all border border-white/30"
+                                    className="px-10 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-full transition-all border-2 border-white/30 hover:border-white/50"
                                 >
                                     Pelajari Lebih Lanjut
                                 </Link>
@@ -131,29 +133,29 @@ export default function Welcome() {
                         </div>
 
                         {/* Featured Cards with Glassmorphism */}
-                        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-                            <div className="group bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 hover:bg-white/20 transition-all">
+                        <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                            <div className="group bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-white/20 hover:bg-white/20 transition-all hover:scale-105 duration-300">
                                 <div className="flex items-start gap-6">
-                                    <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
                                         <BookOpenIcon className="w-10 h-10 text-blue-600" />
                                     </div>
-                                    <div>
+                                    <div className="flex-1">
                                         <h3 className="text-2xl font-bold text-white mb-3">Soal Berkualitas</h3>
-                                        <p className="text-blue-100 leading-relaxed">
+                                        <p className="text-blue-100 leading-relaxed text-base">
                                             Ribuan soal yang disusun sesuai standar UTBK terbaru
                                         </p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="group bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 hover:bg-white/20 transition-all">
+                            <div className="group bg-white/10 backdrop-blur-md rounded-3xl p-10 border border-white/20 hover:bg-white/20 transition-all hover:scale-105 duration-300">
                                 <div className="flex items-start gap-6">
-                                    <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                    <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform">
                                         <ChartBarIcon className="w-10 h-10 text-blue-600" />
                                     </div>
-                                    <div>
+                                    <div className="flex-1">
                                         <h3 className="text-2xl font-bold text-white mb-3">Analisis Mendalam</h3>
-                                        <p className="text-blue-100 leading-relaxed">
+                                        <p className="text-blue-100 leading-relaxed text-base">
                                             Statistik lengkap dan rekomendasi personal untuk meningkatkan skor
                                         </p>
                                     </div>
@@ -167,26 +169,26 @@ export default function Welcome() {
                 <section id="features" className="relative py-32 px-6 bg-gray-50">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center mb-20">
-                            <h2 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
                                 Fitur <span className="text-blue-600">Unggulan</span>
                             </h2>
-                            <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                            <p className="text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                                 Platform tryout paling lengkap untuk persiapan UTBK
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
                             {features.map((feature, index) => (
                                 <div
                                     key={index}
-                                    className="group bg-white rounded-3xl p-10 hover:shadow-2xl transition-all duration-300 border border-gray-100"
+                                    className="group bg-white rounded-3xl p-10 hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-100"
                                 >
                                     {/* Gradient Icon Background */}
                                     <div className={`w-20 h-20 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
                                         <feature.icon className="w-10 h-10 text-white" />
                                     </div>
 
-                                    <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4">
+                                    <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4 leading-tight">
                                         {feature.title}
                                     </h3>
                                     <p className="text-base lg:text-lg text-gray-600 leading-relaxed">
@@ -203,11 +205,11 @@ export default function Welcome() {
                     <div className="max-w-5xl mx-auto">
                         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[60px] p-16 lg:p-20 border border-blue-100">
                             <div className="text-center">
-                                <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                                <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                                     Program <span className="text-blue-600">KSE UNSRAT</span><br />
                                     untuk Adik-Adik SMA
                                 </h3>
-                                <p className="text-xl lg:text-2xl text-gray-700 leading-relaxed">
+                                <p className="text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
                                     Beasiswa Karya Salembah Empat hadir untuk mendukung persiapan UTBK kamu
                                 </p>
                             </div>
@@ -226,7 +228,7 @@ export default function Welcome() {
                             </div>
 
                             <div className="relative z-10">
-                                <h2 className="text-4xl lg:text-6xl font-bold text-white mb-8">
+                                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
                                     Siap Raih PTN Impianmu?
                                 </h2>
                                 <p className="text-xl lg:text-2xl text-blue-100 mb-12 max-w-2xl mx-auto leading-relaxed">
@@ -234,7 +236,7 @@ export default function Welcome() {
                                 </p>
                                 <Link
                                     href={route('register')}
-                                    className="inline-flex items-center gap-2 px-10 py-5 bg-white hover:bg-gray-50 text-blue-600 font-bold rounded-full transition-all text-lg shadow-2xl"
+                                    className="inline-flex items-center gap-3 px-10 py-5 bg-white hover:bg-gray-50 text-blue-600 font-bold rounded-full transition-all text-lg shadow-2xl hover:shadow-3xl"
                                 >
                                     Daftar Sekarang Gratis
                                     <ArrowRightIcon className="w-5 h-5" />
