@@ -83,20 +83,21 @@ export default function Welcome() {
                     </div>
                 </nav>
 
+
                 {/* Hero Section */}
-                <section className="relative pt-32 pb-24 px-6">
+                <section className="relative pt-40 pb-32 px-6">
                     <div className="max-w-7xl mx-auto">
                         <div className="text-center max-w-4xl mx-auto">
-                            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                            <h1 className="text-5xl lg:text-7xl font-bold text-gray-900 mb-8 leading-tight">
                                 Persiapan UTBK Terbaik<br />
                                 untuk Raih PTN Impian
                             </h1>
 
-                            <p className="text-xl text-gray-600 mb-4 leading-relaxed max-w-2xl mx-auto">
+                            <p className="text-xl lg:text-2xl text-gray-600 mb-6 leading-relaxed max-w-3xl mx-auto">
                                 Platform tryout online dari <span className="font-bold text-blue-600">Beasiswa Karya Salembah Empat (KSE) UNSRAT</span>
                             </p>
 
-                            <p className="text-lg text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+                            <p className="text-lg lg:text-xl text-gray-600 mb-12 leading-relaxed max-w-2xl mx-auto">
                                 Kami hadir untuk membantu adik-adik SMA dalam mempersiapkan diri menghadapi UTBK dengan menyediakan soal berkualitas, simulasi realistis, dan analisis performa mendalam
                             </p>
 
@@ -115,37 +116,35 @@ export default function Welcome() {
                                     Pelajari Lebih Lanjut
                                 </Link>
                             </div>
-
-
                         </div>
                     </div>
                 </section>
 
                 {/* Features Section */}
-                <section id="features" className="relative py-20 px-6 bg-white">
+                <section id="features" className="relative py-32 px-6 bg-white">
                     <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-16">
-                            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                        <div className="text-center mb-20">
+                            <h2 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
                                 Fitur Unggulan
                             </h2>
-                            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                            <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                                 Platform tryout paling lengkap untuk persiapan UTBK
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {features.map((feature, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white rounded-2xl p-8 border border-gray-100 hover:border-blue-100 hover:shadow-lg transition-all duration-300"
+                                    className="bg-white rounded-2xl p-10 border border-gray-100 hover:border-blue-100 hover:shadow-xl transition-all duration-300"
                                 >
-                                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
-                                        <feature.icon className="w-6 h-6 text-blue-600" />
+                                    <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
+                                        <feature.icon className="w-7 h-7 text-blue-600" />
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                                    <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-gray-600 leading-relaxed">
+                                    <p className="text-base lg:text-lg text-gray-600 leading-relaxed">
                                         {feature.description}
                                     </p>
                                 </div>
@@ -155,14 +154,14 @@ export default function Welcome() {
                 </section>
 
                 {/* Benefits Section */}
-                <section id="benefits" className="relative py-20 px-6 bg-gradient-to-b from-white to-blue-50">
+                <section id="benefits" className="relative py-32 px-6 bg-gradient-to-b from-white to-blue-50">
                     <div className="max-w-5xl mx-auto">
-                        <div className="bg-white rounded-3xl p-12 lg:p-16 shadow-lg border border-gray-100">
-                            <div className="text-center mb-12">
-                                <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                        <div className="bg-white rounded-3xl p-16 lg:p-20 shadow-lg border border-gray-100">
+                            <div className="text-center">
+                                <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
                                     Program KSE UNSRAT untuk Adik-Adik SMA
                                 </h3>
-                                <p className="text-lg text-gray-600">
+                                <p className="text-xl lg:text-2xl text-gray-600 leading-relaxed">
                                     Beasiswa Karya Salembah Empat hadir untuk mendukung persiapan UTBK kamu
                                 </p>
                             </div>
@@ -171,13 +170,13 @@ export default function Welcome() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="relative py-20 px-6">
+                <section className="relative py-32 px-6">
                     <div className="max-w-4xl mx-auto">
-                        <div className="bg-blue-600 rounded-3xl p-12 lg:p-16 text-center shadow-xl">
-                            <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
+                        <div className="bg-blue-600 rounded-3xl p-16 lg:p-20 text-center shadow-xl">
+                            <h2 className="text-4xl lg:text-6xl font-bold text-white mb-8">
                                 Siap Raih PTN Impianmu?
                             </h2>
-                            <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+                            <p className="text-xl lg:text-2xl text-blue-100 mb-12 max-w-2xl mx-auto leading-relaxed">
                                 Mulai persiapan UTBK kamu sekarang dengan tryout gratis
                             </p>
                             <Link
