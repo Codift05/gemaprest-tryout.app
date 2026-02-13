@@ -135,7 +135,7 @@ export default function MainLayout({ children, title }) {
             </header>
 
             {/* Main Content */}
-            <main className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-8">
+            <main className="mx-auto max-w-[85rem] px-4 sm:px-6 lg:px-8 py-8">
                 {children}
             </main>
 
