@@ -44,37 +44,37 @@ export default function Welcome() {
             icon: BookOpenIcon,
             title: 'Soal Berkualitas Tinggi',
             description: 'Ribuan soal yang disusun sesuai standar UTBK terbaru oleh tim ahli pendidikan.',
-            color: 'bg-blue-600',
+            color: 'bg-gray-700',
         },
         {
             icon: ClockIcon,
             title: 'Simulasi Waktu Nyata',
             description: 'Latihan dengan timer yang sama persis seperti ujian sesungguhnya.',
-            color: 'bg-blue-600',
+            color: 'bg-gray-700',
         },
         {
             icon: ChartBarIcon,
             title: 'Analisis Performa',
             description: 'Statistik lengkap dan rekomendasi personal untuk meningkatkan skor.',
-            color: 'bg-blue-600',
+            color: 'bg-gray-700',
         },
         {
             icon: TrophyIcon,
             title: 'Leaderboard Real-time',
             description: 'Bandingkan skormu dengan ribuan peserta lain secara real-time.',
-            color: 'bg-blue-600',
+            color: 'bg-gray-700',
         },
         {
             icon: AcademicCapIcon,
             title: 'Pembahasan Lengkap',
             description: 'Setiap soal dilengkapi pembahasan detail untuk pemahaman maksimal.',
-            color: 'bg-blue-600',
+            color: 'bg-gray-700',
         },
         {
             icon: ShieldCheckIcon,
             title: 'Anti Kecurangan',
             description: 'Sistem monitoring canggih untuk memastikan integritas ujian.',
-            color: 'bg-blue-600',
+            color: 'bg-gray-700',
         },
     ];
 
