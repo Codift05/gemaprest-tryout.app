@@ -1,4 +1,5 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
+import { useState, useRef } from 'react';
 import {
     ClockIcon,
     ChartBarIcon,
@@ -13,42 +14,67 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function Welcome() {
+    const [clickCount, setClickCount] = useState(0);
+    const clickTimerRef = useRef(null);
+
+    const handleLogoClick = () => {
+        const newCount = clickCount + 1;
+        setClickCount(newCount);
+
+        // Clear previous timer
+        if (clickTimerRef.current) {
+            clearTimeout(clickTimerRef.current);
+        }
+
+        // Check if reached 3 clicks
+        if (newCount >= 3) {
+            setClickCount(0);
+            router.visit('/admin-portal-secret');
+            return;
+        }
+
+        // Reset counter after 3 seconds
+        clickTimerRef.current = setTimeout(() => {
+            setClickCount(0);
+        }, 3000);
+    };
+
     const features = [
         {
             icon: BookOpenIcon,
             title: 'Soal Berkualitas Tinggi',
             description: 'Ribuan soal yang disusun sesuai standar UTBK terbaru oleh tim ahli pendidikan.',
-            gradient: 'from-blue-400 to-blue-600',
+            color: 'bg-blue-600',
         },
         {
             icon: ClockIcon,
             title: 'Simulasi Waktu Nyata',
             description: 'Latihan dengan timer yang sama persis seperti ujian sesungguhnya.',
-            gradient: 'from-cyan-400 to-blue-500',
+            color: 'bg-blue-600',
         },
         {
             icon: ChartBarIcon,
             title: 'Analisis Performa',
             description: 'Statistik lengkap dan rekomendasi personal untuk meningkatkan skor.',
-            gradient: 'from-blue-500 to-indigo-600',
+            color: 'bg-blue-600',
         },
         {
             icon: TrophyIcon,
             title: 'Leaderboard Real-time',
             description: 'Bandingkan skormu dengan ribuan peserta lain secara real-time.',
-            gradient: 'from-indigo-400 to-purple-600',
+            color: 'bg-blue-600',
         },
         {
             icon: AcademicCapIcon,
             title: 'Pembahasan Lengkap',
             description: 'Setiap soal dilengkapi pembahasan detail untuk pemahaman maksimal.',
-            gradient: 'from-cyan-500 to-blue-600',
+            color: 'bg-blue-600',
         },
         {
             icon: ShieldCheckIcon,
             title: 'Anti Kecurangan',
             description: 'Sistem monitoring canggih untuk memastikan integritas ujian.',
-            gradient: 'from-blue-600 to-indigo-700',
+            color: 'bg-blue-600',
         },
     ];
 
@@ -61,12 +87,15 @@ export default function Welcome() {
                 <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-100 shadow-sm">
                     <div className="max-w-7xl mx-auto px-6 lg:px-8">
                         <div className="flex justify-between items-center h-20">
-                            <Link href="/" className="flex items-center gap-3">
+                            <div
+                                onClick={handleLogoClick}
+                                className="flex items-center gap-3 cursor-pointer"
+                            >
                                 <img src="/logo.png" alt="Gemaprest Logo" className="h-10 w-auto" />
                                 <span className="text-xl font-bold text-gray-900">
                                     Gemaprest
                                 </span>
-                            </Link>
+                            </div>
                             <div className="hidden md:flex items-center gap-8">
                                 <a href="#features" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
                                     Fitur
@@ -75,14 +104,7 @@ export default function Welcome() {
                                     Keunggulan
                                 </a>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <Link href={route('login')} className="px-6 py-2.5 text-gray-700 hover:text-gray-900 font-semibold transition-colors">
-                                    Masuk
-                                </Link>
-                                <Link href={route('register')} className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all shadow-sm">
-                                    Daftar Gratis
-                                </Link>
-                            </div>
+
                         </div>
                     </div>
                 </nav>
@@ -119,32 +141,32 @@ export default function Welcome() {
                 </section>
 
                 {/* Features Section */}
-                <section id="features" className="relative py-32 px-6 bg-white">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="text-center mb-20">
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+                <section id="features" className="relative py-16 px-6 bg-white">
+                    <div className="max-w-6xl mx-auto">
+                        <div className="text-center mb-12">
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
                                 Fitur <span className="text-blue-600">Unggulan</span>
                             </h2>
-                            <p className="text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                            <p className="text-base text-gray-600 max-w-2xl mx-auto">
                                 Platform tryout paling lengkap untuk persiapan UTBK
                             </p>
                         </div>
 
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {features.map((feature, index) => (
                                 <div
                                     key={index}
-                                    className="group bg-gray-50 rounded-3xl p-10 hover:shadow-2xl transition-all duration-300 border border-gray-100 hover:border-blue-100 hover:bg-white"
+                                    className="bg-white rounded-xl p-6 hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-blue-200"
                                 >
-                                    {/* Gradient Icon Background */}
-                                    <div className={`w-20 h-20 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform`}>
-                                        <feature.icon className="w-10 h-10 text-white" />
+                                    {/* Solid Color Icon Background */}
+                                    <div className={`w-12 h-12 ${feature.color} rounded-lg flex items-center justify-center mb-4`}>
+                                        <feature.icon className="w-6 h-6 text-white" />
                                     </div>
 
-                                    <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-4 leading-tight">
+                                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-base lg:text-lg text-gray-600 leading-relaxed">
+                                    <p className="text-sm text-gray-600 leading-relaxed">
                                         {feature.description}
                                     </p>
                                 </div>
@@ -153,62 +175,129 @@ export default function Welcome() {
                     </div>
                 </section>
 
-                {/* Benefits Section */}
-                <section id="benefits" className="relative py-32 px-6 bg-gray-50">
-                    <div className="max-w-5xl mx-auto">
-                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-[60px] p-16 lg:p-20 border border-blue-100 shadow-lg">
-                            <div className="text-center">
-                                <h3 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                                    Program <span className="text-blue-600">KSE UNSRAT</span><br />
-                                    untuk Adik-Adik SMA
-                                </h3>
-                                <p className="text-xl lg:text-2xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
-                                    Beasiswa Karya Salembah Empat hadir untuk mendukung persiapan UTBK kamu
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
 
-                {/* CTA Section */}
-                <section className="relative py-32 px-6 bg-white">
-                    <div className="max-w-4xl mx-auto">
-                        <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-[60px] p-16 lg:p-20 text-center shadow-2xl relative overflow-hidden">
-                            {/* Decorative Elements */}
-                            <div className="absolute inset-0 opacity-20">
-                                <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-                                <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-300 rounded-full blur-3xl"></div>
-                            </div>
+                {/* Combined Benefits & CTA Section */}
+                <section id="benefits" className="relative py-16 px-6 bg-gradient-to-b from-gray-50 to-white">
+                    <div className="max-w-6xl mx-auto">
+                        {/* Main Card */}
+                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+                            <div className="grid md:grid-cols-2 gap-0">
+                                {/* Left Side - Benefits */}
+                                <div className="bg-blue-600 p-8 md:p-10 flex flex-col justify-center">
+                                    <div className="inline-flex items-center gap-2 bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4 w-fit">
+                                        <SparklesIcon className="w-4 h-4" />
+                                        <span>Program KSE UNSRAT</span>
+                                    </div>
+                                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight">
+                                        Platform Tryout untuk Calon Mahasiswa
+                                    </h3>
+                                    <p className="text-blue-50 mb-6 leading-relaxed">
+                                        Dari Beasiswa Karya Salembah Empat UNSRAT. Platform tryout online terlengkap untuk persiapan UTBK kamu.
+                                    </p>
+                                    <div className="flex flex-col gap-3">
+                                        <div className="flex items-start gap-3">
+                                            <CheckCircleIcon className="w-5 h-5 text-blue-200 flex-shrink-0 mt-0.5" />
+                                            <span className="text-sm text-blue-50">Tryout gratis tanpa batas</span>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <CheckCircleIcon className="w-5 h-5 text-blue-200 flex-shrink-0 mt-0.5" />
+                                            <span className="text-sm text-blue-50">Pembahasan lengkap setiap soal</span>
+                                        </div>
+                                        <div className="flex items-start gap-3">
+                                            <CheckCircleIcon className="w-5 h-5 text-blue-200 flex-shrink-0 mt-0.5" />
+                                            <span className="text-sm text-blue-50">Analisis performa real-time</span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div className="relative z-10">
-                                <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
-                                    Siap Raih PTN Impianmu?
-                                </h2>
-                                <p className="text-xl lg:text-2xl text-blue-100 mb-12 max-w-2xl mx-auto leading-relaxed">
-                                    Mulai persiapan UTBK kamu sekarang dengan tryout gratis
-                                </p>
-                                <Link
-                                    href={route('register')}
-                                    className="inline-flex items-center gap-3 px-10 py-5 bg-white hover:bg-gray-50 text-blue-600 font-bold rounded-full transition-all text-lg shadow-2xl hover:shadow-3xl"
-                                >
-                                    Daftar Sekarang Gratis
-                                    <ArrowRightIcon className="w-5 h-5" />
-                                </Link>
+                                {/* Right Side - CTA */}
+                                <div className="bg-gradient-to-br from-gray-50 to-white p-8 md:p-10 flex flex-col justify-center">
+                                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 leading-tight">
+                                        Siap Raih PTN Impianmu?
+                                    </h2>
+                                    <p className="text-gray-600 mb-6 leading-relaxed">
+                                        Mulai persiapan UTBK kamu sekarang. Daftar gratis dan akses ribuan soal berkualitas.
+                                    </p>
+
+                                    {/* CTA Button */}
+                                    <Link
+                                        href={route('register')}
+                                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg w-full md:w-auto"
+                                    >
+                                        Daftar Sekarang Gratis
+                                        <ArrowRightIcon className="w-4 h-4" />
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
                 {/* Footer */}
-                <footer className="relative border-t border-gray-200 py-12 px-6 bg-gray-50">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                            <div className="flex items-center gap-3">
-                                <img src="/logo.png" alt="Gemaprest Logo" className="h-8 w-auto" />
-                                <span className="text-lg font-bold text-gray-900">Gemaprest Tryout</span>
+                <footer className="relative border-t border-gray-200 bg-gray-50">
+                    <div className="max-w-6xl mx-auto px-6 py-12">
+                        {/* Footer Content */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                            {/* About Section */}
+                            <div>
+                                <div className="flex items-center gap-2 mb-4">
+                                    <img src="/logo.png" alt="Gemaprest Logo" className="h-8 w-auto" />
+                                    <span className="text-lg font-bold text-gray-900">Gemaprest</span>
+                                </div>
+                                <p className="text-sm text-gray-600 leading-relaxed">
+                                    Platform tryout UTBK online terlengkap dari Program Beasiswa Karya Salembah Empat UNSRAT.
+                                </p>
                             </div>
-                            <div className="text-gray-600 text-sm font-medium">
-                                © 2024 Gemaprest. All rights reserved.
+
+                            {/* Quick Links */}
+                            <div>
+                                <h4 className="text-sm font-semibold text-gray-900 mb-4">Menu</h4>
+                                <ul className="space-y-2">
+                                    <li>
+                                        <a href="#features" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                                            Fitur
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#benefits" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                                            Keunggulan
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <Link href={route('register')} className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                                            Daftar Gratis
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            {/* Contact/Info */}
+                            <div>
+                                <h4 className="text-sm font-semibold text-gray-900 mb-4">Informasi</h4>
+                                <ul className="space-y-2">
+                                    <li className="text-sm text-gray-600">
+                                        Program KSE UNSRAT
+                                    </li>
+                                    <li className="text-sm text-gray-600">
+                                        Universitas Sam Ratulangi
+                                    </li>
+                                    <li className="text-sm text-gray-600">
+                                        Manado, Sulawesi Utara
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        {/* Bottom Bar */}
+                        <div className="pt-6 border-t border-gray-200">
+                            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600">
+                                <div>
+                                    © 2026 Gemaprest. All rights reserved.
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <span>Developed by</span>
+                                    <span className="font-semibold text-gray-900">mfthsarsyd</span>
+                                </div>
                             </div>
                         </div>
                     </div>
