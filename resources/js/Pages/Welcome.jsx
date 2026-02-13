@@ -145,10 +145,10 @@ export default function Welcome() {
                 <section id="features" className="relative py-16 px-6 bg-white">
                     <div className="max-w-6xl mx-auto">
                         <div className="text-center mb-12">
-                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
                                 Fitur <span className="text-blue-600">Unggulan</span>
                             </h2>
-                            <p className="text-base text-gray-600 max-w-2xl mx-auto">
+                            <p className="text-sm text-gray-600 max-w-2xl mx-auto">
                                 Platform tryout paling lengkap untuk persiapan UTBK
                             </p>
                         </div>
@@ -186,7 +186,7 @@ export default function Welcome() {
                                 <TrophyIcon className="w-4 h-4" />
                                 <span>Leaderboard Real-time</span>
                             </div>
-                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
                                 Siswa <span className="text-blue-600">Terbaik</span> Minggu Ini
                             </h2>
                             <p className="text-sm text-gray-600 max-w-xl mx-auto">
