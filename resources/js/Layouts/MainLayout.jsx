@@ -32,7 +32,7 @@ export default function MainLayout({ children, title }) {
 
             {/* Header */}
             <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-100 shadow-sm">
-                <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <nav className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between items-center">
                         {/* Logo */}
                         <div className="flex items-center">
@@ -135,7 +135,7 @@ export default function MainLayout({ children, title }) {
             </header>
 
             {/* Main Content */}
-            <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+            <main className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8 py-8">
                 {children}
             </main>
 
