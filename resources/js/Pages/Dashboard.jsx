@@ -117,7 +117,7 @@ export default function Dashboard({ availableTryouts = [], activeSession = null,
                     </div>
 
                     {(availableTryouts || []).length > 0 ? (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                             {(availableTryouts || []).map((tryout) => (
                                 <TryoutCard key={tryout?.id || Math.random()} tryout={tryout || {}} />
                             ))}
@@ -229,7 +229,7 @@ function TryoutCard({ tryout }) {
     return (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
             {/* Thumbnail */}
-            <div className="h-40 bg-gradient-to-br from-blue-500 to-indigo-600 relative overflow-hidden">
+            <div className="h-40 bg-blue-600 relative overflow-hidden">
                 {tryout.thumbnail && (
                     <img
                         src={`/storage/${tryout.thumbnail}`}
@@ -237,9 +237,10 @@ function TryoutCard({ tryout }) {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                {/* Solid overlay for text readability if image exists, otherwise clean blue */}
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors" />
                 <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="font-bold text-white text-lg line-clamp-2 drop-shadow-md">
+                    <h3 className="font-bold text-white text-lg line-clamp-2">
                         {tryout.title}
                     </h3>
                 </div>
