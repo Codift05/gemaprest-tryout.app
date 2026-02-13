@@ -173,58 +173,144 @@ export default function Welcome() {
                 </section>
 
 
-                {/* Combined Benefits & CTA Section */}
+                {/* Leaderboard Section */}
                 <section id="benefits" className="relative py-16 px-6 bg-gradient-to-b from-gray-50 to-white">
-                    <div className="max-w-6xl mx-auto">
-                        {/* Main Card */}
-                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                            <div className="grid md:grid-cols-2 gap-0">
-                                {/* Left Side - Benefits */}
-                                <div className="bg-blue-600 p-8 md:p-10 flex flex-col justify-center">
-                                    <div className="inline-flex items-center gap-2 bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4 w-fit">
-                                        <SparklesIcon className="w-4 h-4" />
-                                        <span>Program KSE UNSRAT</span>
-                                    </div>
-                                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight">
-                                        Platform Tryout untuk Calon Mahasiswa
-                                    </h3>
-                                    <p className="text-blue-50 mb-6 leading-relaxed">
-                                        Dari Beasiswa Karya Salembah Empat UNSRAT. Platform tryout online terlengkap untuk persiapan UTBK kamu.
-                                    </p>
-                                    <div className="flex flex-col gap-3">
-                                        <div className="flex items-start gap-3">
-                                            <CheckCircleIcon className="w-5 h-5 text-blue-200 flex-shrink-0 mt-0.5" />
-                                            <span className="text-sm text-blue-50">Tryout gratis tanpa batas</span>
+                    <div className="max-w-5xl mx-auto">
+                        {/* Section Header */}
+                        <div className="text-center mb-10">
+                            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 text-xs font-semibold px-4 py-2 rounded-full mb-4">
+                                <TrophyIcon className="w-4 h-4" />
+                                <span>Leaderboard Real-time</span>
+                            </div>
+                            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+                                Siswa <span className="text-blue-600">Terbaik</span> Minggu Ini
+                            </h2>
+                            <p className="text-base text-gray-600 max-w-2xl mx-auto">
+                                Selesaikan tryout dan lihat namamu di leaderboard bersama ribuan peserta lainnya
+                            </p>
+                        </div>
+
+                        {/* Leaderboard Card */}
+                        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                            {/* Leaderboard Header */}
+                            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                                <div className="grid grid-cols-12 gap-4 text-white text-sm font-semibold">
+                                    <div className="col-span-1 text-center">Rank</div>
+                                    <div className="col-span-7 md:col-span-8">Nama Siswa</div>
+                                    <div className="col-span-4 md:col-span-3 text-right">Skor</div>
+                                </div>
+                            </div>
+
+                            {/* Leaderboard Items */}
+                            <div className="divide-y divide-gray-100">
+                                {/* Rank 1 */}
+                                <div className="px-6 py-4 hover:bg-blue-50 transition-colors">
+                                    <div className="grid grid-cols-12 gap-4 items-center">
+                                        <div className="col-span-1 flex justify-center">
+                                            <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                                                <TrophyIcon className="w-5 h-5 text-white" />
+                                            </div>
                                         </div>
-                                        <div className="flex items-start gap-3">
-                                            <CheckCircleIcon className="w-5 h-5 text-blue-200 flex-shrink-0 mt-0.5" />
-                                            <span className="text-sm text-blue-50">Pembahasan lengkap setiap soal</span>
+                                        <div className="col-span-7 md:col-span-8">
+                                            <div className="font-semibold text-gray-900">Ahmad Rizki Pratama</div>
+                                            <div className="text-xs text-gray-500">SMA Negeri 1 Manado</div>
                                         </div>
-                                        <div className="flex items-start gap-3">
-                                            <CheckCircleIcon className="w-5 h-5 text-blue-200 flex-shrink-0 mt-0.5" />
-                                            <span className="text-sm text-blue-50">Analisis performa real-time</span>
+                                        <div className="col-span-4 md:col-span-3 text-right">
+                                            <div className="text-lg font-bold text-blue-600">985</div>
+                                            <div className="text-xs text-gray-500">dari 1000</div>
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Right Side - CTA */}
-                                <div className="bg-gradient-to-br from-gray-50 to-white p-8 md:p-10 flex flex-col justify-center">
-                                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 leading-tight">
-                                        Siap Raih PTN Impianmu?
-                                    </h2>
-                                    <p className="text-gray-600 mb-6 leading-relaxed">
-                                        Mulai persiapan UTBK kamu sekarang. Daftar gratis dan akses ribuan soal berkualitas.
-                                    </p>
-
-                                    {/* CTA Button */}
-                                    <Link
-                                        href={route('register')}
-                                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg w-full md:w-auto"
-                                    >
-                                        Daftar Sekarang Gratis
-                                        <ArrowRightIcon className="w-4 h-4" />
-                                    </Link>
+                                {/* Rank 2 */}
+                                <div className="px-6 py-4 hover:bg-blue-50 transition-colors">
+                                    <div className="grid grid-cols-12 gap-4 items-center">
+                                        <div className="col-span-1 flex justify-center">
+                                            <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                                <TrophyIcon className="w-5 h-5 text-white" />
+                                            </div>
+                                        </div>
+                                        <div className="col-span-7 md:col-span-8">
+                                            <div className="font-semibold text-gray-900">Siti Nurhaliza</div>
+                                            <div className="text-xs text-gray-500">SMA Negeri 3 Manado</div>
+                                        </div>
+                                        <div className="col-span-4 md:col-span-3 text-right">
+                                            <div className="text-lg font-bold text-blue-600">978</div>
+                                            <div className="text-xs text-gray-500">dari 1000</div>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                {/* Rank 3 */}
+                                <div className="px-6 py-4 hover:bg-blue-50 transition-colors">
+                                    <div className="grid grid-cols-12 gap-4 items-center">
+                                        <div className="col-span-1 flex justify-center">
+                                            <div className="w-8 h-8 bg-orange-400 rounded-full flex items-center justify-center">
+                                                <TrophyIcon className="w-5 h-5 text-white" />
+                                            </div>
+                                        </div>
+                                        <div className="col-span-7 md:col-span-8">
+                                            <div className="font-semibold text-gray-900">Budi Santoso</div>
+                                            <div className="text-xs text-gray-500">SMA Negeri 2 Manado</div>
+                                        </div>
+                                        <div className="col-span-4 md:col-span-3 text-right">
+                                            <div className="text-lg font-bold text-blue-600">972</div>
+                                            <div className="text-xs text-gray-500">dari 1000</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Rank 4 */}
+                                <div className="px-6 py-4 hover:bg-blue-50 transition-colors">
+                                    <div className="grid grid-cols-12 gap-4 items-center">
+                                        <div className="col-span-1 flex justify-center">
+                                            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm">
+                                                4
+                                            </div>
+                                        </div>
+                                        <div className="col-span-7 md:col-span-8">
+                                            <div className="font-semibold text-gray-900">Dewi Lestari</div>
+                                            <div className="text-xs text-gray-500">SMA Negeri 5 Manado</div>
+                                        </div>
+                                        <div className="col-span-4 md:col-span-3 text-right">
+                                            <div className="text-lg font-bold text-blue-600">965</div>
+                                            <div className="text-xs text-gray-500">dari 1000</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Rank 5 */}
+                                <div className="px-6 py-4 hover:bg-blue-50 transition-colors">
+                                    <div className="grid grid-cols-12 gap-4 items-center">
+                                        <div className="col-span-1 flex justify-center">
+                                            <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm">
+                                                5
+                                            </div>
+                                        </div>
+                                        <div className="col-span-7 md:col-span-8">
+                                            <div className="font-semibold text-gray-900">Andi Wijaya</div>
+                                            <div className="text-xs text-gray-500">SMA Negeri 4 Manado</div>
+                                        </div>
+                                        <div className="col-span-4 md:col-span-3 text-right">
+                                            <div className="text-lg font-bold text-blue-600">958</div>
+                                            <div className="text-xs text-gray-500">dari 1000</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* CTA Footer */}
+                            <div className="bg-gray-50 px-6 py-6 text-center border-t border-gray-100">
+                                <p className="text-sm text-gray-600 mb-4">
+                                    Ingin namamu muncul di leaderboard? Daftar sekarang dan mulai tryout!
+                                </p>
+                                <Link
+                                    href={route('register')}
+                                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
+                                >
+                                    Daftar Sekarang Gratis
+                                    <ArrowRightIcon className="w-4 h-4" />
+                                </Link>
                             </div>
                         </div>
                     </div>
