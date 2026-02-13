@@ -46,11 +46,7 @@ export default function Welcome() {
         },
     ];
 
-    const stats = [
-        { value: '10,000+', label: 'Soal Berkualitas' },
-        { value: '95%', label: 'Tingkat Kepuasan' },
-        { value: '5,000+', label: 'Siswa Aktif' },
-    ];
+
 
     return (
         <>
@@ -90,22 +86,21 @@ export default function Welcome() {
                 {/* Hero Section */}
                 <section className="relative pt-32 pb-24 px-6">
                     <div className="max-w-7xl mx-auto">
-                        <div className="text-center max-w-4xl mx-auto mb-16">
-                            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-6 border border-blue-100">
-                                <SparklesIcon className="w-4 h-4" />
-                                Platform Tryout UTBK Terpercaya
-                            </div>
-
+                        <div className="text-center max-w-4xl mx-auto">
                             <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
                                 Persiapan UTBK Terbaik<br />
                                 untuk Raih PTN Impian
                             </h1>
 
-                            <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-                                Platform tryout online dengan soal berkualitas, simulasi realistis, dan analisis performa mendalam
+                            <p className="text-xl text-gray-600 mb-4 leading-relaxed max-w-2xl mx-auto">
+                                Platform tryout online dari <span className="font-bold text-blue-600">Beasiswa Karya Salembah Empat (KSE) UNSRAT</span>
                             </p>
 
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+                            <p className="text-lg text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto">
+                                Kami hadir untuk membantu adik-adik SMA dalam mempersiapkan diri menghadapi UTBK dengan menyediakan soal berkualitas, simulasi realistis, dan analisis performa mendalam
+                            </p>
+
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <Link
                                     href={route('register')}
                                     className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all inline-flex items-center justify-center gap-2 shadow-sm"
@@ -121,17 +116,7 @@ export default function Welcome() {
                                 </Link>
                             </div>
 
-                            {/* Stats */}
-                            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-                                {stats.map((stat, index) => (
-                                    <div key={index} className="text-center">
-                                        <div className="text-3xl lg:text-4xl font-bold text-blue-600 mb-1">
-                                            {stat.value}
-                                        </div>
-                                        <div className="text-sm text-gray-600 font-medium">{stat.label}</div>
-                                    </div>
-                                ))}
-                            </div>
+
                         </div>
                     </div>
                 </section>
@@ -175,65 +160,11 @@ export default function Welcome() {
                         <div className="bg-white rounded-3xl p-12 lg:p-16 shadow-lg border border-gray-100">
                             <div className="text-center mb-12">
                                 <h3 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                                    Kenapa Memilih Gemaprest?
+                                    Program KSE UNSRAT untuk Adik-Adik SMA
                                 </h3>
                                 <p className="text-lg text-gray-600">
-                                    Bergabung dengan ribuan siswa yang sudah mempersiapkan diri untuk UTBK
+                                    Beasiswa Karya Salembah Empat hadir untuk mendukung persiapan UTBK kamu
                                 </p>
-                            </div>
-
-                            <div className="grid md:grid-cols-2 gap-6 mb-12">
-                                <div className="flex gap-4">
-                                    <div className="flex-shrink-0">
-                                        <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
-                                            <CheckCircleIcon className="w-6 h-6 text-green-600" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-gray-900 mb-1">Akses Unlimited</h4>
-                                        <p className="text-gray-600">Semua paket tryout tersedia untuk kamu</p>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4">
-                                    <div className="flex-shrink-0">
-                                        <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
-                                            <CheckCircleIcon className="w-6 h-6 text-green-600" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-gray-900 mb-1">Pembahasan Lengkap</h4>
-                                        <p className="text-gray-600">Setiap soal dilengkapi pembahasan detail</p>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4">
-                                    <div className="flex-shrink-0">
-                                        <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
-                                            <CheckCircleIcon className="w-6 h-6 text-green-600" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-gray-900 mb-1">Analisis Real-time</h4>
-                                        <p className="text-gray-600">Lihat performa kamu secara langsung</p>
-                                    </div>
-                                </div>
-                                <div className="flex gap-4">
-                                    <div className="flex-shrink-0">
-                                        <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
-                                            <CheckCircleIcon className="w-6 h-6 text-green-600" />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-bold text-gray-900 mb-1">Leaderboard Nasional</h4>
-                                        <p className="text-gray-600">Bandingkan skor dengan peserta lain</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="text-center">
-                                <div className="inline-block bg-blue-50 rounded-2xl p-8 mb-6">
-                                    <div className="text-5xl font-bold text-blue-600 mb-2">95%</div>
-                                    <div className="text-gray-700 font-semibold">Siswa Lulus PTN Favorit</div>
-                                </div>
                             </div>
                         </div>
                     </div>
