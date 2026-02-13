@@ -182,10 +182,6 @@ export default function Welcome() {
                     <div className="max-w-4xl mx-auto">
                         {/* Section Header */}
                         <div className="text-center mb-12">
-                            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 text-xs font-semibold px-4 py-2 rounded-full mb-4">
-                                <TrophyIcon className="w-4 h-4" />
-                                <span>Leaderboard Real-time</span>
-                            </div>
                             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
                                 Siswa <span className="text-blue-600">Terbaik</span> Minggu Ini
                             </h2>
