@@ -22,24 +22,22 @@ export default function MainLayout({ children, title }) {
         ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50/30 to-slate-100">
+
+        <div className="min-h-screen bg-gray-50 font-sans text-gray-900 flex flex-col">
             {/* Background Pattern */}
-            <div className="fixed inset-0 -z-10 overflow-hidden">
-                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary-200/30 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent-200/20 rounded-full blur-3xl" />
+            <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-3xl opacity-50" />
+                <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-100/40 rounded-full blur-3xl opacity-50" />
             </div>
 
             {/* Header */}
-            <header className="glass sticky top-0 z-40 border-b border-white/20">
+            <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-lg border-b border-gray-100 shadow-sm">
                 <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between items-center">
                         {/* Logo */}
                         <div className="flex items-center">
                             <Link href="/" className="flex items-center gap-3 group">
-                                <img src="/logo.png" alt="Gemaprest" className="w-10 h-10 group-hover:scale-110 transition-transform" />
-                                <span className="font-bold text-xl bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
-                                    Gemaprest Tryout
-                                </span>
+                                <img src="/logo.png" alt="Gemaprest" className="w-9 h-9 group-hover:scale-110 transition-transform" />
                             </Link>
                         </div>
 
@@ -50,10 +48,10 @@ export default function MainLayout({ children, title }) {
                                     key={item.name}
                                     href={item.href}
                                     className={clsx(
-                                        'px-4 py-2 rounded-xl text-sm font-medium transition-all',
+                                        'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
                                         route().current(item.href)
-                                            ? 'bg-primary-100 text-primary-700'
-                                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50'
+                                            ? 'bg-blue-50 text-blue-700'
+                                            : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                                     )}
                                 >
                                     {item.name}
@@ -67,30 +65,22 @@ export default function MainLayout({ children, title }) {
                                 <div className="flex items-center gap-3">
                                     <Link
                                         href={route('profile.edit')}
-                                        className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 glass-card px-3 py-2 rounded-xl"
+                                        className="flex items-center gap-2 pl-2 pr-4 py-1.5 rounded-full border border-gray-200 hover:border-blue-200 hover:bg-blue-50 transition-all group"
                                     >
-                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
-                                            <span className="text-white text-xs font-semibold">
-                                                {auth.user.name.charAt(0).toUpperCase()}
+                                        <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center border border-blue-200 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                            <span className="text-xs font-bold">
+                                                {auth.user.name?.charAt(0).toUpperCase()}
                                             </span>
                                         </div>
-                                        <span className="hidden sm:block font-medium">{auth.user.name}</span>
-                                    </Link>
-                                    <Link
-                                        href={route('logout')}
-                                        method="post"
-                                        as="button"
-                                        className="btn-secondary px-4 py-2 rounded-xl text-sm font-medium"
-                                    >
-                                        Keluar
+                                        <span className="hidden sm:block text-sm font-medium text-gray-700 group-hover:text-blue-700">{auth.user.name}</span>
                                     </Link>
                                 </div>
                             ) : (
                                 <div className="flex items-center gap-2">
-                                    <Link href={route('login')} className="btn-secondary px-4 py-2 rounded-xl text-sm font-medium">
+                                    <Link href={route('login')} className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium text-sm">
                                         Masuk
                                     </Link>
-                                    <Link href={route('register')} className="btn-primary px-4 py-2 rounded-xl text-sm font-medium">
+                                    <Link href={route('register')} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium text-sm shadow-sm transition-all hover:shadow-md">
                                         Daftar
                                     </Link>
                                 </div>
@@ -99,7 +89,7 @@ export default function MainLayout({ children, title }) {
                             {/* Mobile menu button */}
                             <button
                                 type="button"
-                                className="md:hidden p-2 rounded-xl text-gray-600 hover:bg-gray-100/50"
+                                className="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100"
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             >
                                 {mobileMenuOpen ? (
@@ -113,37 +103,36 @@ export default function MainLayout({ children, title }) {
 
                     {/* Mobile Navigation */}
                     {mobileMenuOpen && auth.user && (
-                        <div className="md:hidden py-4 border-t border-white/20">
+                        <div className="md:hidden py-4 border-t border-gray-100">
                             <div className="flex flex-col gap-1">
                                 {navigation.map((item) => (
                                     <Link
                                         key={item.name}
                                         href={item.href}
                                         className={clsx(
-                                            'px-4 py-3 rounded-xl text-sm font-medium transition-all',
+                                            'px-4 py-3 rounded-lg text-sm font-medium transition-all',
                                             route().current(item.href)
-                                                ? 'bg-primary-100 text-primary-700'
-                                                : 'text-gray-600 hover:bg-gray-100/50'
+                                                ? 'bg-blue-50 text-blue-700'
+                                                : 'text-gray-600 hover:bg-gray-50'
                                         )}
                                         onClick={() => setMobileMenuOpen(false)}
                                     >
                                         {item.name}
                                     </Link>
                                 ))}
+                                <Link
+                                    href={route('logout')}
+                                    method="post"
+                                    as="button"
+                                    className="px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 text-left"
+                                >
+                                    Keluar
+                                </Link>
                             </div>
                         </div>
                     )}
                 </nav>
             </header>
-
-            {/* Page Title */}
-            {title && (
-                <div className="glass border-b border-white/20">
-                    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-                        <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-                    </div>
-                </div>
-            )}
 
             {/* Main Content */}
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -151,24 +140,21 @@ export default function MainLayout({ children, title }) {
             </main>
 
             {/* Footer */}
-            <footer className="glass border-t border-white/20 mt-auto">
+            <footer className="bg-white border-t border-gray-200 mt-auto">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                         <div className="flex items-center gap-3">
-                            <img src="/logo.png" alt="Gemaprest" className="w-8 h-8" />
-                            <p className="text-sm text-gray-600">
-                                © {new Date().getFullYear()} Gemaprest Tryout. All rights reserved.
+                            <img src="/logo.png" alt="Gemaprest" className="w-8 h-8 opacity-80" />
+                            <p className="text-sm text-gray-500">
+                                © {new Date().getFullYear()} Gemaprest Tryout.
                             </p>
                         </div>
                         <div className="flex gap-6">
-                            <a href="#" className="text-sm text-gray-500 hover:text-primary-600 transition-colors">
+                            <a href="#" className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
                                 Bantuan
                             </a>
-                            <a href="#" className="text-sm text-gray-500 hover:text-primary-600 transition-colors">
+                            <a href="#" className="text-sm text-gray-500 hover:text-blue-600 transition-colors">
                                 Kebijakan Privasi
-                            </a>
-                            <a href="#" className="text-sm text-gray-500 hover:text-primary-600 transition-colors">
-                                Syarat & Ketentuan
                             </a>
                         </div>
                     </div>

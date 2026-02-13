@@ -19,10 +19,12 @@ class DashboardController extends Controller
 
         // Get available tryouts
         $availableTryouts = Tryout::available()
-            ->withCount(['examSessions as attempts_count' => function ($query) use ($user) {
-                $query->where('user_id', $user->id)
-                    ->whereIn('status', ['completed', 'timeout', 'violated']);
-            }])
+            ->withCount([
+                'examSessions as attempts_count' => function ($query) use ($user) {
+                    $query->where('user_id', $user->id)
+                        ->whereIn('status', ['completed', 'timeout', 'violated']);
+                }
+            ])
             ->orderByDesc('created_at')
             ->take(6)
             ->get()
@@ -58,8 +60,8 @@ class DashboardController extends Controller
                 return [
                     'id' => $session->id,
                     'tryout' => [
-                        'title' => $session->tryout->title,
-                        'slug' => $session->tryout->slug,
+                        'title' => $session->tryout?->title ?? 'Tryout Terhapus',
+                        'slug' => $session->tryout?->slug ?? '#',
                     ],
                     'score' => $session->score,
                     'percentage' => $session->percentage,
@@ -84,7 +86,7 @@ class DashboardController extends Controller
             'availableTryouts' => $availableTryouts,
             'activeSession' => $activeSession ? [
                 'id' => $activeSession->id,
-                'tryout_title' => $activeSession->tryout->title,
+                'tryout_title' => $activeSession->tryout?->title ?? 'Tryout Tidak Tersedia',
                 'remaining_time' => $activeSession->remaining_time,
                 'progress' => $activeSession->progress_percentage,
             ] : null,

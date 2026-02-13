@@ -35,7 +35,7 @@ export default function HistoryIndex({ sessions }) {
         const hours = Math.floor(seconds / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const secs = seconds % 60;
-        
+
         if (hours > 0) {
             return `${hours}j ${minutes}m`;
         }
@@ -56,8 +56,8 @@ export default function HistoryIndex({ sessions }) {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">Riwayat Ujian</h1>
-                    <p className="mt-2 text-gray-600">Daftar tryout yang pernah Anda kerjakan</p>
+                    <h1 className="text-3xl font-bold text-white">Riwayat Ujian</h1>
+                    <p className="mt-2 text-gray-400">Daftar tryout yang pernah Anda kerjakan</p>
                 </div>
 
                 {sessions.data.length === 0 ? (
@@ -105,11 +105,11 @@ export default function HistoryIndex({ sessions }) {
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {sessions.data.map((session) => {
-                                        const percentage = session.total_questions > 0 
-                                            ? Math.round((session.correct_count / session.total_questions) * 100) 
+                                        const percentage = session.total_questions > 0
+                                            ? Math.round((session.correct_count / session.total_questions) * 100)
                                             : 0;
                                         const { grade, color } = getGrade(percentage);
-                                        
+
                                         return (
                                             <tr key={session.id} className="hover:bg-gray-50 transition-colors">
                                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -159,11 +159,11 @@ export default function HistoryIndex({ sessions }) {
                         {/* Mobile Cards */}
                         <div className="md:hidden space-y-4">
                             {sessions.data.map((session) => {
-                                const percentage = session.total_questions > 0 
-                                    ? Math.round((session.correct_count / session.total_questions) * 100) 
+                                const percentage = session.total_questions > 0
+                                    ? Math.round((session.correct_count / session.total_questions) * 100)
                                     : 0;
                                 const { grade, color } = getGrade(percentage);
-                                
+
                                 return (
                                     <div key={session.id} className="bg-white rounded-xl shadow-lg p-5">
                                         <div className="flex justify-between items-start mb-4">
@@ -224,13 +224,11 @@ export default function HistoryIndex({ sessions }) {
                                         <Link
                                             key={index}
                                             href={link.url || '#'}
-                                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                                                link.active
+                                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${link.active
                                                     ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                                                     : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
-                                            } ${!link.url && 'opacity-50 cursor-not-allowed'} ${
-                                                index === 0 ? 'rounded-l-md' : ''
-                                            } ${index === sessions.links.length - 1 ? 'rounded-r-md' : ''}`}
+                                                } ${!link.url && 'opacity-50 cursor-not-allowed'} ${index === 0 ? 'rounded-l-md' : ''
+                                                } ${index === sessions.links.length - 1 ? 'rounded-r-md' : ''}`}
                                             preserveScroll
                                             dangerouslySetInnerHTML={{ __html: link.label }}
                                         />

@@ -9,7 +9,7 @@
     }
 
     body {
-        @apply bg-gray-50 text-gray-900;
+        @apply bg-black text-gray-100;
         overscroll-behavior: none;
     }
 }
@@ -150,18 +150,19 @@
     @apply bg-gradient-to-r from-red-500 to-red-700 bg-clip-text text-transparent;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Hidden but functional */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    display: none;
 }
 
-::-webkit-scrollbar-track {
-    @apply bg-gray-950 rounded-full;
-}
-
-::-webkit-scrollbar-thumb {
-    @apply bg-gray-700 rounded-full hover:bg-gray-600;
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
 }
 
 /* Fullscreen exam mode */

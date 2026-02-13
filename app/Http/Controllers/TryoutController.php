@@ -12,8 +12,8 @@ class TryoutController extends Controller
     public function index(Request $request)
     {
         $query = Tryout::with('categories')
-            ->where('is_active', true)
-            ->withCount(['questions', 'sessions as participant_count']);
+            ->where('is_published', true)
+            ->withCount(['questions', 'examSessions as participant_count']);
 
         // Search filter
         if ($request->filled('search')) {
@@ -30,10 +30,10 @@ class TryoutController extends Controller
         $tryouts = $query->latest()->paginate(12)->through(function ($tryout) {
             $now = now();
             $status = 'active';
-            
-            if ($tryout->end_date && $now->gt($tryout->end_date)) {
+
+            if ($tryout->end_time && $now->gt($tryout->end_time)) {
                 $status = 'ended';
-            } elseif ($tryout->start_date && $now->lt($tryout->start_date)) {
+            } elseif ($tryout->start_time && $now->lt($tryout->start_time)) {
                 $status = 'upcoming';
             }
 
@@ -71,7 +71,7 @@ class TryoutController extends Controller
         $tryout->loadCount('questions');
 
         // Get previous attempts
-        $previousAttempts = $tryout->sessions()
+        $previousAttempts = $tryout->examSessions()
             ->where('user_id', $user->id)
             ->whereNotNull('finished_at')
             ->latest('finished_at')
@@ -85,23 +85,23 @@ class TryoutController extends Controller
             });
 
         // Check if user can attempt
-        $attemptCount = $tryout->sessions()
+        $attemptCount = $tryout->examSessions()
             ->where('user_id', $user->id)
             ->whereNotNull('finished_at')
             ->count();
 
         $remainingAttempts = $tryout->max_attempts - $attemptCount;
         $now = now();
-        
+
         $status = 'active';
-        if ($tryout->end_date && $now->gt($tryout->end_date)) {
+        if ($tryout->end_time && $now->gt($tryout->end_time)) {
             $status = 'ended';
-        } elseif ($tryout->start_date && $now->lt($tryout->start_date)) {
+        } elseif ($tryout->start_time && $now->lt($tryout->start_time)) {
             $status = 'upcoming';
         }
 
-        $canAttempt = $tryout->is_active 
-            && $remainingAttempts > 0 
+        $canAttempt = $tryout->is_published
+            && $remainingAttempts > 0
             && $status === 'active';
 
         return Inertia::render('Exam/Show', [
@@ -116,7 +116,7 @@ class TryoutController extends Controller
                 'max_attempts' => $tryout->max_attempts,
                 'remaining_attempts' => $remainingAttempts,
                 'max_violations' => $tryout->max_violations,
-                'participant_count' => $tryout->sessions()->whereNotNull('finished_at')->count(),
+                'participant_count' => $tryout->examSessions()->whereNotNull('finished_at')->count(),
                 'categories' => $tryout->categories,
                 'can_attempt' => $canAttempt,
                 'show_leaderboard' => $tryout->show_leaderboard,
