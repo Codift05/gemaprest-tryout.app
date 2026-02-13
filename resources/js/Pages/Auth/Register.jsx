@@ -46,6 +46,7 @@ export default function Register() {
                         <img src="/logo.png" alt="Gemaprest" className="h-12 w-auto" />
                         <img src="/kabinet.png" alt="Kabinet" className="h-12 w-auto" />
                         <img src="/kse.png" alt="KSE" className="h-12 w-auto" />
+                        <img src="/kseunsrat.png" alt="KSE UNSRAT" className="h-12 w-auto" />
                     </div>
 
                     <div className="max-w-lg text-center relative z-10">
