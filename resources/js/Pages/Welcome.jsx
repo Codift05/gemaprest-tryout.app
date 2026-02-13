@@ -321,37 +321,37 @@ export default function Welcome() {
                 </section>
 
                 {/* Footer */}
-                <footer className="relative border-t border-gray-200 bg-gray-50">
-                    <div className="max-w-6xl mx-auto px-6 py-12">
+                <footer className="relative border-t border-gray-200 bg-white">
+                    <div className="max-w-4xl mx-auto px-6 py-10">
                         {/* Footer Content */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
                             {/* About Section */}
                             <div>
-                                <div className="flex items-center gap-2 mb-4">
-                                    <img src="/logo.png" alt="Gemaprest Logo" className="h-8 w-auto" />
-                                    <span className="text-lg font-bold text-gray-900">Gemaprest</span>
+                                <div className="flex items-center gap-2 mb-3">
+                                    <img src="/logo.png" alt="Gemaprest Logo" className="h-7 w-auto" />
+                                    <span className="text-base font-bold text-gray-900">Gemaprest</span>
                                 </div>
-                                <p className="text-sm text-gray-600 leading-relaxed">
+                                <p className="text-xs text-gray-600 leading-relaxed">
                                     Platform tryout UTBK online terlengkap dari Program Beasiswa Karya Salembah Empat UNSRAT.
                                 </p>
                             </div>
 
                             {/* Quick Links */}
                             <div>
-                                <h4 className="text-sm font-semibold text-gray-900 mb-4">Menu</h4>
+                                <h4 className="text-xs font-bold text-gray-900 mb-3 uppercase tracking-wide">Menu</h4>
                                 <ul className="space-y-2">
                                     <li>
-                                        <a href="#features" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                                        <a href="#features" className="text-xs text-gray-600 hover:text-blue-600 transition-colors">
                                             Fitur
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#benefits" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                                        <a href="#benefits" className="text-xs text-gray-600 hover:text-blue-600 transition-colors">
                                             Keunggulan
                                         </a>
                                     </li>
                                     <li>
-                                        <Link href={route('register')} className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+                                        <Link href={route('register')} className="text-xs text-gray-600 hover:text-blue-600 transition-colors">
                                             Daftar Gratis
                                         </Link>
                                     </li>
@@ -360,15 +360,15 @@ export default function Welcome() {
 
                             {/* Contact/Info */}
                             <div>
-                                <h4 className="text-sm font-semibold text-gray-900 mb-4">Informasi</h4>
+                                <h4 className="text-xs font-bold text-gray-900 mb-3 uppercase tracking-wide">Informasi</h4>
                                 <ul className="space-y-2">
-                                    <li className="text-sm text-gray-600">
+                                    <li className="text-xs text-gray-600">
                                         Program KSE UNSRAT
                                     </li>
-                                    <li className="text-sm text-gray-600">
+                                    <li className="text-xs text-gray-600">
                                         Universitas Sam Ratulangi
                                     </li>
-                                    <li className="text-sm text-gray-600">
+                                    <li className="text-xs text-gray-600">
                                         Manado, Sulawesi Utara
                                     </li>
                                 </ul>
@@ -377,11 +377,11 @@ export default function Welcome() {
 
                         {/* Bottom Bar */}
                         <div className="pt-6 border-t border-gray-200">
-                            <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-600">
+                            <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-600">
                                 <div>
                                     © 2026 Gemaprest. All rights reserved.
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1.5">
                                     <span>Developed by</span>
                                     <span className="font-semibold text-gray-900">mfthsarsyd</span>
                                 </div>
