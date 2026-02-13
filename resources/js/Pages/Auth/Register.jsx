@@ -43,9 +43,9 @@ export default function Register() {
                     {/* Organizational Logos */}
                     <div className="absolute top-8 left-8 flex items-center gap-3">
                         <img src="/unsrat.png" alt="UNSRAT" className="h-12 w-auto" />
-                        <img src="/kabinet.png" alt="Kabinet" className="h-12 w-auto" />
-                        <img src="/kse.png" alt="KSE" className="h-12 w-auto" />
+                        <img src="/logo.png" alt="Gemaprest" className="h-12 w-auto" />
                         <img src="/kseunsrat.png" alt="KSE UNSRAT" className="h-12 w-auto" />
+                        <img src="/kse.png" alt="KSE" className="h-12 w-auto" />
                     </div>
 
 
