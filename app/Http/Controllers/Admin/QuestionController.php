@@ -60,8 +60,13 @@ class QuestionController extends Controller
                 'type_label' => $q->type_label,
                 'difficulty' => $q->difficulty,
                 'difficulty_label' => $q->difficulty_label,
-                'category' => $q->subcategory->category->name,
-                'subcategory' => $q->subcategory->name,
+                'subcategory' => [
+                    'name' => $q->subcategory->name,
+                    'category' => [
+                        'name' => $q->subcategory->category->name,
+                        'color' => $q->subcategory->category->color,
+                    ],
+                ],
                 'score' => $q->score,
                 'is_active' => $q->is_active,
                 'creator' => $q->creator->name,

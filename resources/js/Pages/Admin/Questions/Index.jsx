@@ -175,7 +175,7 @@ export default function Index({ questions, categories, filters }) {
                                         <td className="px-6 py-4">
                                             <div
                                                 className="prose prose-sm max-w-md text-gray-900 line-clamp-2"
-                                                dangerouslySetInnerHTML={{ __html: question.question_text }}
+                                                dangerouslySetInnerHTML={{ __html: question.content }}
                                             />
                                         </td>
                                         <td className="px-6 py-4">
@@ -244,10 +244,10 @@ export default function Index({ questions, categories, filters }) {
                                 key={index}
                                 href={link.url || '#'}
                                 className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${link.active
-                                        ? 'bg-indigo-600 text-white shadow-sm'
-                                        : link.url
-                                            ? 'text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
-                                            : 'text-gray-300 cursor-not-allowed'
+                                    ? 'bg-indigo-600 text-white shadow-sm'
+                                    : link.url
+                                        ? 'text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
+                                        : 'text-gray-300 cursor-not-allowed'
                                     }`}
                                 preserveState
                                 dangerouslySetInnerHTML={{ __html: link.label }}
