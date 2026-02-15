@@ -169,6 +169,7 @@ class ExamController extends Controller
                 'id' => $tryout->id,
                 'title' => $tryout->title,
                 'duration_minutes' => $tryout->duration_minutes,
+                'max_violations' => $tryout->max_violations,
             ],
             'questions' => $questions->map(function ($question, $index) use ($answers) {
                 $answer = $answers->get($question->id);

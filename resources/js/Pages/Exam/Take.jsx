@@ -14,7 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { FlagIcon as FlagSolidIcon } from '@heroicons/react/24/solid';
 
-export default function Take({ session, questions = [], answers: initialAnswers, serverTime }) {
+export default function Take({ session, tryout = {}, questions = [], answers: initialAnswers, serverTime }) {
     const { settings = {} } = usePage().props;
     const [showNavigation, setShowNavigation] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,7 +44,7 @@ export default function Take({ session, questions = [], answers: initialAnswers,
     );
 
     // Anti-cheat monitoring - Pass enable_proctoring flag
-    useAntiCheat(session.id, addViolation, session.tryout.max_violations, settings?.enable_proctoring);
+    useAntiCheat(session.id, addViolation, tryout.max_violations || session.max_violations, settings?.enable_proctoring);
 
     // Auto-save answers
     useAutoSave(answers, session.id);
@@ -147,7 +147,8 @@ export default function Take({ session, questions = [], answers: initialAnswers,
 
     return (
         <>
-            <Head title={`Ujian - ${session.tryout.title}`} />
+
+            <Head title={`Ujian - ${tryout.title || session.tryout?.title || ''}`} />
 
             <div className="min-h-screen bg-gray-100 flex flex-col">
                 {/* Header */}
@@ -156,7 +157,7 @@ export default function Take({ session, questions = [], answers: initialAnswers,
                         {/* Left: Tryout info */}
                         <div className="flex items-center gap-4">
                             <h1 className="font-semibold text-gray-900 truncate max-w-xs">
-                                {session.tryout.title}
+                                {tryout.title || session.tryout?.title}
                             </h1>
                             <span className="text-sm text-gray-600 hidden sm:inline">
                                 Soal {currentQuestionIndex + 1} dari {totalQuestions}
@@ -164,13 +165,13 @@ export default function Take({ session, questions = [], answers: initialAnswers,
                         </div>
 
                         {/* Center: Timer */}
-                        {/* Center: Timer */}
+
                         <div
                             className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono text-lg font-bold transition-colors ${urgencyLevel === 'critical' || urgencyLevel === 'warning'
-                                    ? 'bg-red-100 text-red-700 animate-pulse'
-                                    : urgencyLevel === 'caution'
-                                        ? 'bg-amber-100 text-amber-700'
-                                        : 'bg-gray-100 text-gray-700'
+                                ? 'bg-red-100 text-red-700 animate-pulse'
+                                : urgencyLevel === 'caution'
+                                    ? 'bg-amber-100 text-amber-700'
+                                    : 'bg-gray-100 text-gray-700'
                                 }`}
                         >
                             <ClockIcon className="w-5 h-5" />
@@ -183,7 +184,7 @@ export default function Take({ session, questions = [], answers: initialAnswers,
                                 <div className="flex items-center gap-1 text-red-600" title="Pelanggaran">
                                     <ExclamationTriangleIcon className="w-5 h-5" />
                                     <span className="font-medium">
-                                        {violations}/{session.tryout.max_violations}
+                                        {violations}/{tryout.max_violations || session.max_violations}
                                     </span>
                                 </div>
                             )}
