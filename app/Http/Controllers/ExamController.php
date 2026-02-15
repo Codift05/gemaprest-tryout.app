@@ -21,7 +21,8 @@ class ExamController extends Controller
 {
     public function __construct(
         private ExamScoringService $scoringService
-    ) {}
+    ) {
+    }
 
     /**
      * Display tryout detail / pre-exam page
@@ -99,6 +100,11 @@ class ExamController extends Controller
 
         // Get questions
         $questions = $tryout->questions()->pluck('questions.id')->toArray();
+
+        // Check if questions are available
+        if (empty($questions)) {
+            return back()->withErrors(['error' => 'Tryout ini belum memiliki soal.']);
+        }
 
         if ($tryout->is_randomized) {
             shuffle($questions);

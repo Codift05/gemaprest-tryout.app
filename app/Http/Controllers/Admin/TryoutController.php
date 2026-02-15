@@ -58,6 +58,11 @@ class TryoutController extends Controller
         return Inertia::render('Admin/Tryouts/Form', [
             'categories' => Category::active()->ordered()->with('subcategories')->get(),
             'tryout' => null,
+            'defaultSettings' => [
+                'duration_minutes' => \App\Models\Setting::getValue('default_duration', 120),
+                'passing_score' => \App\Models\Setting::getValue('passing_score', 60),
+                'max_violations' => \App\Models\Setting::getValue('max_violations', 3),
+            ],
         ]);
     }
 
@@ -110,7 +115,8 @@ class TryoutController extends Controller
         }
 
         // Calculate total questions
-        $tryout->update(['total_questions' => $tryout->categories()->sum('question_count')]);
+        // Calculate total questions
+        $tryout->update(['total_questions' => $tryout->questions()->count()]);
 
         return redirect()->route('admin.tryouts.edit', $tryout)
             ->with('success', 'Tryout berhasil dibuat.');
@@ -198,7 +204,8 @@ class TryoutController extends Controller
         }
 
         // Calculate total questions
-        $tryout->update(['total_questions' => $tryout->categories()->sum('question_count')]);
+        // Calculate total questions
+        $tryout->update(['total_questions' => $tryout->questions()->count()]);
 
         return redirect()->route('admin.tryouts.index')
             ->with('success', 'Tryout berhasil diperbarui.');
@@ -289,6 +296,7 @@ class TryoutController extends Controller
 
         if (!empty($attachData)) {
             $tryout->questions()->attach($attachData);
+            $tryout->update(['total_questions' => $tryout->questions()->count()]);
         }
 
         return back()->with('success', 'Soal berhasil ditambahkan.');
@@ -310,6 +318,7 @@ class TryoutController extends Controller
         })->toArray();
 
         $tryout->questions()->sync($questionData);
+        $tryout->update(['total_questions' => $tryout->questions()->count()]);
 
         return back()->with('success', 'Soal berhasil diperbarui.');
     }
@@ -340,6 +349,7 @@ class TryoutController extends Controller
         }
 
         $tryout->questions()->sync($questions);
+        $tryout->update(['total_questions' => $tryout->questions()->count()]);
 
         return back()->with('success', 'Soal berhasil di-assign secara otomatis.');
     }

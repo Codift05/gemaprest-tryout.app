@@ -126,7 +126,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/reports/violations', [\App\Http\Controllers\Admin\ReportController::class, 'violations'])->name('reports.violations');
 
     // Settings
-    Route::get('/settings', function () {
-        return inertia('Admin/Settings/Index');
-    })->name('settings.index');
+    Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
 });

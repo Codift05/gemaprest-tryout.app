@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import { useExamStore } from '@/stores';
 import { useExamTimer, useAntiCheat, useAutoSave } from '@/hooks';
 import {
@@ -14,7 +14,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { FlagIcon as FlagSolidIcon } from '@heroicons/react/24/solid';
 
-export default function Take({ session, questions, answers: initialAnswers, serverTime }) {
+export default function Take({ session, questions = [], answers: initialAnswers, serverTime }) {
+    const { settings = {} } = usePage().props;
     const [showNavigation, setShowNavigation] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showSubmitModal, setShowSubmitModal] = useState(false);
@@ -37,8 +38,8 @@ export default function Take({ session, questions, answers: initialAnswers, serv
         session.id
     );
 
-    // Anti-cheat monitoring
-    useAntiCheat(session.id, addViolation, session.tryout.max_violations);
+    // Anti-cheat monitoring - Pass enable_proctoring flag
+    useAntiCheat(session.id, addViolation, session.tryout.max_violations, settings?.enable_proctoring);
 
     // Auto-save answers
     useAutoSave(answers, session.id);
@@ -52,8 +53,10 @@ export default function Take({ session, questions, answers: initialAnswers, serv
         setAnswers(answersMap);
     }, []);
 
-    // Enter fullscreen on mount
+    // Enter fullscreen on mount if enabled
     useEffect(() => {
+        if (!settings?.enable_fullscreen) return;
+
         const enterFullscreen = async () => {
             try {
                 await document.documentElement.requestFullscreen();
@@ -66,10 +69,10 @@ export default function Take({ session, questions, answers: initialAnswers, serv
 
         return () => {
             if (document.fullscreenElement) {
-                document.exitFullscreen().catch(() => {});
+                document.exitFullscreen().catch(() => { });
             }
         };
-    }, []);
+    }, [settings?.enable_fullscreen]);
 
     // Auto-submit when time runs out
     useEffect(() => {
@@ -80,6 +83,17 @@ export default function Take({ session, questions, answers: initialAnswers, serv
 
     const currentQuestion = questions[currentQuestionIndex];
     const totalQuestions = questions.length;
+
+    if (!currentQuestion) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <h2 className="text-xl font-bold text-gray-800">Soal tidak ditemukan</h2>
+                    <p className="text-gray-600 mt-2">Maaf, terjadi kesalahan memuat data soal.</p>
+                </div>
+            </div>
+        );
+    }
 
     const goToQuestion = useCallback((index) => {
         if (index >= 0 && index < totalQuestions) {
@@ -101,9 +115,9 @@ export default function Take({ session, questions, answers: initialAnswers, serv
         }
 
         setIsSubmitting(true);
-        
+
         if (document.fullscreenElement) {
-            await document.exitFullscreen().catch(() => {});
+            await document.exitFullscreen().catch(() => { });
         }
 
         router.post(route('exam.submit', session.id), {}, {
@@ -146,13 +160,12 @@ export default function Take({ session, questions, answers: initialAnswers, serv
 
                         {/* Center: Timer */}
                         <div
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono text-lg font-bold transition-colors ${
-                                isDanger
-                                    ? 'bg-red-100 text-red-700 animate-pulse'
-                                    : isWarning
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono text-lg font-bold transition-colors ${isDanger
+                                ? 'bg-red-100 text-red-700 animate-pulse'
+                                : isWarning
                                     ? 'bg-amber-100 text-amber-700'
                                     : 'bg-gray-100 text-gray-700'
-                            }`}
+                                }`}
                         >
                             <ClockIcon className="w-5 h-5" />
                             {formatTime(remainingTime)}
@@ -199,11 +212,10 @@ export default function Take({ session, questions, answers: initialAnswers, serv
                                     </div>
                                     <button
                                         onClick={() => toggleFlag(currentQuestion.id)}
-                                        className={`p-2 rounded-lg transition-colors ${
-                                            flaggedQuestions.includes(currentQuestion.id)
-                                                ? 'bg-amber-100 text-amber-600'
-                                                : 'hover:bg-gray-100 text-gray-400'
-                                        }`}
+                                        className={`p-2 rounded-lg transition-colors ${flaggedQuestions.includes(currentQuestion.id)
+                                            ? 'bg-amber-100 text-amber-600'
+                                            : 'hover:bg-gray-100 text-gray-400'
+                                            }`}
                                         title="Tandai soal"
                                     >
                                         {flaggedQuestions.includes(currentQuestion.id) ? (
@@ -244,19 +256,17 @@ export default function Take({ session, questions, answers: initialAnswers, serv
                                                 <button
                                                     key={option}
                                                     onClick={() => handleAnswer(option)}
-                                                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
-                                                        isSelected
-                                                            ? 'border-indigo-600 bg-indigo-50'
-                                                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                                                    }`}
+                                                    className={`w-full p-4 rounded-xl border-2 text-left transition-all ${isSelected
+                                                        ? 'border-indigo-600 bg-indigo-50'
+                                                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                                        }`}
                                                 >
                                                     <div className="flex items-start gap-3">
                                                         <span
-                                                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shrink-0 ${
-                                                                isSelected
-                                                                    ? 'bg-indigo-600 text-white'
-                                                                    : 'bg-gray-100 text-gray-600'
-                                                            }`}
+                                                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shrink-0 ${isSelected
+                                                                ? 'bg-indigo-600 text-white'
+                                                                : 'bg-gray-100 text-gray-600'
+                                                                }`}
                                                         >
                                                             {option}
                                                         </span>
@@ -304,9 +314,8 @@ export default function Take({ session, questions, answers: initialAnswers, serv
 
                     {/* Sidebar Navigation */}
                     <aside
-                        className={`w-72 bg-white border-l shrink-0 p-4 overflow-y-auto fixed md:relative right-0 top-16 bottom-0 z-30 transition-transform md:translate-x-0 ${
-                            showNavigation ? 'translate-x-0' : 'translate-x-full'
-                        }`}
+                        className={`w-72 bg-white border-l shrink-0 p-4 overflow-y-auto fixed md:relative right-0 top-16 bottom-0 z-30 transition-transform md:translate-x-0 ${showNavigation ? 'translate-x-0' : 'translate-x-full'
+                            }`}
                     >
                         {/* Stats */}
                         <div className="grid grid-cols-3 gap-2 mb-4">
@@ -333,15 +342,13 @@ export default function Take({ session, questions, answers: initialAnswers, serv
                                     <button
                                         key={index}
                                         onClick={() => goToQuestion(index)}
-                                        className={`relative aspect-square rounded-lg font-medium text-sm transition-all ${
-                                            isCurrent
-                                                ? 'ring-2 ring-indigo-600 ring-offset-2'
-                                                : ''
-                                        } ${
-                                            isAnswered
+                                        className={`relative aspect-square rounded-lg font-medium text-sm transition-all ${isCurrent
+                                            ? 'ring-2 ring-indigo-600 ring-offset-2'
+                                            : ''
+                                            } ${isAnswered
                                                 ? 'bg-emerald-500 text-white hover:bg-emerald-600'
                                                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                        }`}
+                                            }`}
                                     >
                                         {index + 1}
                                         {isFlagged && (

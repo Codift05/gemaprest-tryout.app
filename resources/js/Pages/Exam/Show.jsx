@@ -1,4 +1,4 @@
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
 import {
     ClockIcon,
@@ -14,6 +14,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
 
 export default function Show({ tryout, previousAttempts }) {
+    const { settings } = usePage().props;
     const handleStart = () => {
         if (!tryout.can_attempt) return;
 
@@ -58,10 +59,10 @@ export default function Show({ tryout, previousAttempts }) {
                                     </span>
                                 ))}
                                 <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${tryout.status === 'upcoming'
-                                        ? 'bg-amber-100 text-amber-800'
-                                        : tryout.status === 'ended'
-                                            ? 'bg-red-100 text-red-800'
-                                            : 'bg-emerald-100 text-emerald-800'
+                                    ? 'bg-amber-100 text-amber-800'
+                                    : tryout.status === 'ended'
+                                        ? 'bg-red-100 text-red-800'
+                                        : 'bg-emerald-100 text-emerald-800'
                                     }`}>
                                     {tryout.status === 'upcoming' ? 'Akan Datang' : tryout.status === 'ended' ? 'Berakhir' : 'Sedang Berlangsung'}
                                 </span>
@@ -113,12 +114,12 @@ export default function Show({ tryout, previousAttempts }) {
                             <div className="p-6 md:p-8">
                                 <ul className="space-y-4">
                                     {[
-                                        'Ujian akan berlangsung dalam mode layar penuh (fullscreen).',
-                                        'Dilarang berpindah tab atau keluar dari halaman ujian selama berlangsung.',
-                                        'Fitur copy, paste, dan tangkapan layar (screenshot) dinonaktifkan.',
-                                        `Maksimal ${tryout.max_violations} pelanggaran sebelum ujian otomatis diserahkan/dihentikan.`,
+                                        settings.enable_fullscreen && 'Ujian akan berlangsung dalam mode layar penuh (fullscreen).',
+                                        settings.enable_proctoring && 'Dilarang berpindah tab atau keluar dari halaman ujian selama berlangsung.',
+                                        settings.enable_proctoring && 'Fitur copy, paste, dan tangkapan layar (screenshot) dinonaktifkan.',
+                                        settings.enable_proctoring && `Maksimal ${tryout.max_violations} pelanggaran sebelum ujian otomatis diserahkan/dihentikan.`,
                                         'Jawaban akan tersimpan otomatis setiap kali Anda memilih atau mengubah jawaban.'
-                                    ].map((rule, idx) => (
+                                    ].filter(Boolean).map((rule, idx) => (
                                         <li key={idx} className="flex gap-4 items-start group">
                                             <div className="shrink-0 w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold mt-0.5 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                                                 {idx + 1}

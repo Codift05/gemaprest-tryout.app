@@ -47,6 +47,11 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'settings' => fn() => [
+                'site_name' => \App\Models\Setting::getValue('site_name', config('app.name')),
+                'enable_proctoring' => \App\Models\Setting::getValue('enable_proctoring', true),
+                'enable_fullscreen' => \App\Models\Setting::getValue('enable_fullscreen', true),
+            ],
         ];
     }
 }

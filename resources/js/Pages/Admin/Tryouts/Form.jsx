@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
-export default function Form({ tryout = null, categories = [] }) {
+export default function Form({ tryout = null, categories = [], defaultSettings = {} }) {
     const isEditing = !!tryout;
     const [thumbnailPreview, setThumbnailPreview] = useState(
         tryout?.thumbnail ? `/storage/${tryout.thumbnail}` : null
@@ -20,10 +20,10 @@ export default function Form({ tryout = null, categories = [] }) {
     const { data, setData, post, put, processing, errors } = useForm({
         title: tryout?.title || '',
         description: tryout?.description || '',
-        duration_minutes: tryout?.duration_minutes || 90,
+        duration_minutes: tryout?.duration_minutes || defaultSettings.duration_minutes || 90,
         max_attempts: tryout?.max_attempts || 1,
-        max_violations: tryout?.max_violations || 5,
-        passing_score: tryout?.passing_score || 60,
+        max_violations: tryout?.max_violations || defaultSettings.max_violations || 5,
+        passing_score: tryout?.passing_score || defaultSettings.passing_score || 60,
         is_active: tryout?.is_active ?? true,
         is_randomized: tryout?.is_randomized ?? false,
         show_result: tryout?.show_result ?? true,
@@ -143,8 +143,8 @@ export default function Form({ tryout = null, categories = [] }) {
                                 ) : (
                                     <label
                                         className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200 ${isDragOver
-                                                ? 'border-indigo-500 bg-indigo-50'
-                                                : 'border-gray-300 bg-gray-50 hover:bg-white hover:border-indigo-400'
+                                            ? 'border-indigo-500 bg-indigo-50'
+                                            : 'border-gray-300 bg-gray-50 hover:bg-white hover:border-indigo-400'
                                             }`}
                                         onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
                                         onDragLeave={() => setIsDragOver(false)}
@@ -215,8 +215,8 @@ export default function Form({ tryout = null, categories = [] }) {
                                             type="button"
                                             onClick={() => toggleCategory(category.id)}
                                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${data.category_ids.includes(category.id)
-                                                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200'
-                                                    : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-sm'
+                                                ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200'
+                                                : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-sm'
                                                 }`}
                                         >
                                             {category.name}

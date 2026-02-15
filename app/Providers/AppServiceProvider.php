@@ -24,5 +24,13 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             URL::forceScheme('https');
         }
+
+        // Set app name from settings
+        if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+            $siteName = \App\Models\Setting::getValue('site_name');
+            if ($siteName) {
+                config(['app.name' => $siteName]);
+            }
+        }
     }
 }
