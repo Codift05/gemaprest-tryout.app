@@ -29,7 +29,7 @@ export default function AdminLayout({ children, title }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 text-gray-900">
             {/* Mobile sidebar backdrop */}
             {sidebarOpen && (
                 <div

@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
-export default function Questions({ tryout, questions, availableQuestions }) {
+export default function Questions({ tryout, assignedQuestions, availableQuestions }) {
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [filterCategory, setFilterCategory] = useState('');
@@ -73,7 +73,7 @@ export default function Questions({ tryout, questions, availableQuestions }) {
                         <div>
                             <h1 className="text-2xl font-bold text-gray-900">{tryout.title}</h1>
                             <p className="text-gray-600">
-                                {questions.length} soal • Durasi {tryout.duration_minutes} menit
+                                {assignedQuestions.length} soal • Durasi {tryout.duration_minutes} menit
                             </p>
                         </div>
                         <button
@@ -87,12 +87,12 @@ export default function Questions({ tryout, questions, availableQuestions }) {
                 </div>
 
                 {/* Questions List */}
-                <div className="card">
-                    <div className="card-header">
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100">
+                    <div className="px-6 py-5 border-b border-gray-100">
                         <h2 className="font-semibold text-gray-900">Daftar Soal</h2>
                     </div>
 
-                    {questions.length === 0 ? (
+                    {assignedQuestions.length === 0 ? (
                         <div className="p-12 text-center">
                             <DocumentDuplicateIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                             <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -111,7 +111,7 @@ export default function Questions({ tryout, questions, availableQuestions }) {
                         </div>
                     ) : (
                         <div className="divide-y">
-                            {questions.map((question, index) => (
+                            {assignedQuestions.map((question, index) => (
                                 <div
                                     key={question.id}
                                     className="p-4 flex items-start gap-4 hover:bg-gray-50"
@@ -135,21 +135,20 @@ export default function Questions({ tryout, questions, availableQuestions }) {
                                                     {question.subcategory.name}
                                                 </span>
                                             )}
-                                            <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                                                question.difficulty === 'easy'
-                                                    ? 'bg-emerald-100 text-emerald-700'
-                                                    : question.difficulty === 'medium'
+                                            <span className={`px-2 py-0.5 rounded text-xs font-medium ${question.difficulty === 'easy'
+                                                ? 'bg-emerald-100 text-emerald-700'
+                                                : question.difficulty === 'medium'
                                                     ? 'bg-amber-100 text-amber-700'
                                                     : 'bg-red-100 text-red-700'
-                                            }`}>
+                                                }`}>
                                                 {question.difficulty === 'easy' ? 'Mudah' :
-                                                 question.difficulty === 'medium' ? 'Sedang' : 'Sulit'}
+                                                    question.difficulty === 'medium' ? 'Sedang' : 'Sulit'}
                                             </span>
                                         </div>
 
                                         <div
                                             className="prose prose-sm max-w-none text-gray-900 line-clamp-2"
-                                            dangerouslySetInnerHTML={{ __html: question.question_text }}
+                                            dangerouslySetInnerHTML={{ __html: question.content }}
                                         />
 
                                         <p className="text-sm text-gray-500 mt-2">
@@ -206,7 +205,7 @@ export default function Questions({ tryout, questions, availableQuestions }) {
                             <select
                                 value={filterCategory}
                                 onChange={(e) => setFilterCategory(e.target.value)}
-                                className="input"
+                                className="w-full px-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-indigo-500 text-sm transition-all"
                             >
                                 <option value="">Semua Kategori</option>
                                 {categories.map((cat) => (
@@ -229,19 +228,17 @@ export default function Questions({ tryout, questions, availableQuestions }) {
                                         <button
                                             key={question.id}
                                             onClick={() => toggleQuestionSelection(question.id)}
-                                            className={`w-full text-left p-4 rounded-xl border-2 transition-colors ${
-                                                selectedQuestions.includes(question.id)
-                                                    ? 'border-indigo-600 bg-indigo-50'
-                                                    : 'border-gray-200 hover:border-gray-300'
-                                            }`}
+                                            className={`w-full text-left p-4 rounded-xl border-2 transition-colors ${selectedQuestions.includes(question.id)
+                                                ? 'border-indigo-600 bg-indigo-50'
+                                                : 'border-gray-200 hover:border-gray-300'
+                                                }`}
                                         >
                                             <div className="flex items-start gap-3">
                                                 <div
-                                                    className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
-                                                        selectedQuestions.includes(question.id)
-                                                            ? 'bg-indigo-600 text-white'
-                                                            : 'bg-gray-200'
-                                                    }`}
+                                                    className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${selectedQuestions.includes(question.id)
+                                                        ? 'bg-indigo-600 text-white'
+                                                        : 'bg-gray-200'
+                                                        }`}
                                                 >
                                                     {selectedQuestions.includes(question.id) && (
                                                         <CheckCircleIcon className="w-4 h-4" />
@@ -257,7 +254,7 @@ export default function Questions({ tryout, questions, availableQuestions }) {
                                                     </div>
                                                     <div
                                                         className="prose prose-sm max-w-none text-gray-900 line-clamp-2"
-                                                        dangerouslySetInnerHTML={{ __html: question.question_text }}
+                                                        dangerouslySetInnerHTML={{ __html: question.content }}
                                                     />
                                                 </div>
                                             </div>
