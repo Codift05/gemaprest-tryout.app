@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import {
     ChartBarIcon,
@@ -20,7 +20,8 @@ export default function ReportsIndex({ stats = {} }) {
             icon: UserGroupIcon,
             color: 'bg-blue-600',
             textColor: 'text-blue-600',
-            bgLight: 'bg-blue-50'
+            bgLight: 'bg-blue-50',
+            route: 'admin.users.index'
         },
         {
             title: 'Laporan Tryout',
@@ -28,7 +29,8 @@ export default function ReportsIndex({ stats = {} }) {
             icon: DocumentTextIcon,
             color: 'bg-emerald-600',
             textColor: 'text-emerald-600',
-            bgLight: 'bg-emerald-50'
+            bgLight: 'bg-emerald-50',
+            route: 'admin.tryouts.index'
         },
         {
             title: 'Laporan Soal',
@@ -36,7 +38,8 @@ export default function ReportsIndex({ stats = {} }) {
             icon: BeakerIcon,
             color: 'bg-violet-600',
             textColor: 'text-violet-600',
-            bgLight: 'bg-violet-50'
+            bgLight: 'bg-violet-50',
+            route: 'admin.questions.index'
         },
         {
             title: 'Laporan Kecurangan',
@@ -44,7 +47,8 @@ export default function ReportsIndex({ stats = {} }) {
             icon: NoSymbolIcon,
             color: 'bg-rose-600',
             textColor: 'text-rose-600',
-            bgLight: 'bg-rose-50'
+            bgLight: 'bg-rose-50',
+            route: null
         },
     ];
 
@@ -111,8 +115,8 @@ export default function ReportsIndex({ stats = {} }) {
 
                 {/* Report Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {reportCards.map((report, index) => (
-                        <div key={index} className="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-indigo-100 transition-all cursor-pointer">
+                    {reportCards.map((report, index) => {
+                        const CardContent = () => (
                             <div className="flex items-start gap-5">
                                 <div className={`p-4 rounded-xl ${report.color} text-white shadow-sm shadow-gray-200 group-hover:scale-110 transition-transform duration-300`}>
                                     <report.icon className="w-6 h-6" />
@@ -132,8 +136,26 @@ export default function ReportsIndex({ stats = {} }) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+
+                        return report.route ? (
+                            <Link
+                                key={index}
+                                href={route(report.route)}
+                                className="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-indigo-100 transition-all cursor-pointer block"
+                            >
+                                <CardContent />
+                            </Link>
+                        ) : (
+                            <div
+                                key={index}
+                                onClick={() => alert('Fitur Laporan Kecurangan akan segera hadir!')}
+                                className="group bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-indigo-100 transition-all cursor-pointer"
+                            >
+                                <CardContent />
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* Coming Soon */}
