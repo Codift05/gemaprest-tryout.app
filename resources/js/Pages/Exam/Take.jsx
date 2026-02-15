@@ -164,16 +164,17 @@ export default function Take({ session, questions = [], answers: initialAnswers,
                         </div>
 
                         {/* Center: Timer */}
+                        {/* Center: Timer */}
                         <div
-                            className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono text-lg font-bold transition-colors ${isDanger
-                                ? 'bg-red-100 text-red-700 animate-pulse'
-                                : isWarning
-                                    ? 'bg-amber-100 text-amber-700'
-                                    : 'bg-gray-100 text-gray-700'
+                            className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono text-lg font-bold transition-colors ${urgencyLevel === 'critical' || urgencyLevel === 'warning'
+                                    ? 'bg-red-100 text-red-700 animate-pulse'
+                                    : urgencyLevel === 'caution'
+                                        ? 'bg-amber-100 text-amber-700'
+                                        : 'bg-gray-100 text-gray-700'
                                 }`}
                         >
                             <ClockIcon className="w-5 h-5" />
-                            {formatTime(remainingTime)}
+                            {formattedTime}
                         </div>
 
                         {/* Right: Violations & Submit */}
