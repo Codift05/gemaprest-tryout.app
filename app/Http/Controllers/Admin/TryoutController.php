@@ -30,7 +30,7 @@ class TryoutController extends Controller
 
         // Filter by status
         if ($request->filled('status')) {
-            match($request->status) {
+            match ($request->status) {
                 'published' => $query->where('is_published', true),
                 'draft' => $query->where('is_published', false),
                 'active' => $query->published()
@@ -98,10 +98,12 @@ class TryoutController extends Controller
         // Sync categories
         if (!empty($validated['categories'])) {
             $categoryData = collect($validated['categories'])->mapWithKeys(function ($cat, $index) {
-                return [$cat['id'] => [
-                    'question_count' => $cat['question_count'],
-                    'sort_order' => $index,
-                ]];
+                return [
+                    $cat['id'] => [
+                        'question_count' => $cat['question_count'],
+                        'sort_order' => $index,
+                    ]
+                ];
             })->toArray();
 
             $tryout->categories()->sync($categoryData);
@@ -184,10 +186,12 @@ class TryoutController extends Controller
         // Sync categories
         if (isset($validated['categories'])) {
             $categoryData = collect($validated['categories'])->mapWithKeys(function ($cat, $index) {
-                return [$cat['id'] => [
-                    'question_count' => $cat['question_count'],
-                    'sort_order' => $index,
-                ]];
+                return [
+                    $cat['id'] => [
+                        'question_count' => $cat['question_count'],
+                        'sort_order' => $index,
+                    ]
+                ];
             })->toArray();
 
             $tryout->categories()->sync($categoryData);
@@ -228,9 +232,10 @@ class TryoutController extends Controller
         // Get available questions
         $categoryIds = $tryout->categories->pluck('id');
         $availableQuestions = Question::active()
-            ->whereHas('subcategory', function ($query) use ($categoryIds) {
-                $query->whereIn('category_id', $categoryIds);
-            })
+            // Remove strict category filtering to allow adding any question
+            // ->whereHas('subcategory', function ($query) use ($categoryIds) {
+            //     $query->whereIn('category_id', $categoryIds);
+            // })
             ->whereNotIn('id', $tryout->questions->pluck('id'))
             ->with('subcategory.category')
             ->get();
