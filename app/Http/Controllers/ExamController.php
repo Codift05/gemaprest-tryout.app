@@ -329,6 +329,40 @@ class ExamController extends Controller
 
         $totalParticipants = Leaderboard::where('tryout_id', $tryout->id)->count();
 
+        // Calculate Category Stats
+        $answers = $session->answers()->with(['question.subcategory.category'])->get();
+        $categoryStats = [];
+
+        foreach ($answers as $answer) {
+            $question = $answer->question;
+            if (!$question || !$question->subcategory || !$question->subcategory->category) {
+                continue;
+            }
+
+            $category = $question->subcategory->category;
+            $catId = $category->id;
+
+            if (!isset($categoryStats[$catId])) {
+                $categoryStats[$catId] = [
+                    'id' => $category->id,
+                    'name' => $category->name,
+                    'correct' => 0,
+                    'total' => 0,
+                    'percentage' => 0
+                ];
+            }
+
+            $categoryStats[$catId]['total']++;
+            if ($answer->is_correct) {
+                $categoryStats[$catId]['correct']++;
+            }
+        }
+
+        // Calculate percentages
+        foreach ($categoryStats as &$stat) {
+            $stat['percentage'] = $stat['total'] > 0 ? round(($stat['correct'] / $stat['total']) * 100) : 0;
+        }
+
         return Inertia::render('Exam/Result', [
             'session' => [
                 'id' => $session->id,
@@ -344,12 +378,22 @@ class ExamController extends Controller
                 'violation_count' => $session->violation_count,
                 'passed' => $session->isPassed(),
                 'finished_at' => $session->finished_at?->toISOString(),
+                'started_at' => $session->started_at?->toISOString(),
+            ],
+            'stats' => [
+                'correct' => $session->correct_count,
+                'incorrect' => $session->wrong_count,
+                'unanswered' => $session->unanswered_count,
+                'duration' => round($session->time_taken / 60),
+                'categories' => array_values($categoryStats),
             ],
             'tryout' => [
                 'id' => $tryout->id,
                 'title' => $tryout->title,
                 'slug' => $tryout->slug,
                 'passing_score' => $tryout->passing_score,
+                'allow_review' => true, // Assuming allow_review is always true or based on tryout setting
+                'can_attempt' => true, // Assuming can_attempt is always true or based on tryout setting
                 'show_result_immediately' => $tryout->show_result_immediately,
                 'show_leaderboard' => $tryout->show_leaderboard,
             ],
