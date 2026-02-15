@@ -48,9 +48,7 @@ class Category extends Model
      */
     public function questions()
     {
-        return Question::whereHas('subcategory', function ($query) {
-            $query->where('category_id', $this->id);
-        });
+        return $this->hasManyThrough(Question::class, Subcategory::class);
     }
 
     /**

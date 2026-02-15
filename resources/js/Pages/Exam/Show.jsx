@@ -1,12 +1,14 @@
 import { Head, Link, router } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
-import { 
-    ClockIcon, 
-    DocumentTextIcon, 
+import {
+    ClockIcon,
+    DocumentTextIcon,
     UserGroupIcon,
     ShieldExclamationIcon,
-    CheckCircleIcon,
     ExclamationTriangleIcon,
+    ArrowRightIcon,
+    ChartBarIcon,
+    InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
@@ -21,192 +23,205 @@ export default function Show({ tryout, previousAttempts }) {
     };
 
     return (
-        <MainLayout>
+        <MainLayout title={tryout.title}>
             <Head title={tryout.title} />
 
-            <div className="max-w-4xl mx-auto">
-                {/* Header */}
-                <div className="card overflow-hidden mb-6">
-                    <div className="h-48 bg-gradient-to-br from-indigo-500 to-purple-600 relative">
-                        {tryout.thumbnail && (
-                            <img
-                                src={`/storage/${tryout.thumbnail}`}
-                                alt={tryout.title}
-                                className="w-full h-full object-cover"
-                            />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                        <div className="absolute bottom-6 left-6 right-6">
-                            <div className="flex items-center gap-2 mb-2">
+            <div className="max-w-7xl mx-auto space-y-8">
+                {/* Hero Section */}
+                <div className="relative overflow-hidden rounded-3xl bg-indigo-600 p-8 md:p-10 text-white shadow-xl">
+                    {/* Subtle Texture/Pattern - drastically simplified from blobs */}
+                    <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+                    <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center">
+                        <div className="shrink-0 w-full md:w-48 aspect-video md:aspect-square rounded-2xl overflow-hidden bg-white/10 ring-4 ring-white/20 shadow-lg">
+                            {tryout.thumbnail ? (
+                                <img
+                                    src={`/storage/${tryout.thumbnail}`}
+                                    alt={tryout.title}
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-indigo-700">
+                                    <DocumentTextIcon className="w-16 h-16 text-indigo-300" />
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex-1 space-y-4">
+                            <div className="flex flex-wrap gap-2">
                                 {tryout.categories.map((cat) => (
                                     <span
                                         key={cat.id}
-                                        className="px-2 py-1 rounded text-xs font-medium text-white"
-                                        style={{ backgroundColor: cat.color }}
+                                        className="px-3 py-1 rounded-full text-xs font-semibold bg-white text-indigo-600 shadow-sm"
                                     >
                                         {cat.name}
                                     </span>
                                 ))}
+                                <span className={`px-3 py-1 rounded-full text-xs font-semibold shadow-sm ${tryout.status === 'upcoming'
+                                        ? 'bg-amber-100 text-amber-800'
+                                        : tryout.status === 'ended'
+                                            ? 'bg-red-100 text-red-800'
+                                            : 'bg-emerald-100 text-emerald-800'
+                                    }`}>
+                                    {tryout.status === 'upcoming' ? 'Akan Datang' : tryout.status === 'ended' ? 'Berakhir' : 'Sedang Berlangsung'}
+                                </span>
                             </div>
-                            <h1 className="text-3xl font-bold text-white">{tryout.title}</h1>
+
+                            <div>
+                                <h1 className="text-3xl md:text-4xl font-bold font-display leading-tight drop-shadow-sm mb-2">
+                                    {tryout.title}
+                                </h1>
+                                {tryout.description && (
+                                    <p className="text-indigo-100 text-lg leading-relaxed max-w-3xl">
+                                        {tryout.description}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Left Column: Stats & Rules */}
+                    <div className="lg:col-span-2 space-y-8">
+                        {/* Stats Grid */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {[
+                                { label: 'Butir Soal', value: tryout.total_questions, icon: DocumentTextIcon, color: 'blue' },
+                                { label: 'Durasi', value: `${tryout.duration_minutes} Menit`, icon: ClockIcon, color: 'amber' },
+                                { label: 'Peserta', value: tryout.participant_count, icon: UserGroupIcon, color: 'emerald' },
+                                { label: 'Maks. Pelanggaran', value: tryout.max_violations, icon: ShieldExclamationIcon, color: 'red' },
+                            ].map((stat, idx) => (
+                                <div key={idx} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                                    <div className={`w-12 h-12 rounded-2xl bg-${stat.color}-50 flex items-center justify-center mb-3 text-${stat.color}-600 group-hover:scale-110 transition-transform duration-300`}>
+                                        <stat.icon className="w-6 h-6" />
+                                    </div>
+                                    <span className="text-xl font-bold text-gray-900 mb-1">{stat.value}</span>
+                                    <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">{stat.label}</span>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Rules Section */}
+                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                            <div className="px-6 py-4 border-b border-gray-50 bg-gray-50/50 flex items-center gap-3">
+                                <div className="p-2 bg-amber-100 rounded-lg">
+                                    <ExclamationTriangleIcon className="w-5 h-5 text-amber-600" />
+                                </div>
+                                <h3 className="font-bold text-gray-900">Peraturan & Ketentuan Ujian</h3>
+                            </div>
+                            <div className="p-6 md:p-8">
+                                <ul className="space-y-4">
+                                    {[
+                                        'Ujian akan berlangsung dalam mode layar penuh (fullscreen).',
+                                        'Dilarang berpindah tab atau keluar dari halaman ujian selama berlangsung.',
+                                        'Fitur copy, paste, dan tangkapan layar (screenshot) dinonaktifkan.',
+                                        `Maksimal ${tryout.max_violations} pelanggaran sebelum ujian otomatis diserahkan/dihentikan.`,
+                                        'Jawaban akan tersimpan otomatis setiap kali Anda memilih atau mengubah jawaban.'
+                                    ].map((rule, idx) => (
+                                        <li key={idx} className="flex gap-4 items-start group">
+                                            <div className="shrink-0 w-6 h-6 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs font-bold mt-0.5 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                                {idx + 1}
+                                            </div>
+                                            <span className="text-gray-600 text-sm leading-relaxed group-hover:text-gray-900 transition-colors">
+                                                {rule}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
                     </div>
 
-                    <div className="p-6">
-                        {tryout.description && (
-                            <p className="text-gray-600 mb-6">{tryout.description}</p>
-                        )}
+                    {/* Right Column: Actions & History */}
+                    <div className="space-y-6">
+                        {/* Action Card */}
+                        <div className="bg-white rounded-2xl border border-gray-100 shadow-lg shadow-indigo-500/5 p-6 relative overflow-hidden">
+                            <h3 className="text-lg font-bold text-gray-900 mb-2 relative z-10">Mulai Pengerjaan</h3>
+                            <p className="text-sm text-gray-500 mb-6 relative z-10 leading-relaxed">
+                                Pastikan Anda berada di tempat yang kondusif dan memiliki koneksi internet yang stabil.
+                            </p>
 
-                        {/* Info Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-                                <DocumentTextIcon className="w-8 h-8 text-indigo-600" />
-                                <div>
-                                    <p className="text-2xl font-bold text-gray-900">
-                                        {tryout.total_questions}
-                                    </p>
-                                    <p className="text-sm text-gray-600">Soal</p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-                                <ClockIcon className="w-8 h-8 text-amber-600" />
-                                <div>
-                                    <p className="text-2xl font-bold text-gray-900">
-                                        {tryout.duration_minutes}
-                                    </p>
-                                    <p className="text-sm text-gray-600">Menit</p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-                                <UserGroupIcon className="w-8 h-8 text-emerald-600" />
-                                <div>
-                                    <p className="text-2xl font-bold text-gray-900">
-                                        {tryout.participant_count}
-                                    </p>
-                                    <p className="text-sm text-gray-600">Peserta</p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl">
-                                <ShieldExclamationIcon className="w-8 h-8 text-red-600" />
-                                <div>
-                                    <p className="text-2xl font-bold text-gray-900">
-                                        {tryout.max_violations}
-                                    </p>
-                                    <p className="text-sm text-gray-600">Maks. Pelanggaran</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Rules */}
-                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
-                            <h3 className="font-semibold text-amber-900 flex items-center gap-2 mb-3">
-                                <ExclamationTriangleIcon className="w-5 h-5" />
-                                Peraturan Ujian
-                            </h3>
-                            <ul className="space-y-2 text-sm text-amber-800">
-                                <li className="flex items-start gap-2">
-                                    <CheckCircleIcon className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                                    Ujian akan berlangsung dalam mode fullscreen
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <CheckCircleIcon className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                                    Jangan berpindah tab atau keluar dari halaman ujian
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <CheckCircleIcon className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                                    Copy, paste, dan screenshot tidak diperbolehkan
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <CheckCircleIcon className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                                    Maksimal {tryout.max_violations} pelanggaran sebelum ujian otomatis diserahkan
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <CheckCircleIcon className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                                    Jawaban disimpan otomatis setiap kali Anda menjawab
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Action Button */}
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <p className="text-sm text-gray-600">
-                                    Percobaan tersisa:{' '}
-                                    <span className="font-semibold">
-                                        {tryout.remaining_attempts} dari {tryout.max_attempts}
+                            <div className="space-y-4 relative z-10">
+                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                    <span className="text-sm text-gray-600 font-medium">Sisa Percobaan</span>
+                                    <span className={`text-sm font-bold ${tryout.remaining_attempts > 0 ? 'text-indigo-600' : 'text-red-500'}`}>
+                                        {tryout.remaining_attempts} / {tryout.max_attempts}
                                     </span>
-                                </p>
+                                </div>
+
+                                {tryout.can_attempt ? (
+                                    <button
+                                        onClick={handleStart}
+                                        className="w-full group relative flex items-center justify-center gap-2 py-3.5 px-6 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold shadow-lg shadow-indigo-200 transition-all active:scale-[0.98]"
+                                    >
+                                        <span>Mulai Ujian</span>
+                                        <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                    </button>
+                                ) : (
+                                    <div className="text-center p-3 bg-gray-50 rounded-xl border border-gray-200 border-dashed text-gray-400 text-sm font-medium cursor-not-allowed select-none">
+                                        {tryout.status === 'upcoming' ? 'Belum Dimulai' : 'Tidak Tersedia'}
+                                    </div>
+                                )}
+
+                                {tryout.show_leaderboard && (
+                                    <Link
+                                        href={route('leaderboard.show', tryout.slug)}
+                                        className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 hover:border-gray-300 rounded-xl font-medium transition-all text-sm"
+                                    >
+                                        <ChartBarIcon className="w-4 h-4 text-gray-500" />
+                                        Lihat Peringkat
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Previous Attempts */}
+                        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                                    <ClockIcon className="w-5 h-5 text-gray-400" />
+                                    Riwayat
+                                </h3>
+                                {previousAttempts.length > 0 && (
+                                    <span className="text-xs font-medium px-2 py-1 bg-gray-100 text-gray-600 rounded-lg">
+                                        {previousAttempts.length} Percobaan
+                                    </span>
+                                )}
                             </div>
 
-                            {tryout.can_attempt ? (
-                                <button onClick={handleStart} className="btn btn-primary btn-lg">
-                                    Mulai Ujian
-                                </button>
-                            ) : (
-                                <div className="text-right">
-                                    <p className="text-sm text-red-600 mb-2">
-                                        {tryout.status === 'upcoming'
-                                            ? 'Tryout belum dimulai'
-                                            : tryout.status === 'ended'
-                                            ? 'Tryout sudah berakhir'
-                                            : 'Percobaan sudah habis'}
-                                    </p>
-                                    {tryout.show_leaderboard && (
+                            {previousAttempts.length > 0 ? (
+                                <div className="space-y-3">
+                                    {previousAttempts.map((attempt, index) => (
                                         <Link
-                                            href={route('leaderboard.show', tryout.slug)}
-                                            className="btn btn-secondary"
+                                            key={attempt.id}
+                                            href={route('exam.result', attempt.id)}
+                                            className="block p-3 rounded-xl hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all group"
                                         >
-                                            Lihat Leaderboard
+                                            <div className="flex items-center justify-between mb-1">
+                                                <span className="text-xs font-medium text-gray-500">Percobaan #{previousAttempts.length - index}</span>
+                                                <span className="text-xs text-indigo-600 font-medium group-hover:underline">Detail</span>
+                                            </div>
+                                            <div className="flex items-center justification-between gap-3">
+                                                <span className="text-sm font-bold text-gray-900">{attempt.percentage}% <span className="text-gray-400 font-normal text-xs">Skor</span></span>
+                                                <span className="text-xs text-gray-400">
+                                                    {formatDistanceToNow(new Date(attempt.finished_at), { addSuffix: true, locale: id })}
+                                                </span>
+                                            </div>
                                         </Link>
-                                    )}
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center py-8">
+                                    <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <InformationCircleIcon className="w-6 h-6 text-gray-400" />
+                                    </div>
+                                    <p className="text-sm text-gray-500">Belum ada riwayat pengerjaan.</p>
                                 </div>
                             )}
                         </div>
                     </div>
                 </div>
-
-                {/* Previous Attempts */}
-                {previousAttempts.length > 0 && (
-                    <div className="card">
-                        <div className="card-header">
-                            <h2 className="font-semibold text-gray-900">Riwayat Percobaan</h2>
-                        </div>
-                        <div className="divide-y">
-                            {previousAttempts.map((attempt, index) => (
-                                <div
-                                    key={attempt.id}
-                                    className="p-4 flex items-center justify-between"
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-medium text-gray-600">
-                                            #{index + 1}
-                                        </div>
-                                        <div>
-                                            <p className="font-medium text-gray-900">
-                                                Skor: {attempt.percentage}%
-                                            </p>
-                                            <p className="text-sm text-gray-600">
-                                                {formatDistanceToNow(new Date(attempt.finished_at), {
-                                                    addSuffix: true,
-                                                    locale: id,
-                                                })}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <Link
-                                        href={route('exam.result', attempt.id)}
-                                        className="text-indigo-600 hover:text-indigo-700 text-sm font-medium"
-                                    >
-                                        Lihat Detail
-                                    </Link>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </div>
         </MainLayout>
     );

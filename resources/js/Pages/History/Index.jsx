@@ -1,20 +1,39 @@
 import { Head, Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
+import {
+    ClockIcon,
+    CheckCircleIcon,
+    XCircleIcon,
+    ExclamationCircleIcon,
+    DocumentTextIcon,
+    ChartBarIcon,
+    ArrowRightIcon,
+    CalendarIcon
+} from '@heroicons/react/24/outline';
 
 export default function HistoryIndex({ sessions }) {
     const getStatusBadge = (status) => {
         const styles = {
-            completed: 'bg-green-100 text-green-800',
-            timeout: 'bg-yellow-100 text-yellow-800',
-            violated: 'bg-red-100 text-red-800',
+            completed: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+            timeout: 'bg-amber-100 text-amber-800 border-amber-200',
+            violated: 'bg-red-100 text-red-800 border-red-200',
         };
         const labels = {
             completed: 'Selesai',
             timeout: 'Waktu Habis',
             violated: 'Diskualifikasi',
         };
+        const icons = {
+            completed: CheckCircleIcon,
+            timeout: ExclamationCircleIcon,
+            violated: XCircleIcon
+        };
+
+        const Icon = icons[status] || DocumentTextIcon;
+
         return (
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${styles[status] || 'bg-gray-100 text-gray-800'}`}>
+            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${styles[status] || 'bg-gray-100 text-gray-800 border-gray-200'}`}>
+                <Icon className="w-3.5 h-3.5" />
                 {labels[status] || status}
             </span>
         );
@@ -43,108 +62,170 @@ export default function HistoryIndex({ sessions }) {
     };
 
     const getGrade = (percentage) => {
-        if (percentage >= 85) return { grade: 'A', color: 'text-green-600' };
-        if (percentage >= 70) return { grade: 'B', color: 'text-blue-600' };
-        if (percentage >= 55) return { grade: 'C', color: 'text-yellow-600' };
-        if (percentage >= 40) return { grade: 'D', color: 'text-orange-600' };
-        return { grade: 'E', color: 'text-red-600' };
+        if (percentage >= 85) return { grade: 'A', color: 'text-emerald-600', bg: 'bg-emerald-50' };
+        if (percentage >= 70) return { grade: 'B', color: 'text-blue-600', bg: 'bg-blue-50' };
+        if (percentage >= 55) return { grade: 'C', color: 'text-amber-600', bg: 'bg-amber-50' };
+        if (percentage >= 40) return { grade: 'D', color: 'text-orange-600', bg: 'bg-orange-50' };
+        return { grade: 'E', color: 'text-red-600', bg: 'bg-red-50' };
     };
 
     return (
-        <MainLayout>
+        <MainLayout title="Riwayat Ujian">
             <Head title="Riwayat Ujian" />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-white">Riwayat Ujian</h1>
-                    <p className="mt-2 text-gray-400">Daftar tryout yang pernah Anda kerjakan</p>
+            <div className="max-w-7xl mx-auto space-y-8">
+                {/* Hero Section */}
+                <div className="bg-indigo-600 rounded-3xl p-8 md:p-12 shadow-xl shadow-indigo-200 relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+                    {/* Subtle pattern */}
+                    <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+                    <div className="relative z-10 max-w-2xl">
+                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                            Riwayat Ujian
+                        </h1>
+                        <p className="text-indigo-100 text-lg leading-relaxed">
+                            Pantau kemajuan belajar Anda melalui riwayat pengerjaan tryout dan analisis hasil skor.
+                        </p>
+                    </div>
                 </div>
 
-                {sessions.data.length === 0 ? (
-                    <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-                        <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
+                {/* Stats Summary */}
+                {sessions.data.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                            <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center mb-3 text-indigo-600 group-hover:scale-110 transition-transform duration-300">
+                                <DocumentTextIcon className="w-6 h-6" />
+                            </div>
+                            <span className="text-2xl font-bold text-gray-900 mb-1">{sessions.total}</span>
+                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Total Tryout</span>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">Belum Ada Riwayat</h3>
-                        <p className="text-gray-500 mb-6">Anda belum mengerjakan tryout apapun.</p>
+                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                            <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-3 text-emerald-600 group-hover:scale-110 transition-transform duration-300">
+                                <CheckCircleIcon className="w-6 h-6" />
+                            </div>
+                            <span className="text-2xl font-bold text-gray-900 mb-1">
+                                {sessions.data.filter(s => s.status === 'completed').length}
+                            </span>
+                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Selesai</span>
+                        </div>
+                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                            <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-3 text-purple-600 group-hover:scale-110 transition-transform duration-300">
+                                <ChartBarIcon className="w-6 h-6" />
+                            </div>
+                            <span className="text-2xl font-bold text-gray-900 mb-1">
+                                {Math.round(
+                                    sessions.data.reduce((sum, s) => sum + (s.total_questions > 0 ? (s.correct_count / s.total_questions) * 100 : 0), 0) /
+                                    (sessions.data.length || 1)
+                                )}%
+                            </span>
+                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Rata-rata Skor</span>
+                        </div>
+                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                            <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mb-3 text-amber-600 group-hover:scale-110 transition-transform duration-300">
+                                <DocumentTextIcon className="w-6 h-6" />
+                            </div>
+                            <span className="text-2xl font-bold text-gray-900 mb-1">
+                                {sessions.data.reduce((sum, s) => sum + s.total_questions, 0)}
+                            </span>
+                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Soal Dikerjakan</span>
+                        </div>
+                    </div>
+                )}
+
+                {sessions.data.length === 0 ? (
+                    <div className="bg-white rounded-3xl p-16 text-center border border-gray-100 shadow-sm border-dashed">
+                        <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <DocumentTextIcon className="w-10 h-10 text-gray-400" />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">Belum Ada Riwayat</h3>
+                        <p className="text-gray-500 max-w-md mx-auto mb-8">
+                            Anda belum mengerjakan tryout apapun. Mulai kerjakan tryout sekarang untuk melihat progresmu.
+                        </p>
                         <Link
                             href={route('tryouts.index')}
-                            className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-colors"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg shadow-indigo-200 hover:-translate-y-0.5 active:translate-y-0"
                         >
                             Mulai Tryout
+                            <ArrowRightIcon className="w-4 h-4" />
                         </Link>
                     </div>
                 ) : (
                     <>
                         {/* Desktop Table */}
-                        <div className="hidden md:block bg-white rounded-2xl shadow-lg overflow-hidden">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                        <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                            <table className="min-w-full divide-y divide-gray-100">
+                                <thead className="bg-gray-50/50">
                                     <tr>
-                                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                             Tryout
                                         </th>
-                                        <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                             Tanggal
                                         </th>
-                                        <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                             Skor
                                         </th>
-                                        <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                             Durasi
                                         </th>
-                                        <th className="px-6 py-4 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                             Status
                                         </th>
-                                        <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                             Aksi
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="divide-y divide-gray-100">
                                     {sessions.data.map((session) => {
                                         const percentage = session.total_questions > 0
                                             ? Math.round((session.correct_count / session.total_questions) * 100)
                                             : 0;
-                                        const { grade, color } = getGrade(percentage);
+                                        const { grade, color, bg } = getGrade(percentage);
 
                                         return (
-                                            <tr key={session.id} className="hover:bg-gray-50 transition-colors">
-                                                <td className="px-6 py-4 whitespace-nowrap">
-                                                    <div className="font-medium text-gray-900">{session.tryout?.title}</div>
-                                                    <div className="text-sm text-gray-500">
-                                                        {session.total_questions} soal
+                                            <tr key={session.id} className="hover:bg-gray-50/80 transition-colors group">
+                                                <td className="px-6 py-4">
+                                                    <div className="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">{session.tryout?.title}</div>
+                                                    <div className="text-xs text-gray-500 mt-0.5">
+                                                        {session.total_questions} butir soal
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {formatDate(session.finished_at || session.started_at)}
+                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                                    <div className="flex items-center gap-2">
+                                                        <CalendarIcon className="w-4 h-4 text-gray-400" />
+                                                        {formatDate(session.finished_at || session.started_at)}
+                                                    </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-center">
-                                                    <div className={`text-lg font-bold ${color}`}>{grade}</div>
-                                                    <div className="text-sm text-gray-500">{percentage}%</div>
+                                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-gray-50 border border-gray-100">
+                                                        <span className={`text-lg font-bold ${color}`}>{grade}</span>
+                                                        <span className="text-sm font-medium text-gray-600 border-l border-gray-200 pl-2">{percentage}%</span>
+                                                    </div>
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                                                    {formatDuration(session.duration_seconds)}
+                                                <td className="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-600">
+                                                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-gray-50 text-gray-600 border border-gray-100">
+                                                        <ClockIcon className="w-4 h-4 text-gray-400" />
+                                                        {formatDuration(session.duration_seconds)}
+                                                    </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-center">
                                                     {getStatusBadge(session.status)}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-right">
-                                                    <div className="flex justify-end space-x-2">
+                                                    <div className="flex justify-end gap-2">
                                                         <Link
                                                             href={route('exam.result', session.id)}
-                                                            className="text-indigo-600 hover:text-indigo-900 text-sm font-medium"
+                                                            className="px-3 py-1.5 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 rounded-lg text-xs font-semibold transition-colors"
                                                         >
-                                                            Hasil
+                                                            Analisis
                                                         </Link>
                                                         {session.tryout?.allow_review && (
                                                             <Link
                                                                 href={route('exam.review', session.id)}
-                                                                className="text-green-600 hover:text-green-900 text-sm font-medium"
+                                                                className="px-3 py-1.5 bg-white border border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50 rounded-lg text-xs font-semibold transition-colors"
                                                             >
-                                                                Review
+                                                                Pembahasan
                                                             </Link>
                                                         )}
                                                     </div>
@@ -162,52 +243,53 @@ export default function HistoryIndex({ sessions }) {
                                 const percentage = session.total_questions > 0
                                     ? Math.round((session.correct_count / session.total_questions) * 100)
                                     : 0;
-                                const { grade, color } = getGrade(percentage);
+                                const { grade, color, bg } = getGrade(percentage);
 
                                 return (
-                                    <div key={session.id} className="bg-white rounded-xl shadow-lg p-5">
+                                    <div key={session.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
                                         <div className="flex justify-between items-start mb-4">
                                             <div>
-                                                <h3 className="font-semibold text-gray-900">{session.tryout?.title}</h3>
-                                                <p className="text-sm text-gray-500">
+                                                <h3 className="font-bold text-gray-900 text-sm mb-1">{session.tryout?.title}</h3>
+                                                <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                                                    <CalendarIcon className="w-3.5 h-3.5" />
                                                     {formatDate(session.finished_at || session.started_at)}
-                                                </p>
+                                                </div>
                                             </div>
                                             {getStatusBadge(session.status)}
                                         </div>
 
-                                        <div className="grid grid-cols-3 gap-4 mb-4">
-                                            <div className="text-center">
-                                                <div className={`text-2xl font-bold ${color}`}>{grade}</div>
-                                                <div className="text-xs text-gray-500">{percentage}%</div>
+                                        <div className="grid grid-cols-3 gap-3 mb-4">
+                                            <div className={`rounded-xl p-2.5 text-center ${bg}`}>
+                                                <div className={`text-xl font-bold ${color}`}>{grade}</div>
+                                                <div className="text-[10px] uppercase font-bold text-gray-500 mt-1">Grade</div>
                                             </div>
-                                            <div className="text-center">
-                                                <div className="text-lg font-semibold text-gray-900">
-                                                    {session.correct_count}/{session.total_questions}
+                                            <div className="rounded-xl bg-gray-50 p-2.5 text-center border border-gray-100">
+                                                <div className="text-lg font-bold text-gray-900">
+                                                    {percentage}%
                                                 </div>
-                                                <div className="text-xs text-gray-500">Benar</div>
+                                                <div className="text-[10px] uppercase font-bold text-gray-500 mt-1">Akurasi</div>
                                             </div>
-                                            <div className="text-center">
-                                                <div className="text-lg font-semibold text-gray-900">
+                                            <div className="rounded-xl bg-gray-50 p-2.5 text-center border border-gray-100">
+                                                <div className="text-lg font-bold text-gray-900">
                                                     {formatDuration(session.duration_seconds)}
                                                 </div>
-                                                <div className="text-xs text-gray-500">Durasi</div>
+                                                <div className="text-[10px] uppercase font-bold text-gray-500 mt-1">Durasi</div>
                                             </div>
                                         </div>
 
-                                        <div className="flex space-x-3">
+                                        <div className="flex gap-2">
                                             <Link
                                                 href={route('exam.result', session.id)}
-                                                className="flex-1 text-center px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                                                className="flex-1 text-center px-4 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-all shadow-sm active:scale-[0.98]"
                                             >
-                                                Lihat Hasil
+                                                Lihat Analisis
                                             </Link>
                                             {session.tryout?.allow_review && (
                                                 <Link
                                                     href={route('exam.review', session.id)}
-                                                    className="flex-1 text-center px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                                                    className="flex-1 text-center px-4 py-2.5 bg-white border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-all active:scale-[0.98]"
                                                 >
-                                                    Review
+                                                    Pembahasan
                                                 </Link>
                                             )}
                                         </div>
@@ -218,18 +300,19 @@ export default function HistoryIndex({ sessions }) {
 
                         {/* Pagination */}
                         {sessions.last_page > 1 && (
-                            <div className="mt-8 flex justify-center">
-                                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                            <div className="flex justify-center pt-6">
+                                <nav className="flex gap-2">
                                     {sessions.links.map((link, index) => (
                                         <Link
                                             key={index}
                                             href={link.url || '#'}
-                                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${link.active
-                                                    ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                                                    : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
-                                                } ${!link.url && 'opacity-50 cursor-not-allowed'} ${index === 0 ? 'rounded-l-md' : ''
-                                                } ${index === sessions.links.length - 1 ? 'rounded-r-md' : ''}`}
-                                            preserveScroll
+                                            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${link.active
+                                                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
+                                                : link.url
+                                                    ? 'bg-white text-gray-600 hover:text-indigo-600 hover:bg-indigo-50 border border-gray-200'
+                                                    : 'bg-gray-50 text-gray-400 border border-gray-100 cursor-not-allowed'
+                                                }`}
+                                            preserveState
                                             dangerouslySetInnerHTML={{ __html: link.label }}
                                         />
                                     ))}
@@ -237,42 +320,6 @@ export default function HistoryIndex({ sessions }) {
                             </div>
                         )}
                     </>
-                )}
-
-                {/* Stats Summary */}
-                {sessions.data.length > 0 && (
-                    <div className="mt-8 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-4">Ringkasan Statistik</h3>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="bg-white rounded-xl p-4 text-center">
-                                <div className="text-2xl font-bold text-indigo-600">{sessions.total}</div>
-                                <div className="text-sm text-gray-500">Total Tryout</div>
-                            </div>
-                            <div className="bg-white rounded-xl p-4 text-center">
-                                <div className="text-2xl font-bold text-green-600">
-                                    {sessions.data.filter(s => s.status === 'completed').length}
-                                </div>
-                                <div className="text-sm text-gray-500">Selesai</div>
-                            </div>
-                            <div className="bg-white rounded-xl p-4 text-center">
-                                <div className="text-2xl font-bold text-purple-600">
-                                    {sessions.data.length > 0
-                                        ? Math.round(
-                                            sessions.data.reduce((sum, s) => sum + (s.total_questions > 0 ? (s.correct_count / s.total_questions) * 100 : 0), 0) /
-                                            sessions.data.length
-                                        )
-                                        : 0}%
-                                </div>
-                                <div className="text-sm text-gray-500">Rata-rata</div>
-                            </div>
-                            <div className="bg-white rounded-xl p-4 text-center">
-                                <div className="text-2xl font-bold text-yellow-600">
-                                    {sessions.data.reduce((sum, s) => sum + s.total_questions, 0)}
-                                </div>
-                                <div className="text-sm text-gray-500">Soal Dikerjakan</div>
-                            </div>
-                        </div>
-                    </div>
                 )}
             </div>
         </MainLayout>

@@ -10,6 +10,7 @@ import {
     UsersIcon,
     ChartBarIcon,
     Cog6ToothIcon,
+    ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 
@@ -28,11 +29,11 @@ export default function AdminLayout({ children, title }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-100 via-emerald-50/30 to-slate-100">
+        <div className="min-h-screen bg-gray-50">
             {/* Mobile sidebar backdrop */}
             {sidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-40 lg:hidden"
+                    className="fixed inset-0 bg-gray-900/50 z-40 lg:hidden backdrop-blur-sm transition-opacity"
                     onClick={() => setSidebarOpen(false)}
                 />
             )}
@@ -40,19 +41,18 @@ export default function AdminLayout({ children, title }) {
             {/* Sidebar */}
             <aside
                 className={clsx(
-                    'fixed inset-y-0 left-0 z-50 w-64 glass-dark transform transition-transform duration-300 lg:translate-x-0',
+                    'fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-100 transform transition-transform duration-300 lg:translate-x-0 shadow-sm',
                     sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                 )}
             >
                 <div className="flex h-full flex-col">
                     {/* Logo */}
-                    <div className="flex h-16 items-center justify-between px-4 border-b border-white/10">
+                    <div className="flex h-16 items-center justify-between px-6 border-b border-gray-50">
                         <Link href={route('admin.dashboard')} className="flex items-center gap-3">
-                            <img src="/logo.png" alt="Gemaprest" className="w-10 h-10" />
-                            <span className="font-bold text-lg text-white">Admin Panel</span>
+                            <img src="/kseunsrat.png" alt="Logo" className="h-10 w-auto" />
                         </Link>
                         <button
-                            className="lg:hidden text-white/70 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors"
+                            className="lg:hidden text-gray-400 hover:text-gray-600 transition-colors"
                             onClick={() => setSidebarOpen(false)}
                         >
                             <XMarkIcon className="w-6 h-6" />
@@ -60,22 +60,22 @@ export default function AdminLayout({ children, title }) {
                     </div>
 
                     {/* Navigation */}
-                    <nav className="flex-1 overflow-y-auto py-6 px-3">
+                    <nav className="flex-1 overflow-y-auto py-6 px-4">
                         <ul className="space-y-1">
                             {navigation.map((item) => {
-                                const isActive = route().current(item.href + '*');
+                                const isActive = route().current(item.href + '*') || route().current(item.href);
                                 return (
                                     <li key={item.name}>
                                         <Link
                                             href={route(item.href)}
                                             className={clsx(
-                                                'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all',
+                                                'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group',
                                                 isActive
-                                                    ? 'bg-gradient-to-r from-primary-500 to-primary-600 text-white shadow-lg shadow-primary-500/30'
-                                                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                                                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
+                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
                                             )}
                                         >
-                                            <item.icon className="w-5 h-5" />
+                                            <item.icon className={clsx("w-5 h-5 transition-colors", isActive ? "text-white" : "text-gray-400 group-hover:text-indigo-600")} />
                                             {item.name}
                                         </Link>
                                     </li>
@@ -85,18 +85,16 @@ export default function AdminLayout({ children, title }) {
                     </nav>
 
                     {/* User info */}
-                    <div className="p-4 border-t border-white/10">
-                        <div className="flex items-center gap-3 glass p-3 rounded-xl">
-                            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-accent-500 rounded-full flex items-center justify-center shadow-lg">
-                                <span className="text-white font-semibold">
-                                    {auth.user?.name?.charAt(0).toUpperCase()}
-                                </span>
+                    <div className="p-4 border-t border-gray-50 bg-gray-50/50">
+                        <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white transition-colors border border-transparent hover:border-gray-100 hover:shadow-sm group cursor-pointer">
+                            <div className="w-9 h-9 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-sm">
+                                {auth.user?.name?.charAt(0).toUpperCase()}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-white truncate">
+                                <p className="text-sm font-semibold text-gray-900 truncate group-hover:text-indigo-600 transition-colors">
                                     {auth.user?.name}
                                 </p>
-                                <p className="text-xs text-gray-400 truncate">
+                                <p className="text-xs text-gray-500 truncate">
                                     {auth.user?.email}
                                 </p>
                             </div>
@@ -106,13 +104,13 @@ export default function AdminLayout({ children, title }) {
             </aside>
 
             {/* Main Content */}
-            <div className="lg:pl-64">
+            <div className="lg:pl-64 flex flex-col min-h-screen">
                 {/* Top bar */}
-                <header className="sticky top-0 z-30 glass border-b border-white/20">
-                    <div className="flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
+                <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 h-16">
+                    <div className="flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
                         <button
                             type="button"
-                            className="lg:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100/50 rounded-xl transition-colors"
+                            className="lg:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors"
                             onClick={() => setSidebarOpen(true)}
                         >
                             <Bars3Icon className="w-6 h-6" />
@@ -120,31 +118,35 @@ export default function AdminLayout({ children, title }) {
 
                         <div className="flex-1 lg:flex-none">
                             {title && (
-                                <h1 className="text-lg font-bold text-gray-900">{title}</h1>
+                                <h1 className="text-lg font-bold text-gray-900 lg:hidden">{title}</h1>
                             )}
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                             <Link
                                 href={route('dashboard')}
-                                className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
+                                className="hidden sm:inline-flex text-sm text-gray-600 hover:text-indigo-600 font-medium transition-colors"
                             >
                                 Ke Halaman Siswa
                             </Link>
+                            <div className="h-6 w-px bg-gray-200 hidden sm:block"></div>
                             <Link
                                 href={route('logout')}
                                 method="post"
                                 as="button"
-                                className="btn-secondary px-4 py-2 rounded-xl text-sm font-medium"
+                                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             >
-                                Keluar
+                                <ArrowRightOnRectangleIcon className="w-4 h-4" />
+                                <span className="hidden sm:inline">Keluar</span>
                             </Link>
                         </div>
                     </div>
                 </header>
 
                 {/* Page Content */}
-                <main className="p-4 sm:p-6 lg:p-8">{children}</main>
+                <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+                    {children}
+                </main>
             </div>
         </div>
     );

@@ -4,6 +4,9 @@ import {
     ArrowLeftIcon,
     PhotoIcon,
     XMarkIcon,
+    CalendarIcon,
+    ClockIcon,
+    CheckCircleIcon
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
@@ -12,6 +15,7 @@ export default function Form({ tryout = null, categories = [] }) {
     const [thumbnailPreview, setThumbnailPreview] = useState(
         tryout?.thumbnail ? `/storage/${tryout.thumbnail}` : null
     );
+    const [isDragOver, setIsDragOver] = useState(false);
 
     const { data, setData, post, put, processing, errors } = useForm({
         title: tryout?.title || '',
@@ -61,6 +65,16 @@ export default function Form({ tryout = null, categories = [] }) {
         }
     };
 
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragOver(false);
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            setData('thumbnail', file);
+            setThumbnailPreview(URL.createObjectURL(file));
+        }
+    };
+
     const removeThumbnail = () => {
         setData('thumbnail', null);
         setThumbnailPreview(null);
@@ -79,53 +93,71 @@ export default function Form({ tryout = null, categories = [] }) {
         <AdminLayout>
             <Head title={isEditing ? 'Edit Tryout' : 'Tambah Tryout'} />
 
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-4xl mx-auto pb-12">
                 {/* Header */}
-                <div className="mb-6">
+                <div className="mb-8">
                     <Link
                         href={route('admin.tryouts.index')}
-                        className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+                        className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-indigo-600 mb-4 transition-colors p-2 -ml-2 rounded-lg hover:bg-indigo-50"
                     >
-                        <ArrowLeftIcon className="w-4 h-4 mr-1" />
-                        Kembali
+                        <ArrowLeftIcon className="w-4 h-4 mr-2" />
+                        Kembali ke Daftar
                     </Link>
-                    <h1 className="text-2xl font-bold text-gray-900">
-                        {isEditing ? 'Edit Tryout' : 'Tambah Tryout Baru'}
+                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+                        {isEditing ? 'Edit Tryout' : 'Buat Tryout Baru'}
                     </h1>
+                    <p className="mt-2 text-gray-500">
+                        {isEditing ? 'Perbarui informasi dan pengaturan tryout.' : 'Isi form di bawah untuk menambahkan tryout baru.'}
+                    </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-8">
                     {/* Basic Info */}
-                    <div className="card">
-                        <div className="card-header">
-                            <h2 className="font-semibold text-gray-900">Informasi Dasar</h2>
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 className="text-lg font-semibold text-gray-900">Informasi Dasar</h2>
                         </div>
-                        <div className="p-6 space-y-4">
+                        <div className="p-8 space-y-6">
                             {/* Thumbnail */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-bold text-gray-700 mb-2">
                                     Thumbnail
                                 </label>
                                 {thumbnailPreview ? (
-                                    <div className="relative w-full h-48 rounded-xl overflow-hidden">
+                                    <div className="relative w-full h-64 rounded-2xl overflow-hidden group border border-gray-200 shadow-sm">
                                         <img
                                             src={thumbnailPreview}
                                             alt="Preview"
                                             className="w-full h-full object-cover"
                                         />
-                                        <button
-                                            type="button"
-                                            onClick={removeThumbnail}
-                                            className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-                                        >
-                                            <XMarkIcon className="w-5 h-5" />
-                                        </button>
+                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <button
+                                                type="button"
+                                                onClick={removeThumbnail}
+                                                className="p-2 bg-white text-red-600 rounded-full hover:bg-red-50 transition-colors shadow-lg"
+                                            >
+                                                <XMarkIcon className="w-6 h-6" />
+                                            </button>
+                                        </div>
                                     </div>
                                 ) : (
-                                    <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-colors">
-                                        <PhotoIcon className="w-12 h-12 text-gray-400" />
-                                        <span className="text-sm text-gray-500 mt-2">
+                                    <label
+                                        className={`flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200 ${isDragOver
+                                                ? 'border-indigo-500 bg-indigo-50'
+                                                : 'border-gray-300 bg-gray-50 hover:bg-white hover:border-indigo-400'
+                                            }`}
+                                        onDragOver={(e) => { e.preventDefault(); setIsDragOver(true); }}
+                                        onDragLeave={() => setIsDragOver(false)}
+                                        onDrop={handleDrop}
+                                    >
+                                        <div className="p-4 bg-white rounded-full shadow-sm mb-3">
+                                            <PhotoIcon className="w-8 h-8 text-indigo-600" />
+                                        </div>
+                                        <span className="text-sm font-medium text-gray-900">
                                             Klik untuk upload thumbnail
+                                        </span>
+                                        <span className="text-xs text-gray-500 mt-1">
+                                            atau drag & drop file gambar di sini
                                         </span>
                                         <input
                                             type="file"
@@ -139,56 +171,53 @@ export default function Form({ tryout = null, categories = [] }) {
 
                             {/* Title */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Judul Tryout <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
                                     value={data.title}
                                     onChange={(e) => setData('title', e.target.value)}
-                                    className={`input w-full ${errors.title ? 'border-red-500' : ''}`}
+                                    className={`w-full px-4 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-colors ${errors.title ? 'border-red-500 focus:ring-red-500' : ''}`}
                                     placeholder="Contoh: UTBK SNBT 2024 - Paket 1"
                                 />
                                 {errors.title && (
-                                    <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+                                    <p className="text-red-500 text-sm mt-1 flex items-center gap-1">
+                                        <span className="w-1 h-1 rounded-full bg-red-500"></span>
+                                        {errors.title}
+                                    </p>
                                 )}
                             </div>
 
                             {/* Description */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Deskripsi
                                 </label>
                                 <textarea
                                     value={data.description}
                                     onChange={(e) => setData('description', e.target.value)}
-                                    rows={3}
-                                    className="input w-full"
+                                    rows={4}
+                                    className="w-full px-4 py-3 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 transition-colors resize-none"
                                     placeholder="Deskripsi singkat tentang tryout..."
                                 />
                             </div>
 
                             {/* Categories */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-bold text-gray-700 mb-3">
                                     Kategori
                                 </label>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap gap-2.5 bg-gray-50 p-4 rounded-xl border border-gray-100">
                                     {categories.map((category) => (
                                         <button
                                             key={category.id}
                                             type="button"
                                             onClick={() => toggleCategory(category.id)}
-                                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                                                data.category_ids.includes(category.id)
-                                                    ? 'text-white'
-                                                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                                            }`}
-                                            style={
-                                                data.category_ids.includes(category.id)
-                                                    ? { backgroundColor: category.color }
-                                                    : {}
-                                            }
+                                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${data.category_ids.includes(category.id)
+                                                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200'
+                                                    : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-sm'
+                                                }`}
                                         >
                                             {category.name}
                                         </button>
@@ -199,28 +228,31 @@ export default function Form({ tryout = null, categories = [] }) {
                     </div>
 
                     {/* Settings */}
-                    <div className="card">
-                        <div className="card-header">
-                            <h2 className="font-semibold text-gray-900">Pengaturan Ujian</h2>
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 className="text-lg font-semibold text-gray-900">Pengaturan Ujian</h2>
                         </div>
-                        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Duration */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Durasi (menit) <span className="text-red-500">*</span>
                                 </label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    value={data.duration_minutes}
-                                    onChange={(e) => setData('duration_minutes', parseInt(e.target.value))}
-                                    className="input w-full"
-                                />
+                                <div className="relative">
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        value={data.duration_minutes}
+                                        onChange={(e) => setData('duration_minutes', parseInt(e.target.value))}
+                                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                                    />
+                                    <ClockIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                </div>
                             </div>
 
                             {/* Max Attempts */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Maksimal Percobaan
                                 </label>
                                 <input
@@ -228,13 +260,13 @@ export default function Form({ tryout = null, categories = [] }) {
                                     min="1"
                                     value={data.max_attempts}
                                     onChange={(e) => setData('max_attempts', parseInt(e.target.value))}
-                                    className="input w-full"
+                                    className="w-full px-4 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                                 />
                             </div>
 
                             {/* Max Violations */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Maks. Pelanggaran
                                 </label>
                                 <input
@@ -242,92 +274,92 @@ export default function Form({ tryout = null, categories = [] }) {
                                     min="1"
                                     value={data.max_violations}
                                     onChange={(e) => setData('max_violations', parseInt(e.target.value))}
-                                    className="input w-full"
+                                    className="w-full px-4 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                                 />
-                                <p className="text-xs text-gray-500 mt-1">
+                                <p className="text-xs text-gray-500 mt-1.5 flex items-center gap-1">
+                                    <CheckCircleIcon className="w-3 h-3" />
                                     Ujian otomatis diserahkan jika melebihi batas
                                 </p>
                             </div>
 
                             {/* Passing Score */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Nilai Kelulusan (%)
                                 </label>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    max="100"
-                                    value={data.passing_score}
-                                    onChange={(e) => setData('passing_score', parseInt(e.target.value))}
-                                    className="input w-full"
-                                />
+                                <div className="relative">
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={data.passing_score}
+                                        onChange={(e) => setData('passing_score', parseInt(e.target.value))}
+                                        className="w-full pl-4 pr-10 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                                    />
+                                    <span className="text-gray-400 absolute right-4 top-1/2 -translate-y-1/2 font-medium">%</span>
+                                </div>
                             </div>
 
                             {/* Start Date */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Waktu Mulai
                                 </label>
-                                <input
-                                    type="datetime-local"
-                                    value={data.start_date}
-                                    onChange={(e) => setData('start_date', e.target.value)}
-                                    className="input w-full"
-                                />
+                                <div className="relative">
+                                    <input
+                                        type="datetime-local"
+                                        value={data.start_date}
+                                        onChange={(e) => setData('start_date', e.target.value)}
+                                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                                    />
+                                    <CalendarIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                </div>
                             </div>
 
                             {/* End Date */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Waktu Berakhir
                                 </label>
-                                <input
-                                    type="datetime-local"
-                                    value={data.end_date}
-                                    onChange={(e) => setData('end_date', e.target.value)}
-                                    className="input w-full"
-                                />
+                                <div className="relative">
+                                    <input
+                                        type="datetime-local"
+                                        value={data.end_date}
+                                        onChange={(e) => setData('end_date', e.target.value)}
+                                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                                    />
+                                    <CalendarIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {/* Toggles */}
-                    <div className="card">
-                        <div className="card-header">
-                            <h2 className="font-semibold text-gray-900">Opsi Lainnya</h2>
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 className="text-lg font-semibold text-gray-900">Opsi Lainnya</h2>
                         </div>
-                        <div className="p-6 space-y-4">
+                        <div className="p-8 space-y-6">
                             {[
-                                { key: 'is_active', label: 'Aktif', desc: 'Tryout dapat diakses siswa' },
-                                { key: 'is_randomized', label: 'Acak Soal', desc: 'Urutan soal diacak untuk setiap siswa' },
-                                { key: 'show_result', label: 'Tampilkan Hasil', desc: 'Siswa dapat melihat hasil setelah ujian' },
-                                { key: 'show_leaderboard', label: 'Tampilkan Leaderboard', desc: 'Leaderboard dapat diakses' },
-                                { key: 'allow_review', label: 'Izinkan Review', desc: 'Siswa dapat melihat pembahasan soal' },
+                                { key: 'is_active', label: 'Aktif', desc: 'Tryout dapat diakses oleh siswa' },
+                                { key: 'is_randomized', label: 'Acak Soal', desc: 'Urutan soal akan diacak secara otomatis untuk setiap siswa' },
+                                { key: 'show_result', label: 'Tampilkan Hasil', desc: 'Siswa dapat melihat detail hasil setelah selesai ujian' },
+                                { key: 'show_leaderboard', label: 'Tampilkan Leaderboard', desc: 'Nama siswa akan muncul di papan peringkat jika tersedia' },
+                                { key: 'allow_review', label: 'Izinkan Review', desc: 'Siswa diperbolehkan melihat pembahasan soal setelah ujian selesai' },
                             ].map(({ key, label, desc }) => (
-                                <label key={key} className="flex items-center justify-between cursor-pointer">
+                                <label key={key} className="flex items-center justify-between cursor-pointer group p-3 -mx-3 rounded-xl hover:bg-gray-50 transition-colors">
                                     <div>
-                                        <p className="font-medium text-gray-900">{label}</p>
+                                        <p className="font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{label}</p>
                                         <p className="text-sm text-gray-500">{desc}</p>
                                     </div>
-                                    <div className="relative">
+                                    <div className="relative inline-flex items-center cursor-pointer">
                                         <input
                                             type="checkbox"
                                             checked={data[key]}
                                             onChange={(e) => setData(key, e.target.checked)}
-                                            className="sr-only"
+                                            className="sr-only peer"
                                         />
-                                        <div
-                                            className={`w-11 h-6 rounded-full transition-colors ${
-                                                data[key] ? 'bg-indigo-600' : 'bg-gray-300'
-                                            }`}
-                                        >
-                                            <div
-                                                className={`w-5 h-5 bg-white rounded-full shadow transform transition-transform ${
-                                                    data[key] ? 'translate-x-5' : 'translate-x-0.5'
-                                                } mt-0.5`}
-                                            />
-                                        </div>
+                                        <div className="w-12 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-100 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-indigo-600"></div>
                                     </div>
                                 </label>
                             ))}
@@ -335,11 +367,18 @@ export default function Form({ tryout = null, categories = [] }) {
                     </div>
 
                     {/* Submit */}
-                    <div className="flex items-center justify-end gap-4">
-                        <Link href={route('admin.tryouts.index')} className="btn btn-secondary">
+                    <div className="flex items-center justify-end gap-4 pt-4 border-t border-gray-100">
+                        <Link
+                            href={route('admin.tryouts.index')}
+                            className="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                        >
                             Batal
                         </Link>
-                        <button type="submit" disabled={processing} className="btn btn-primary">
+                        <button
+                            type="submit"
+                            disabled={processing}
+                            className="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-100 transition-all shadow-sm hover:shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
                             {processing ? 'Menyimpan...' : isEditing ? 'Simpan Perubahan' : 'Buat Tryout'}
                         </button>
                     </div>
