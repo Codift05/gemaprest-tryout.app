@@ -23,11 +23,11 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
     const {
         currentQuestionIndex,
         setCurrentQuestionIndex,
-        answers,
+        answers = {},
         setAnswers,
-        flaggedQuestions,
+        flaggedQuestions = [],
         toggleFlag,
-        violations,
+        violations = 0,
         addViolation,
     } = useExamStore();
 
@@ -133,7 +133,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
     const getQuestionStatus = (index) => {
         const question = questions[index];
         const isAnswered = answers[question.id] !== undefined;
-        const isFlagged = flaggedQuestions.includes(question.id);
+        const isFlagged = flaggedQuestions?.has ? flaggedQuestions.has(question.id) : false;
         const isCurrent = index === currentQuestionIndex;
 
         return { isAnswered, isFlagged, isCurrent };
@@ -141,7 +141,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
 
     const stats = {
         answered: Object.keys(answers).length,
-        flagged: flaggedQuestions.length,
+        flagged: flaggedQuestions?.size || 0,
         unanswered: totalQuestions - Object.keys(answers).length,
     };
 
@@ -219,13 +219,13 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                     </div>
                                     <button
                                         onClick={() => toggleFlag(currentQuestion.id)}
-                                        className={`p-2 rounded-lg transition-colors ${flaggedQuestions.includes(currentQuestion.id)
+                                        className={`p-2 rounded-lg transition-colors ${flaggedQuestions?.has && flaggedQuestions.has(currentQuestion.id)
                                             ? 'bg-amber-100 text-amber-600'
                                             : 'hover:bg-gray-100 text-gray-400'
                                             }`}
                                         title="Tandai soal"
                                     >
-                                        {flaggedQuestions.includes(currentQuestion.id) ? (
+                                        {flaggedQuestions?.has && flaggedQuestions.has(currentQuestion.id) ? (
                                             <FlagSolidIcon className="w-5 h-5" />
                                         ) : (
                                             <FlagIcon className="w-5 h-5" />
