@@ -41,7 +41,9 @@ class ReportController extends Controller
                 'violations' => $totalViolations,
             ],
         ]);
-        /**
+    }
+
+    /**
      * Display violations report
      */
     public function violations(): Response
@@ -65,5 +67,4 @@ class ReportController extends Controller
             'violations' => $violations,
         ]);
     }
-}
 }
