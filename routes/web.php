@@ -123,6 +123,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Reports
     Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/violations', [\App\Http\Controllers\Admin\ReportController::class, 'violations'])->name('reports.violations');
 
     // Settings
     Route::get('/settings', function () {

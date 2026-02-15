@@ -48,7 +48,7 @@ export default function ReportsIndex({ stats = {} }) {
             color: 'bg-rose-600',
             textColor: 'text-rose-600',
             bgLight: 'bg-rose-50',
-            route: null
+            route: 'admin.reports.violations'
         },
     ];
 

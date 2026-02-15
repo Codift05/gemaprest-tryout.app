@@ -41,5 +41,29 @@ class ReportController extends Controller
                 'violations' => $totalViolations,
             ],
         ]);
+        /**
+     * Display violations report
+     */
+    public function violations(): Response
+    {
+        $violations = \App\Models\ExamViolation::with(['examSession.user', 'examSession.tryout'])
+            ->latest('occurred_at')
+            ->paginate(20)
+            ->through(fn($v) => [
+                'id' => $v->id,
+                'user_name' => $v->examSession->user->name ?? 'Unknown',
+                'user_email' => $v->examSession->user->email ?? '-',
+                'tryout_title' => $v->examSession->tryout->title ?? 'Unknown',
+                'type_label' => $v->type_label,
+                'severity' => $v->severity,
+                'details' => $v->details,
+                'occurred_at' => $v->occurred_at->format('d M Y H:i:s'),
+                'occurred_time' => $v->occurred_at->diffForHumans(),
+            ]);
+
+        return Inertia::render('Admin/Reports/Violations', [
+            'violations' => $violations,
+        ]);
     }
+}
 }
