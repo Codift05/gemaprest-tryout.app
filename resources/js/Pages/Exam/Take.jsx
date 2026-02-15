@@ -14,7 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { FlagIcon as FlagSolidIcon } from '@heroicons/react/24/solid';
 
-export default function Take({ session, tryout = {}, questions = [], answers: initialAnswers, serverTime }) {
+export default function Take({ session, tryout = {}, questions = [], answers: initialAnswers = [], serverTime }) {
     const { settings = {} } = usePage().props;
     const [showNavigation, setShowNavigation] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,7 +44,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
     );
 
     // Anti-cheat monitoring - Pass enable_proctoring flag
-    useAntiCheat(session.id, addViolation, tryout.max_violations || session.max_violations, settings?.enable_proctoring);
+    useAntiCheat(session.id, addViolation, tryout?.max_violations || session.max_violations, settings?.enable_proctoring);
 
     // Auto-save answers
     useAutoSave(answers, session.id);
@@ -148,7 +148,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
     return (
         <>
 
-            <Head title={`Ujian - ${tryout.title || session.tryout?.title || ''}`} />
+            <Head title={`Ujian - ${tryout?.title || session.tryout?.title || ''}`} />
 
             <div className="min-h-screen bg-gray-100 flex flex-col">
                 {/* Header */}
@@ -157,7 +157,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                         {/* Left: Tryout info */}
                         <div className="flex items-center gap-4">
                             <h1 className="font-semibold text-gray-900 truncate max-w-xs">
-                                {tryout.title || session.tryout?.title}
+                                {tryout?.title || session.tryout?.title}
                             </h1>
                             <span className="text-sm text-gray-600 hidden sm:inline">
                                 Soal {currentQuestionIndex + 1} dari {totalQuestions}
@@ -184,7 +184,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                 <div className="flex items-center gap-1 text-red-600" title="Pelanggaran">
                                     <ExclamationTriangleIcon className="w-5 h-5" />
                                     <span className="font-medium">
-                                        {violations}/{tryout.max_violations || session.max_violations}
+                                        {violations}/{tryout?.max_violations || session.max_violations}
                                     </span>
                                 </div>
                             )}
