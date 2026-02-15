@@ -122,9 +122,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])->name('users.toggle-active');
 
     // Reports
-    Route::get('/reports', function () {
-        return inertia('Admin/Reports/Index');
-    })->name('reports.index');
+    Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
 
     // Settings
     Route::get('/settings', function () {
