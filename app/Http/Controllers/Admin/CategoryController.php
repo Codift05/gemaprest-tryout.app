@@ -18,12 +18,17 @@ class CategoryController extends Controller
      */
     public function index(): Response
     {
-        $categories = Category::withCount(['subcategories', 'questions' => function ($query) {
-            // Count questions through subcategories
-        }])
-            ->with(['subcategories' => function ($query) {
-                $query->withCount('questions')->ordered();
-            }])
+        $categories = Category::withCount([
+            'subcategories',
+            'questions' => function ($query) {
+                // Count questions through subcategories
+            }
+        ])
+            ->with([
+                'subcategories' => function ($query) {
+                    $query->withCount('questions')->ordered();
+                }
+            ])
             ->ordered()
             ->get();
 
@@ -37,6 +42,7 @@ class CategoryController extends Controller
                 'sort_order' => $cat->sort_order,
                 'is_active' => $cat->is_active,
                 'subcategories_count' => $cat->subcategories_count,
+                'questions_count' => $cat->questions_count,
                 'subcategories' => $cat->subcategories->map(fn($sub) => [
                     'id' => $sub->id,
                     'name' => $sub->name,
