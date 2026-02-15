@@ -13,8 +13,7 @@ import {
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 
-export default function Result({ session, stats, rank }) {
-    const tryout = session?.tryout || {};
+export default function Result({ session, stats, rank, tryout }) {
     const score = session?.percentage || 0;
 
     const getScoreColor = (percentage) => {
