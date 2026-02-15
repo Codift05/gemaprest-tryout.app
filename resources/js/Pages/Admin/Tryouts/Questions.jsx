@@ -78,7 +78,7 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                         </div>
                         <button
                             onClick={() => setShowAddModal(true)}
-                            className="btn btn-primary"
+                            className="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-medium shadow-sm flex items-center"
                         >
                             <PlusIcon className="w-5 h-5 mr-2" />
                             Tambah Soal
@@ -103,7 +103,7 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                             </p>
                             <button
                                 onClick={() => setShowAddModal(true)}
-                                className="btn btn-primary"
+                                className="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-medium shadow-sm inline-flex items-center"
                             >
                                 <PlusIcon className="w-5 h-5 mr-2" />
                                 Tambah Soal
@@ -268,14 +268,14 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                         <div className="p-4 border-t flex items-center justify-end gap-4">
                             <button
                                 onClick={() => setShowAddModal(false)}
-                                className="btn btn-secondary"
+                                className="px-4 py-2 bg-white text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors font-medium"
                             >
                                 Batal
                             </button>
                             <button
                                 onClick={handleAddQuestions}
                                 disabled={selectedQuestions.length === 0}
-                                className="btn btn-primary"
+                                className="px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors font-medium shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 Tambah {selectedQuestions.length} Soal
                             </button>
