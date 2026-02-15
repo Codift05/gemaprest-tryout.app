@@ -74,7 +74,7 @@ const useExamStore = create(
                 },
             })),
 
-            setAnswers: (answers) => set({ answers }),
+            initializeAnswers: (answers) => set({ answers }),
 
             // Flag management
             toggleFlag: (questionId) => set((state) => {

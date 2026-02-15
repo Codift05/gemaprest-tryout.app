@@ -24,7 +24,8 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
         currentQuestionIndex,
         setCurrentQuestionIndex,
         answers = {},
-        setAnswers,
+        setAnswers, // Deprecated or unused? No, I need to match the store export.
+        initializeAnswers, // Added this
         flaggedQuestions = [],
         toggleFlag,
         violations = 0,
@@ -55,7 +56,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
         initialAnswers.forEach((ans) => {
             answersMap[ans.question_id] = ans.selected_option;
         });
-        setAnswers(answersMap);
+        initializeAnswers(answersMap);
     }, []);
 
     // Enter fullscreen on mount if enabled
