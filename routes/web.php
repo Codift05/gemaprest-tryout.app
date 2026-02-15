@@ -113,6 +113,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Tryouts
     Route::resource('tryouts', AdminTryoutController::class)->except(['show']);
     Route::get('/tryouts/{tryout}/questions', [AdminTryoutController::class, 'questions'])->name('tryouts.questions');
+    Route::post('/tryouts/{tryout}/questions/add', [AdminTryoutController::class, 'addQuestions'])->name('tryouts.questions.add');
     Route::post('/tryouts/{tryout}/questions', [AdminTryoutController::class, 'syncQuestions'])->name('tryouts.sync-questions');
     Route::post('/tryouts/{tryout}/auto-assign', [AdminTryoutController::class, 'autoAssignQuestions'])->name('tryouts.auto-assign');
 

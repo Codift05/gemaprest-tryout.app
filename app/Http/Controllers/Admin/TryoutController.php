@@ -267,6 +267,34 @@ class TryoutController extends Controller
     }
 
     /**
+     * Add questions to tryout
+     */
+    public function addQuestions(Request $request, Tryout $tryout): RedirectResponse
+    {
+        $validated = $request->validate([
+            'question_ids' => 'required|array',
+            'question_ids.*' => 'exists:questions,id',
+        ]);
+
+        $currentMaxOrder = $tryout->questions()->max('sort_order') ?? 0;
+        $order = $currentMaxOrder + 1;
+
+        $attachData = [];
+        foreach ($validated['question_ids'] as $questionId) {
+            // Check if already attached to avoid duplicates (though UI should prevent it)
+            if (!$tryout->questions()->where('question_id', $questionId)->exists()) {
+                $attachData[$questionId] = ['sort_order' => $order++];
+            }
+        }
+
+        if (!empty($attachData)) {
+            $tryout->questions()->attach($attachData);
+        }
+
+        return back()->with('success', 'Soal berhasil ditambahkan.');
+    }
+
+    /**
      * Sync questions to tryout
      */
     public function syncQuestions(Request $request, Tryout $tryout): RedirectResponse
