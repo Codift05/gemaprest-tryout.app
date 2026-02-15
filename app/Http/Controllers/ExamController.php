@@ -194,6 +194,8 @@ class ExamController extends Controller
                     'status' => $answer?->status ?? 'unanswered',
                 ];
             })->values(),
+            'answers' => $session->answers,
+            'serverTime' => now()->toISOString(),
         ]);
     }
 

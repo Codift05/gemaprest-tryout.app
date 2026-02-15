@@ -32,10 +32,15 @@ export default function Take({ session, questions = [], answers: initialAnswers,
     } = useExamStore();
 
     // Server-synced timer
-    const { remainingTime, isWarning, isDanger, formatTime } = useExamTimer(
-        session.end_time,
-        serverTime,
-        session.id
+    const {
+        timeRemaining: remainingTime,
+        formattedTime,
+        urgencyLevel,
+        isExpired
+    } = useExamTimer(
+        session.server_end_time, // Was session.end_time which might differ? ExamController sends session with server_end_time
+        session.id,
+        () => handleSubmit(true) // onTimeUp callback
     );
 
     // Anti-cheat monitoring - Pass enable_proctoring flag
@@ -76,10 +81,10 @@ export default function Take({ session, questions = [], answers: initialAnswers,
 
     // Auto-submit when time runs out
     useEffect(() => {
-        if (remainingTime <= 0 && !isSubmitting) {
+        if (isExpired && !isSubmitting) {
             handleSubmit(true);
         }
-    }, [remainingTime]);
+    }, [isExpired, isSubmitting]);
 
     const currentQuestion = questions[currentQuestionIndex];
     const totalQuestions = questions.length;
