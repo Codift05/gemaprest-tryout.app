@@ -8,23 +8,23 @@ const useExamStore = create(
             sessionId: null,
             tryoutId: null,
             endTime: null,
-            
+
             // Questions & Answers
             questions: [],
             answers: {},
             currentIndex: 0,
-            
+
             // Flags
             flaggedQuestions: new Set(),
-            
+
             // Violations
             violationCount: 0,
             maxViolations: 3,
-            
+
             // UI State
             isFullscreen: false,
             showNavigation: true,
-            
+
             // Initialize exam session
             initSession: (data) => set({
                 sessionId: data.sessionId,
@@ -37,7 +37,7 @@ const useExamStore = create(
                 violationCount: data.violationCount || 0,
                 maxViolations: data.maxViolations || 3,
             }),
-            
+
             // Clear session
             clearSession: () => set({
                 sessionId: null,
@@ -50,7 +50,7 @@ const useExamStore = create(
                 violationCount: 0,
                 isFullscreen: false,
             }),
-            
+
             // Navigation
             setCurrentIndex: (index) => set({ currentIndex: index }),
             goToNext: () => {
@@ -65,7 +65,7 @@ const useExamStore = create(
                     set({ currentIndex: currentIndex - 1 });
                 }
             },
-            
+
             // Answer management
             setAnswer: (questionId, answer) => set((state) => ({
                 answers: {
@@ -73,7 +73,9 @@ const useExamStore = create(
                     [questionId]: answer,
                 },
             })),
-            
+
+            setAnswers: (answers) => set({ answers }),
+
             // Flag management
             toggleFlag: (questionId) => set((state) => {
                 const newFlags = new Set(state.flaggedQuestions);
@@ -85,26 +87,26 @@ const useExamStore = create(
                 return { flaggedQuestions: newFlags };
             }),
             isFlagged: (questionId) => get().flaggedQuestions.has(questionId),
-            
+
             // Violation tracking
             addViolation: () => set((state) => ({
                 violationCount: state.violationCount + 1,
             })),
-            
+
             // Fullscreen
             setFullscreen: (isFullscreen) => set({ isFullscreen }),
-            
+
             // Toggle navigation panel
             toggleNavigation: () => set((state) => ({
                 showNavigation: !state.showNavigation,
             })),
-            
+
             // Get current question
             getCurrentQuestion: () => {
                 const { questions, currentIndex } = get();
                 return questions[currentIndex] || null;
             },
-            
+
             // Get answer status counts
             getAnswerStats: () => {
                 const { questions, answers, flaggedQuestions } = get();
@@ -113,7 +115,7 @@ const useExamStore = create(
                 const flagged = flaggedQuestions.size;
                 return { answered, unanswered, flagged, total: questions.length };
             },
-            
+
             // Check if question is answered
             isAnswered: (questionId) => {
                 const { answers } = get();
