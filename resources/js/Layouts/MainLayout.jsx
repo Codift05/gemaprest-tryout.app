@@ -25,7 +25,7 @@ export default function MainLayout({ children, title }) {
 
     return (
 
-        <div className="min-h-screen bg-gray-50 font-sans text-gray-900 flex flex-col">
+        <div className="min-h-screen bg-gray-50 font-sans text-gray-900 flex flex-col overflow-x-hidden">
             {/* Background Pattern */}
             <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-3xl opacity-50" />
@@ -180,7 +180,7 @@ export default function MainLayout({ children, title }) {
             </header>
 
             {/* Main Content */}
-            <main className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8 py-8">
+            <main className="mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-8">
                 {children}
             </main>
 
