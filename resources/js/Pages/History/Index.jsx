@@ -73,67 +73,67 @@ export default function HistoryIndex({ sessions }) {
         <MainLayout title="Riwayat Ujian">
             <Head title="Riwayat Ujian" />
 
-            <div className="max-w-7xl mx-auto space-y-8">
+            <div className="max-w-7xl mx-auto space-y-5 md:space-y-8">
                 {/* Hero Section */}
-                <div className="bg-indigo-600 rounded-3xl p-8 md:p-12 shadow-xl shadow-indigo-200 relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="bg-indigo-600 rounded-2xl md:rounded-3xl p-5 md:p-12 shadow-xl shadow-indigo-200 relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
                     {/* Subtle pattern */}
                     <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
-                    <div className="relative z-10 max-w-2xl">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                    <div className="relative z-10 w-full max-w-2xl">
+                        <h1 className="text-xl md:text-4xl font-bold text-white mb-2 md:mb-4 tracking-tight">
                             Riwayat Ujian
                         </h1>
-                        <p className="text-indigo-100 text-lg leading-relaxed">
-                            Pantau kemajuan belajar Anda melalui riwayat pengerjaan tryout dan analisis hasil skor.
+                        <p className="text-indigo-100 text-xs md:text-lg leading-relaxed">
+                            Pantau kemajuan belajar melalui riwayat pengerjaan tryout dan analisis hasil skor.
                         </p>
                     </div>
                 </div>
 
                 {/* Stats Summary */}
                 {sessions.data.length > 0 && (
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
-                            <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center mb-3 text-indigo-600 group-hover:scale-110 transition-transform duration-300">
-                                <DocumentTextIcon className="w-6 h-6" />
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-4">
+                        <div className="bg-white p-3 md:p-5 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                            <div className="w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-indigo-50 flex items-center justify-center mb-2 md:mb-3 text-indigo-600 group-hover:scale-110 transition-transform duration-300">
+                                <DocumentTextIcon className="w-4 h-4 md:w-6 md:h-6" />
                             </div>
-                            <span className="text-2xl font-bold text-gray-900 mb-1">{sessions.total}</span>
-                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Total Tryout</span>
+                            <span className="text-lg md:text-2xl font-bold text-gray-900 mb-0.5 md:mb-1">{sessions.total}</span>
+                            <span className="text-[9px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">Total Tryout</span>
                         </div>
-                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
-                            <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center mb-3 text-emerald-600 group-hover:scale-110 transition-transform duration-300">
-                                <CheckCircleIcon className="w-6 h-6" />
+                        <div className="bg-white p-3 md:p-5 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                            <div className="w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-emerald-50 flex items-center justify-center mb-2 md:mb-3 text-emerald-600 group-hover:scale-110 transition-transform duration-300">
+                                <CheckCircleIcon className="w-4 h-4 md:w-6 md:h-6" />
                             </div>
-                            <span className="text-2xl font-bold text-gray-900 mb-1">
+                            <span className="text-lg md:text-2xl font-bold text-gray-900 mb-0.5 md:mb-1">
                                 {sessions.data.filter(s => s.status === 'completed').length}
                             </span>
-                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Selesai</span>
+                            <span className="text-[9px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">Selesai</span>
                         </div>
-                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
-                            <div className="w-12 h-12 rounded-2xl bg-purple-50 flex items-center justify-center mb-3 text-purple-600 group-hover:scale-110 transition-transform duration-300">
-                                <ChartBarIcon className="w-6 h-6" />
+                        <div className="bg-white p-3 md:p-5 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                            <div className="w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-purple-50 flex items-center justify-center mb-2 md:mb-3 text-purple-600 group-hover:scale-110 transition-transform duration-300">
+                                <ChartBarIcon className="w-4 h-4 md:w-6 md:h-6" />
                             </div>
-                            <span className="text-2xl font-bold text-gray-900 mb-1">
+                            <span className="text-lg md:text-2xl font-bold text-gray-900 mb-0.5 md:mb-1">
                                 {Math.round(
                                     sessions.data.reduce((sum, s) => sum + (s.total_questions > 0 ? (s.correct_count / s.total_questions) * 100 : 0), 0) /
                                     (sessions.data.length || 1)
                                 )}%
                             </span>
-                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Rata-rata Skor</span>
+                            <span className="text-[9px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">Rata-rata Skor</span>
                         </div>
-                        <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
-                            <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mb-3 text-amber-600 group-hover:scale-110 transition-transform duration-300">
-                                <DocumentTextIcon className="w-6 h-6" />
+                        <div className="bg-white p-3 md:p-5 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                            <div className="w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-amber-50 flex items-center justify-center mb-2 md:mb-3 text-amber-600 group-hover:scale-110 transition-transform duration-300">
+                                <DocumentTextIcon className="w-4 h-4 md:w-6 md:h-6" />
                             </div>
-                            <span className="text-2xl font-bold text-gray-900 mb-1">
+                            <span className="text-lg md:text-2xl font-bold text-gray-900 mb-0.5 md:mb-1">
                                 {sessions.data.reduce((sum, s) => sum + s.total_questions, 0)}
                             </span>
-                            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">Soal Dikerjakan</span>
+                            <span className="text-[9px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">Soal Dikerjakan</span>
                         </div>
                     </div>
                 )}
 
                 {sessions.data.length === 0 ? (
-                    <div className="bg-white rounded-3xl p-16 text-center border border-gray-100 shadow-sm border-dashed">
+                    <div className="bg-white rounded-2xl md:rounded-3xl p-8 md:p-16 text-center border border-gray-100 shadow-sm border-dashed">
                         <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
                             <DocumentTextIcon className="w-10 h-10 text-gray-400" />
                         </div>

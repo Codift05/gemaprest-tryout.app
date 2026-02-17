@@ -116,7 +116,7 @@ export default function Welcome() {
                         {/* Banner Image Container */}
                         <div className="relative rounded-[40px] overflow-hidden shadow-2xl mb-12">
                             <img
-                                src="/Banner Web.png"
+                                src="/Banner Web 2.png"
                                 alt="Gemaprest Try Out UTBK - Platform tryout online dari Beasiswa Karya Salembah Empat (KSE) UNSRAT"
                                 className="w-full h-auto object-cover"
                             />

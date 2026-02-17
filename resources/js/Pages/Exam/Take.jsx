@@ -22,10 +22,10 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
     const [showSubmitModal, setShowSubmitModal] = useState(false);
 
     const {
-        currentQuestionIndex,
-        setCurrentQuestionIndex,
+        currentIndex: currentQuestionIndex, // Remap to keep existing code working
+        setCurrentIndex: setCurrentQuestionIndex, // Remap to keep existing code working
         answers = {},
-        setAnswers, // Deprecated or unused? No, I need to match the store export.
+        setAnswer,
         initializeAnswers, // Added this
         flaggedQuestions = [],
         toggleFlag,
@@ -42,14 +42,31 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
     } = useExamTimer(
         session.server_end_time, // Was session.end_time which might differ? ExamController sends session with server_end_time
         session.id,
-        () => handleSubmit(true) // onTimeUp callback
+        () => handleSubmit(true), // onTimeUp callback
+        30000, // Sync interval
+        session?.remaining_time || 0 // Initial remaining time from server
     );
 
+    useEffect(() => {
+        console.log('Take Component Mounted');
+        console.log('Session:', session);
+        console.log('Server End Time:', session?.server_end_time);
+        console.log('Remaining Time:', remainingTime);
+    }, [session, remainingTime]);
+
+    // Violation warning state
+    const [violationWarning, setViolationWarning] = useState(null);
+
+    const handleViolation = useCallback((type, count, max) => {
+        addViolation(type);
+        setViolationWarning({ type, count, max });
+    }, [addViolation]);
+
     // Anti-cheat monitoring - Pass enable_proctoring flag
-    useAntiCheat(session.id, addViolation, tryout?.max_violations || session.max_violations, settings?.enable_proctoring);
+    useAntiCheat(session.id, handleViolation, tryout?.max_violations || session.max_violations, settings?.enable_proctoring);
 
     // Auto-save answers
-    useAutoSave(answers, session.id);
+    useAutoSave(session.id, answers);
 
     // Initialize store
     useEffect(() => {
@@ -92,15 +109,34 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
         }
     }, [isExpired, isSubmitting]);
 
+    // Get current question
     const currentQuestion = questions[currentQuestionIndex];
-    const totalQuestions = questions.length;
+    const totalQuestions = questions?.length || 0;
+
+    useEffect(() => {
+        console.log('Current Index:', currentQuestionIndex);
+        console.log('Total Questions:', totalQuestions);
+        console.log('Current Question:', currentQuestion);
+        if (!currentQuestion && totalQuestions > 0) {
+            console.error('Question mismatch! Index out of bounds?');
+        }
+    }, [currentQuestionIndex, totalQuestions, currentQuestion]);
 
     if (!currentQuestion) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
                 <div className="text-center">
-                    <h2 className="text-xl font-bold text-gray-800">Soal tidak ditemukan</h2>
-                    <p className="text-gray-600 mt-2">Maaf, terjadi kesalahan memuat data soal.</p>
+                    <h1 className="text-3xl font-bold mb-4">Soal tidak ditemukan</h1>
+                    <p className="text-gray-400">Maaf, terjadi kesalahan memuat data soal.</p>
+                    <p className="text-xs text-gray-600 mt-4">
+                        Index: {currentQuestionIndex} / Total: {totalQuestions}
+                    </p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="mt-6 px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+                    >
+                        Refresh Halaman
+                    </button>
                 </div>
             </div>
         );
@@ -113,10 +149,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
     }, [totalQuestions]);
 
     const handleAnswer = (option) => {
-        setAnswers({
-            ...answers,
-            [currentQuestion.id]: option,
-        });
+        setAnswer(currentQuestion.id, option);
     };
 
     const handleSubmit = async (force = false) => {
@@ -260,7 +293,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                         {/* Question Text */}
                                         <div
                                             className="prose prose-lg prose-blue max-w-none mb-10 text-gray-800 leading-relaxed"
-                                            dangerouslySetInnerHTML={{ __html: currentQuestion.question_text }}
+                                            dangerouslySetInnerHTML={{ __html: currentQuestion.content }}
                                         />
 
                                         {/* Question Image */}
@@ -276,16 +309,14 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
 
                                         {/* Options */}
                                         <div className="grid gap-4">
-                                            {['A', 'B', 'C', 'D', 'E'].map((option) => {
-                                                const optionText = currentQuestion[`option_${option.toLowerCase()}`];
-                                                if (!optionText) return null;
-
-                                                const isSelected = answers[currentQuestion.id] === option;
+                                            {currentQuestion.options && currentQuestion.options.map((option, idx) => {
+                                                const optionKey = option.key || String.fromCharCode(65 + idx); // Fallback if key missing
+                                                const isSelected = answers[currentQuestion.id] === optionKey;
 
                                                 return (
                                                     <button
-                                                        key={option}
-                                                        onClick={() => handleAnswer(option)}
+                                                        key={optionKey}
+                                                        onClick={() => handleAnswer(optionKey)}
                                                         className={`group w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 relative overflow-hidden ${isSelected
                                                             ? 'border-blue-500 bg-blue-50/50 shadow-md shadow-blue-100 ring-2 ring-blue-500/20'
                                                             : 'border-gray-100 hover:border-blue-200 hover:bg-white hover:shadow-md bg-white'
@@ -298,13 +329,22 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                                                     : 'bg-gray-100 text-gray-500 group-hover:bg-blue-100 group-hover:text-blue-600'
                                                                     }`}
                                                             >
-                                                                {option}
+                                                                {optionKey}
                                                             </span>
                                                             <div className="flex-1 py-1">
-                                                                <div
-                                                                    className={`prose prose-base max-w-none transition-colors ${isSelected ? 'text-blue-900' : 'text-gray-700 group-hover:text-gray-900'}`}
-                                                                    dangerouslySetInnerHTML={{ __html: optionText }}
-                                                                />
+                                                                {option.text && (
+                                                                    <div
+                                                                        className={`prose prose-base max-w-none transition-colors ${isSelected ? 'text-blue-900' : 'text-gray-700 group-hover:text-gray-900'}`}
+                                                                        dangerouslySetInnerHTML={{ __html: option.text }}
+                                                                    />
+                                                                )}
+                                                                {option.image && (
+                                                                    <img
+                                                                        src={`/storage/${option.image}`}
+                                                                        className="mt-2 max-h-40 rounded-lg border border-gray-200"
+                                                                        alt="Option"
+                                                                    />
+                                                                )}
                                                             </div>
                                                             {isSelected && (
                                                                 <div className="absolute top-4 right-4 text-blue-500 animate-in fade-in zoom-in duration-300">
@@ -337,14 +377,24 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                         Daftar Soal
                                     </button>
 
-                                    <button
-                                        onClick={() => goToQuestion(currentQuestionIndex + 1)}
-                                        disabled={currentQuestionIndex === totalQuestions - 1}
-                                        className="btn bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 active:scale-95"
-                                    >
-                                        Selanjutnya
-                                        <ChevronRightIcon className="w-5 h-5 ml-2" />
-                                    </button>
+                                    {currentQuestionIndex === totalQuestions - 1 ? (
+                                        <button
+                                            onClick={() => handleSubmit()}
+                                            disabled={isSubmitting}
+                                            className="btn bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 active:scale-95"
+                                        >
+                                            Selesai
+                                            <PaperAirplaneIcon className="w-5 h-5 ml-2" />
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => goToQuestion(currentQuestionIndex + 1)}
+                                            className="btn bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 active:scale-95"
+                                        >
+                                            Selanjutnya
+                                            <ChevronRightIcon className="w-5 h-5 ml-2" />
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </main>
@@ -444,6 +494,55 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                         />
                     )}
                 </div>
+
+                {/* Violation Warning Modal */}
+                {violationWarning && (
+                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/80 backdrop-blur-sm animate-in fade-in">
+                        <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl transform transition-all scale-100 animate-in zoom-in-95 duration-200 border-t-8 border-red-500">
+                            <div className="text-center mb-6">
+                                <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6 ring-8 ring-red-50/50 animate-bounce">
+                                    <ExclamationTriangleIcon className="w-10 h-10 text-red-500" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                                    Peringatan Pelanggaran
+                                </h3>
+                                <p className="text-gray-500">
+                                    Sistem mendeteksi aktivitas mencurigakan.
+                                </p>
+                            </div>
+
+                            <div className="bg-red-50 rounded-2xl p-5 mb-8 border border-red-100">
+                                <div className="flex justify-between items-center mb-3">
+                                    <span className="text-gray-600 font-medium">Jenis Pelanggaran</span>
+                                    <span className="font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full text-sm">
+                                        {violationWarning.type === 'tab_switch' ? 'Pindah Tab/Minimalkan Browser' :
+                                            violationWarning.type === 'window_blur' ? 'Meninggalkan Layar Ujian' :
+                                                violationWarning.type === 'fullscreen_exit' ? 'Keluar Layar Penuh' :
+                                                    violationWarning.type}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-gray-600 font-medium">Total Pelanggaran</span>
+                                    <span className="font-bold text-gray-900 text-lg">
+                                        <span className="text-red-600 text-2xl">{violationWarning.count}</span>
+                                        <span className="text-gray-400 mx-1">/</span>
+                                        <span>{violationWarning.max}</span>
+                                    </span>
+                                </div>
+                                <div className="mt-4 text-xs text-red-500 text-center font-medium bg-white/50 p-2 rounded-lg">
+                                    Jika mencapai batas maksimal, ujian akan otomatis dihentikan.
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => setViolationWarning(null)}
+                                className="btn w-full bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/20 hover:shadow-red-500/40 font-semibold py-3.5 rounded-xl uppercase tracking-wide transition-all active:scale-95"
+                            >
+                                Saya Mengerti & Lanjutkan
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 {/* Submit Confirmation Modal */}
                 {showSubmitModal && (

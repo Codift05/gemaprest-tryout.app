@@ -36,7 +36,7 @@ export default function Edit({ user }) {
                         <ArrowLeftIcon className="w-4 h-4 mr-1" />
                         Kembali ke Dashboard
                     </Link>
-                    <h1 className="text-3xl font-bold text-gray-900">Edit Profil</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Edit Profil</h1>
                     <p className="text-gray-500 mt-2">Perbarui informasi pribadi dan keamanan akun Anda.</p>
                 </div>
 
@@ -49,7 +49,7 @@ export default function Edit({ user }) {
                                 Informasi Pribadi
                             </h2>
                         </div>
-                        <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                        <div className="p-4 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 md:gap-y-6">
                             {/* Name */}
                             <div className="col-span-full">
                                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -144,7 +144,7 @@ export default function Edit({ user }) {
                                 Keamanan Akun
                             </h2>
                         </div>
-                        <div className="p-8 space-y-6">
+                        <div className="p-4 md:p-8 space-y-5 md:space-y-6">
                             <div className="bg-blue-50 rounded-lg p-4 mb-6">
                                 <p className="text-sm text-blue-700 flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">

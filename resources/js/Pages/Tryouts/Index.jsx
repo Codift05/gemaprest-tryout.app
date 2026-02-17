@@ -38,7 +38,7 @@ const TryoutCard = ({ tryout }) => {
     return (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden group hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
             {/* Thumbnail */}
-            <div className="h-48 bg-indigo-50 relative overflow-hidden group-hover:bg-indigo-100/50 transition-colors">
+            <div className="h-36 md:h-48 bg-indigo-50 relative overflow-hidden group-hover:bg-indigo-100/50 transition-colors">
                 {tryout.thumbnail ? (
                     <img
                         src={`/storage/${tryout.thumbnail}`}
@@ -57,7 +57,7 @@ const TryoutCard = ({ tryout }) => {
             </div>
 
             {/* Content */}
-            <div className="p-6 flex flex-col flex-1">
+            <div className="p-4 md:p-6 flex flex-col flex-1">
                 {/* Categories */}
                 <div className="flex flex-wrap gap-2 mb-3">
                     {tryout.categories?.slice(0, 2).map((cat) => (
@@ -70,11 +70,11 @@ const TryoutCard = ({ tryout }) => {
                     ))}
                 </div>
 
-                <h3 className="font-bold text-gray-900 text-lg leading-snug mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                <h3 className="font-bold text-gray-900 text-sm md:text-lg leading-snug mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
                     {tryout.title}
                 </h3>
 
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-6 mt-auto pt-4">
+                <div className="flex items-center gap-2.5 md:gap-4 text-xs md:text-sm text-gray-500 mb-4 md:mb-6 mt-auto pt-3 md:pt-4">
                     <div className="flex items-center gap-1.5">
                         <ClipboardDocumentListIcon className="w-4 h-4 text-gray-400" />
                         <span>{tryout.total_questions} Soal</span>
@@ -116,18 +116,18 @@ export default function Index({ tryouts, categories, filters }) {
         <MainLayout title="Daftar Tryout">
             <Head title="Daftar Tryout" />
 
-            <div className="space-y-8 max-w-7xl mx-auto">
+            <div className="space-y-5 md:space-y-8 max-w-7xl mx-auto">
                 {/* Header Section */}
-                <div className="bg-indigo-600 rounded-3xl p-8 md:p-12 shadow-xl shadow-indigo-200 relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="bg-indigo-600 rounded-2xl md:rounded-3xl p-5 md:p-12 shadow-xl shadow-indigo-200 relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8">
                     {/* Subtle pattern */}
                     <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
-                    <div className="relative z-10 max-w-2xl">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                    <div className="relative z-10 w-full max-w-2xl">
+                        <h1 className="text-xl md:text-4xl font-bold text-white mb-2 md:mb-4 tracking-tight">
                             Jelajahi Tryout
                         </h1>
-                        <p className="text-indigo-100 text-lg leading-relaxed">
-                            Pilih dari berbagai paket tryout berkualitas tinggi yang disusun sesuai standar terbaru untuk memaksimalkan persiapanmu.
+                        <p className="text-indigo-100 text-xs md:text-lg leading-relaxed">
+                            Pilih dari berbagai paket tryout berkualitas tinggi yang disusun sesuai standar terbaru.
                         </p>
                     </div>
 
@@ -138,7 +138,7 @@ export default function Index({ tryouts, categories, filters }) {
                 </div>
 
                 {/* Search & Filter */}
-                <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm sticky top-20 z-30">
+                <div className="bg-white rounded-xl md:rounded-2xl p-3 md:p-4 border border-gray-100 shadow-sm sticky top-20 z-30">
                     <div className="flex flex-col md:flex-row gap-4">
                         <div className="flex-1 relative group">
                             <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-500 transition-colors" />
@@ -147,7 +147,7 @@ export default function Index({ tryouts, categories, filters }) {
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Cari judul tryout..."
-                                className="w-full pl-10 pr-4 py-3 bg-gray-50 border-transparent focus:bg-white border focus:border-indigo-500 rounded-xl text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-indigo-500/10 transition-all text-sm font-medium"
+                                className="w-full pl-10 pr-4 py-2.5 md:py-3 bg-gray-50 border-transparent focus:bg-white border focus:border-indigo-500 rounded-xl text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-indigo-500/10 transition-all text-sm font-medium"
                                 onKeyDown={(e) => e.key === 'Enter' && handleFilter()}
                             />
                         </div>
@@ -181,7 +181,7 @@ export default function Index({ tryouts, categories, filters }) {
 
                 {/* Tryouts Grid */}
                 {tryouts.data.length === 0 ? (
-                    <div className="bg-white rounded-3xl p-16 text-center border border-gray-100 shadow-sm border-dashed">
+                    <div className="bg-white rounded-2xl md:rounded-3xl p-8 md:p-16 text-center border border-gray-100 shadow-sm border-dashed">
                         <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
                             <MagnifyingGlassIcon className="w-10 h-10 text-gray-400" />
                         </div>
@@ -207,7 +207,7 @@ export default function Index({ tryouts, categories, filters }) {
                         )}
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
                         {tryouts.data.map((tryout) => (
                             <TryoutCard key={tryout.id} tryout={tryout} />
                         ))}

@@ -1,98 +1,49 @@
 import { create } from 'zustand';
 
-const useLeaderboardStore = create((set, get) => ({
-    // Leaderboard data
-    rankings: [],
-    tryoutId: null,
-    tryoutTitle: '',
-    
-    // Connection state
-    isConnected: false,
-    lastUpdated: null,
-    
-    // Current user
-    currentUserId: null,
-    currentUserRank: null,
-    
-    // Initialize leaderboard
-    init: (data) => set({
-        rankings: data.rankings || [],
-        tryoutId: data.tryoutId,
-        tryoutTitle: data.tryoutTitle || '',
-        currentUserId: data.currentUserId,
-        currentUserRank: data.currentUserRank,
-        lastUpdated: new Date(),
-    }),
-    
-    // Update rankings
-    setRankings: (rankings) => set({
-        rankings,
-        lastUpdated: new Date(),
-    }),
-    
-    // Update single ranking (when new result comes in)
-    updateRanking: (newRanking) => set((state) => {
-        const existingIndex = state.rankings.findIndex(
-            r => r.user_id === newRanking.user_id
+export const useLeaderboardStore = create((set) => ({
+    entries: [],
+    userRank: null,
+    totalParticipants: 0,
+    isLoading: false,
+
+    setEntries: (entries) => set({ entries }),
+    setUserRank: (rank) => set({ userRank: rank }),
+    setTotalParticipants: (total) => set({ totalParticipants: total }),
+    setLoading: (isLoading) => set({ isLoading }),
+
+    updateEntry: (newEntry) => set((state) => {
+        const existingIndex = state.entries.findIndex(
+            e => e.user.id === newEntry.user_id
         );
-        
-        let updatedRankings;
-        if (existingIndex >= 0) {
-            // Update existing entry
-            updatedRankings = [...state.rankings];
-            updatedRankings[existingIndex] = newRanking;
-        } else {
-            // Add new entry
-            updatedRankings = [...state.rankings, newRanking];
+
+        if (existingIndex !== -1) {
+            const updated = [...state.entries];
+            updated[existingIndex] = {
+                ...updated[existingIndex],
+                rank: newEntry.rank,
+                score: newEntry.score,
+                percentage: newEntry.percentage,
+            };
+            // Re-sort by rank
+            updated.sort((a, b) => a.rank - b.rank);
+            return { entries: updated };
         }
-        
-        // Re-sort by score descending, then by duration ascending
-        updatedRankings.sort((a, b) => {
-            if (b.score !== a.score) return b.score - a.score;
-            return (a.duration_seconds || 0) - (b.duration_seconds || 0);
-        });
-        
-        // Recalculate ranks
-        updatedRankings = updatedRankings.map((r, index) => ({
-            ...r,
-            rank: index + 1,
-        }));
-        
-        // Update current user rank if applicable
-        const currentUserRank = updatedRankings.find(
-            r => r.user_id === state.currentUserId
-        )?.rank || null;
-        
-        return {
-            rankings: updatedRankings,
-            currentUserRank,
-            lastUpdated: new Date(),
-        };
-    }),
-    
-    // Set connection status
-    setConnected: (isConnected) => set({ isConnected }),
-    
-    // Get top N rankings
-    getTopRankings: (n = 10) => {
-        const { rankings } = get();
-        return rankings.slice(0, n);
-    },
-    
-    // Get current user's ranking data
-    getCurrentUserRanking: () => {
-        const { rankings, currentUserId } = get();
-        return rankings.find(r => r.user_id === currentUserId) || null;
-    },
-    
-    // Clear leaderboard
-    clear: () => set({
-        rankings: [],
-        tryoutId: null,
-        tryoutTitle: '',
-        isConnected: false,
-        lastUpdated: null,
-        currentUserRank: null,
+
+        // Add new entry
+        const updated = [...state.entries, {
+            rank: newEntry.rank,
+            user: {
+                id: newEntry.user_id,
+                name: newEntry.user_name,
+                school: newEntry.school,
+            },
+            score: newEntry.score,
+            percentage: newEntry.percentage,
+            correct_count: newEntry.correct_count,
+            time_taken: newEntry.time_taken,
+        }];
+        updated.sort((a, b) => a.rank - b.rank);
+        return { entries: updated.slice(0, 20) };
     }),
 }));
 

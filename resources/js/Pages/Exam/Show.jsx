@@ -27,9 +27,9 @@ export default function Show({ tryout, previousAttempts }) {
         <MainLayout title={tryout.title}>
             <Head title={tryout.title} />
 
-            <div className="max-w-7xl mx-auto space-y-8">
+            <div className="max-w-7xl mx-auto space-y-5 md:space-y-8">
                 {/* Hero Section */}
-                <div className="relative overflow-hidden rounded-3xl bg-indigo-600 p-8 md:p-10 text-white shadow-xl">
+                <div className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-indigo-600 p-5 md:p-10 text-white shadow-xl">
                     {/* Subtle Texture/Pattern - drastically simplified from blobs */}
                     <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
@@ -69,11 +69,11 @@ export default function Show({ tryout, previousAttempts }) {
                             </div>
 
                             <div>
-                                <h1 className="text-3xl md:text-4xl font-bold font-display leading-tight drop-shadow-sm mb-2">
+                                <h1 className="text-xl md:text-4xl font-bold font-display leading-tight drop-shadow-sm mb-2">
                                     {tryout.title}
                                 </h1>
                                 {tryout.description && (
-                                    <p className="text-indigo-100 text-lg leading-relaxed max-w-3xl">
+                                    <p className="text-indigo-100 text-xs md:text-lg leading-relaxed max-w-3xl">
                                         {tryout.description}
                                     </p>
                                 )}
@@ -82,23 +82,23 @@ export default function Show({ tryout, previousAttempts }) {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 md:gap-8">
                     {/* Left Column: Stats & Rules */}
-                    <div className="lg:col-span-2 space-y-8">
+                    <div className="lg:col-span-2 space-y-5 md:space-y-8">
                         {/* Stats Grid */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-4">
                             {[
                                 { label: 'Butir Soal', value: tryout.total_questions, icon: DocumentTextIcon, color: 'blue' },
                                 { label: 'Durasi', value: `${tryout.duration_minutes} Menit`, icon: ClockIcon, color: 'amber' },
                                 { label: 'Peserta', value: tryout.participant_count, icon: UserGroupIcon, color: 'emerald' },
                                 { label: 'Maks. Pelanggaran', value: tryout.max_violations, icon: ShieldExclamationIcon, color: 'red' },
                             ].map((stat, idx) => (
-                                <div key={idx} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
-                                    <div className={`w-12 h-12 rounded-2xl bg-${stat.color}-50 flex items-center justify-center mb-3 text-${stat.color}-600 group-hover:scale-110 transition-transform duration-300`}>
-                                        <stat.icon className="w-6 h-6" />
+                                <div key={idx} className="bg-white p-3 md:p-5 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                                    <div className={`w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-${stat.color}-50 flex items-center justify-center mb-2 md:mb-3 text-${stat.color}-600 group-hover:scale-110 transition-transform duration-300`}>
+                                        <stat.icon className="w-4 h-4 md:w-6 md:h-6" />
                                     </div>
-                                    <span className="text-xl font-bold text-gray-900 mb-1">{stat.value}</span>
-                                    <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">{stat.label}</span>
+                                    <span className="text-base md:text-xl font-bold text-gray-900 mb-0.5 md:mb-1">{stat.value}</span>
+                                    <span className="text-[9px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">{stat.label}</span>
                                 </div>
                             ))}
                         </div>
@@ -111,7 +111,7 @@ export default function Show({ tryout, previousAttempts }) {
                                 </div>
                                 <h3 className="font-bold text-gray-900">Peraturan & Ketentuan Ujian</h3>
                             </div>
-                            <div className="p-6 md:p-8">
+                            <div className="p-4 md:p-6 md:p-8">
                                 <ul className="space-y-4">
                                     {[
                                         settings.enable_fullscreen && 'Ujian akan berlangsung dalam mode layar penuh (fullscreen).',
@@ -135,7 +135,7 @@ export default function Show({ tryout, previousAttempts }) {
                     </div>
 
                     {/* Right Column: Actions & History */}
-                    <div className="space-y-6">
+                    <div className="space-y-4 md:space-y-6">
                         {/* Action Card */}
                         <div className="bg-white rounded-2xl border border-gray-100 shadow-lg shadow-indigo-500/5 p-6 relative overflow-hidden">
                             <h3 className="text-lg font-bold text-gray-900 mb-2 relative z-10">Mulai Pengerjaan</h3>

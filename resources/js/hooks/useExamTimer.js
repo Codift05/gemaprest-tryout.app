@@ -1,113 +1,75 @@
-import { useEffect, useRef, useCallback, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import axios from 'axios';
 
 /**
- * Custom hook for managing exam timer with server synchronization
- * @param {string} endTime - ISO timestamp when the exam ends
- * @param {number} sessionId - Exam session ID
+ * Custom hook for managing exam timer with simple integer countdown.
+ * Decoupled from client system time to ensure reliability.
+ * 
+ * @param {number} initialRemainingTime - Initial remaining time in seconds
+ * @param {number} sessionId - Exam session ID (unused for now, but kept for interface)
  * @param {function} onTimeUp - Callback when time runs out
- * @param {number} syncInterval - Interval in ms to sync with server (default: 30000)
  */
-export default function useExamTimer(endTime, sessionId, onTimeUp, syncInterval = 30000) {
-    const [timeRemaining, setTimeRemaining] = useState(0);
-    const [isExpired, setIsExpired] = useState(false);
-    const [serverOffset, setServerOffset] = useState(0);
-    const intervalRef = useRef(null);
-    const syncIntervalRef = useRef(null);
-    const hasCalledTimeUp = useRef(false);
+export default function useExamTimer(endTime, sessionId, onTimeUp, syncInterval = 30000, initialRemainingTime = 0) {
+    // Use local state for seconds remaining. 
+    // We trust the server's initial value and just count down.
+    const [timeRemaining, setTimeRemaining] = useState(initialRemainingTime);
+    const [isExpired, setIsExpired] = useState(initialRemainingTime <= 0);
+    const timerRef = useRef(null);
 
-    // Calculate time remaining based on server-synced time
-    const calculateTimeRemaining = useCallback(() => {
-        if (!endTime) return 0;
-        
-        const now = Date.now() + serverOffset;
-        const end = new Date(endTime).getTime();
-        const remaining = Math.max(0, Math.floor((end - now) / 1000));
-        
-        return remaining;
-    }, [endTime, serverOffset]);
-
-    // Sync with server time
-    const syncWithServer = useCallback(async () => {
-        try {
-            const requestTime = Date.now();
-            const response = await axios.get(route('exam.server-time'));
-            const responseTime = Date.now();
-            
-            // Calculate network latency and adjust
-            const latency = (responseTime - requestTime) / 2;
-            const serverTime = new Date(response.data.time).getTime() + latency;
-            const offset = serverTime - responseTime;
-            
-            setServerOffset(offset);
-            
-            // Recalculate remaining time immediately after sync
-            const remaining = calculateTimeRemaining();
-            setTimeRemaining(remaining);
-            
-            if (remaining <= 0 && !hasCalledTimeUp.current) {
-                setIsExpired(true);
-                hasCalledTimeUp.current = true;
-                onTimeUp?.();
-            }
-        } catch (error) {
-            console.error('Failed to sync time with server:', error);
-        }
-    }, [calculateTimeRemaining, onTimeUp]);
-
-    // Format time for display
-    const formatTime = useCallback((seconds) => {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-
-        if (hours > 0) {
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-        return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    }, []);
-
-    // Initialize and start timer
+    // Update state if initial value changes (e.g. on mount/remount)
     useEffect(() => {
-        if (!endTime) return;
+        if (initialRemainingTime !== undefined && initialRemainingTime !== null) {
+            // Only update if we don't have a timer running or it's a significant jump? 
+            // Actually, usually we just want to set it on mount.
+            // But to be safe, let's sett it.
+            setTimeRemaining(initialRemainingTime);
+        }
+    }, [initialRemainingTime]);
 
-        // Initial sync
-        syncWithServer();
+    // Countdown effect
+    useEffect(() => {
+        // Clear existing timer
+        if (timerRef.current) clearInterval(timerRef.current);
 
-        // Set up countdown interval
-        intervalRef.current = setInterval(() => {
-            const remaining = calculateTimeRemaining();
-            setTimeRemaining(remaining);
+        timerRef.current = setInterval(() => {
+            setTimeRemaining((prev) => {
+                const next = prev - 1;
 
-            if (remaining <= 0 && !hasCalledTimeUp.current) {
-                setIsExpired(true);
-                hasCalledTimeUp.current = true;
-                clearInterval(intervalRef.current);
-                onTimeUp?.();
-            }
+                if (next <= 0) {
+                    clearInterval(timerRef.current);
+                    if (!isExpired) {
+                        setIsExpired(true);
+                        onTimeUp?.();
+                    }
+                    return 0;
+                }
+
+                return next;
+            });
         }, 1000);
 
-        // Set up periodic server sync
-        syncIntervalRef.current = setInterval(syncWithServer, syncInterval);
-
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-            if (syncIntervalRef.current) clearInterval(syncIntervalRef.current);
+            if (timerRef.current) clearInterval(timerRef.current);
         };
-    }, [endTime, syncInterval, calculateTimeRemaining, syncWithServer, onTimeUp]);
+    }, [isExpired, onTimeUp]);
 
-    // Get urgency level for styling
+    // Helpers
+    const formatTime = useCallback((seconds) => {
+        if (seconds < 0) seconds = 0;
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+
+        const pad = (n) => n.toString().padStart(2, '0');
+
+        if (h > 0) return `${pad(h)}:${pad(m)}:${pad(s)}`;
+        return `${pad(m)}:${pad(s)}`;
+    }, []);
+
     const getUrgencyLevel = useCallback(() => {
-        if (timeRemaining <= 60) return 'critical'; // Last minute
-        if (timeRemaining <= 300) return 'warning'; // Last 5 minutes
-        if (timeRemaining <= 600) return 'caution'; // Last 10 minutes
+        if (timeRemaining <= 60) return 'critical';
+        if (timeRemaining <= 300) return 'warning';
         return 'normal';
-    }, [timeRemaining]);
-
-    // Get percentage remaining
-    const getPercentRemaining = useCallback((totalSeconds) => {
-        if (!totalSeconds || totalSeconds <= 0) return 0;
-        return Math.min(100, Math.max(0, (timeRemaining / totalSeconds) * 100));
     }, [timeRemaining]);
 
     return {
@@ -115,10 +77,5 @@ export default function useExamTimer(endTime, sessionId, onTimeUp, syncInterval 
         formattedTime: formatTime(timeRemaining),
         isExpired,
         urgencyLevel: getUrgencyLevel(),
-        getPercentRemaining,
-        syncWithServer,
-        hours: Math.floor(timeRemaining / 3600),
-        minutes: Math.floor((timeRemaining % 3600) / 60),
-        seconds: timeRemaining % 60,
     };
 }

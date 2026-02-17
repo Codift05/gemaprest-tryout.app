@@ -1,16 +1,27 @@
 <?php
-use App\Models\ExamSession;
-require __DIR__ . '/vendor/autoload.php';
-$app = require_once __DIR__ . '/bootstrap/app.php';
-$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
-$kernel->bootstrap();
 
-$session = ExamSession::latest()->first();
+use Illuminate\Contracts\Console\Kernel;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$app = require_once __DIR__ . '/bootstrap/app.php';
+
+$app->make(Kernel::class)->bootstrap();
+
+$session = \App\Models\ExamSession::find(5);
+
 if ($session) {
     echo "Session ID: " . $session->id . "\n";
-    echo "Question Order: " . json_encode($session->question_order) . "\n";
-    echo "Questions Count from getOrderedQuestions: " . $session->getOrderedQuestions()->count() . "\n";
-    echo "Tryout Questions Count: " . $session->tryout->questions()->count() . "\n";
+    echo "Server End Time:     " . ($session->server_end_time ? $session->server_end_time->format('Y-m-d H:i:s') : 'NULL') . "\n";
+    echo "Current Server Time: " . now()->format('Y-m-d H:i:s') . "\n";
+    echo "Is Active: " . ($session->isActive() ? 'Yes' : 'No') . "\n";
+    echo "Status: " . $session->status . "\n";
+
+    // Calculate difference
+    if ($session->server_end_time) {
+        $diff = now()->diffInSeconds($session->server_end_time, false);
+        echo "Seconds Remaining (diff): " . $diff . "\n";
+    }
 } else {
-    echo "No session found.\n";
+    echo "Session 3 not found.\n";
 }
