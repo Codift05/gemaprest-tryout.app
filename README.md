@@ -250,26 +250,27 @@ php artisan test
 
 ```
 ├── app/
-│   ├── Events/              # Broadcasting events
+│   ├── Events/              # Broadcasting events (WebSocket)
 │   ├── Http/
-│   │   ├── Controllers/     # Request handlers
-│   │   └── Middleware/      # Custom middleware
-│   ├── Models/              # Eloquent models
-│   └── Services/            # Business logic
+│   │   ├── Controllers/     # Request handlers (Inertia & API)
+│   │   └── Middleware/      # Custom middleware (Role checks)
+│   ├── Models/              # Eloquent models (User, Tryout, etc)
+│   └── Services/            # Business logic (Exam processing)
 ├── database/
-│   ├── migrations/          # Database schema
-│   └── seeders/             # Sample data
+│   ├── migrations/          # Database schema definitions
+│   └── seeders/             # Sample data generators
 ├── resources/
 │   ├── js/
-│   │   ├── Components/      # Reusable components
-│   │   ├── Layouts/         # Page layouts
-│   │   ├── Pages/           # Inertia pages
-│   │   ├── hooks/           # Custom React hooks
-│   │   └── stores/          # Zustand stores
-│   └── views/               # Blade templates
-└── routes/
-    ├── web.php              # Web routes
-    └── channels.php         # Broadcast channels
+│   │   ├── Components/      # Reusable React components
+│   │   ├── Layouts/         # Page layouts (Authenticated/Guest)
+│   │   ├── Pages/           # Inertia page views
+│   │   ├── hooks/           # Custom React hooks (useTimer, etc)
+│   │   └── stores/          # Zustand state management
+│   └── views/               # Blade entry points
+├── routes/
+│   ├── web.php              # Web routes (Inertia)
+│   └── channels.php         # Private broadcast channels
+├── tests/                   # Automated tests (Feature/Unit)
 ```
 
 ## Screenshots
@@ -356,7 +357,9 @@ Jika realtime fitur tidak berjalan:
 
 ## Lisensi
 
-Proyek ini dilisensikan di bawah [MIT License](LICENSE).
+Proyek ini adalah software open-source yang dilisensikan di bawah [MIT License](LICENSE).
+
+Dibuat dengan ❤️ oleh Tim Gemaprest untuk mendukung pendidikan Indonesia.
 
 ---
 
