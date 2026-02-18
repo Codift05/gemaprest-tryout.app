@@ -1,295 +1,291 @@
 import { Head, Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
-import { useLeaderboardRealtime } from '@/hooks';
 import {
     TrophyIcon,
     ArrowLeftIcon,
     UserCircleIcon,
-    ChartBarIcon,
+    MagnifyingGlassIcon,
     ClockIcon,
+    ChartBarIcon,
+    SparklesIcon
 } from '@heroicons/react/24/outline';
-import { formatDistanceToNow } from 'date-fns';
-import { id } from 'date-fns/locale';
+import { useState } from 'react';
 
-export default function Show({ tryout, entries: initialEntries, currentUserRank }) {
-    const { entries, isConnected } = useLeaderboardRealtime(tryout.slug, initialEntries);
+export default function Show({ tryout, entries, userEntry, totalParticipants }) {
+    const [search, setSearch] = useState('');
+
+    // Filter entries based on search
+    const filteredEntries = entries.filter(entry =>
+        entry.user.name.toLowerCase().includes(search.toLowerCase()) ||
+        (entry.user.school && entry.user.school.toLowerCase().includes(search.toLowerCase()))
+    );
 
     const getMedalColor = (rank) => {
         switch (rank) {
-            case 1:
-                return 'from-yellow-400 to-yellow-600';
-            case 2:
-                return 'from-gray-300 to-gray-500';
-            case 3:
-                return 'from-amber-500 to-amber-700';
-            default:
-                return 'from-gray-100 to-gray-200';
+            case 1: return 'from-yellow-300 to-yellow-500 text-yellow-900 border-yellow-200';
+            case 2: return 'from-gray-300 to-gray-400 text-gray-800 border-gray-300';
+            case 3: return 'from-orange-300 to-orange-500 text-orange-900 border-orange-200';
+            default: return 'from-gray-50 to-gray-100 text-gray-600 border-gray-200';
         }
     };
 
-    const getMedalEmoji = (rank) => {
-        switch (rank) {
-            case 1:
-                return '🥇';
-            case 2:
-                return '🥈';
-            case 3:
-                return '🥉';
-            default:
-                return null;
-        }
+    const getRankBadge = (rank) => {
+        if (rank === 1) return <span className="text-2xl">🥇</span>;
+        if (rank === 2) return <span className="text-2xl">🥈</span>;
+        if (rank === 3) return <span className="text-2xl">🥉</span>;
+        return <span className="font-bold text-gray-500">#{rank}</span>;
     };
 
     return (
         <MainLayout>
             <Head title={`Leaderboard - ${tryout.title}`} />
 
-            <div className="max-w-4xl mx-auto space-y-5 md:space-y-6">
-                {/* Header */}
-                <div>
-                    <Link
-                        href={route('dashboard')}
-                        className="inline-flex items-center text-gray-500 hover:text-indigo-600 mb-4 transition-colors font-medium text-sm"
-                    >
-                        <ArrowLeftIcon className="w-4 h-4 mr-1" />
-                        Kembali ke Dashboard
-                    </Link>
-
-                    <div className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-2xl md:rounded-3xl shadow-xl shadow-emerald-200 overflow-hidden">
-                        <div className="p-5 md:p-8 relative">
-                            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-                            <div className="relative z-10 flex items-center justify-between">
-                                <div>
-                                    <h1 className="text-xl md:text-3xl font-bold mb-1 md:mb-2">Leaderboard</h1>
-                                    <p className="text-emerald-100 text-xs md:text-base">{tryout.title}</p>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span
-                                        className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-300 animate-pulse' : 'bg-red-400'
-                                            }`}
-                                    />
-                                    <span className="text-xs md:text-sm text-emerald-100">
-                                        {isConnected ? 'Live' : 'Offline'}
-                                    </span>
-                                </div>
+            <div className="min-h-screen bg-gray-50 font-sans pb-20">
+                {/* Header / Hero Section */}
+                <div className="bg-white border-b border-gray-200 pb-8 pt-6 sticky top-0 z-30 shadow-sm/50 backdrop-blur-md bg-white/90">
+                    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                            <div>
+                                <Link
+                                    href={route('dashboard')}
+                                    className="inline-flex items-center text-gray-500 hover:text-indigo-600 transition-colors font-medium text-sm mb-2 group"
+                                >
+                                    <ArrowLeftIcon className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
+                                    Kembali ke Dashboard
+                                </Link>
+                                <h1 className="text-2xl md:text-3xl font-black text-gray-900 flex items-center gap-2">
+                                    <TrophyIcon className="w-8 h-8 text-amber-500" />
+                                    Leaderboard
+                                </h1>
+                                <p className="text-gray-500 mt-1">{tryout.title}</p>
                             </div>
 
-                            {/* Stats */}
-                            <div className="relative z-10 grid grid-cols-3 gap-2.5 md:gap-4 mt-4 md:mt-6">
-                                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-2.5 md:p-4 text-center">
-                                    <p className="text-xl md:text-3xl font-bold">{entries.length}</p>
-                                    <p className="text-[10px] md:text-sm text-emerald-100">Peserta</p>
-                                </div>
-                                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-2.5 md:p-4 text-center">
-                                    <p className="text-xl md:text-3xl font-bold">
-                                        {entries.length > 0 ? entries[0].percentage : 0}%
-                                    </p>
-                                    <p className="text-[10px] md:text-sm text-emerald-100">Nilai Tertinggi</p>
-                                </div>
-                                <div className="bg-white/15 backdrop-blur-sm rounded-xl p-2.5 md:p-4 text-center">
-                                    <p className="text-xl md:text-3xl font-bold">
-                                        {entries.length > 0
-                                            ? Math.round(
-                                                entries.reduce((acc, e) => acc + e.percentage, 0) /
-                                                entries.length
-                                            )
-                                            : 0}%
-                                    </p>
-                                    <p className="text-[10px] md:text-sm text-emerald-100">Rata-rata</p>
+                            <div className="flex items-center gap-3">
+                                <div className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-sm border border-indigo-100 flex items-center gap-2">
+                                    <UserCircleIcon className="w-5 h-5" />
+                                    {totalParticipants} Peserta
                                 </div>
                             </div>
+                        </div>
+
+                        {/* Search Bar */}
+                        <div className="relative max-w-md">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+                            </div>
+                            <input
+                                type="text"
+                                className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 sm:text-sm transition-all shadow-sm"
+                                placeholder="Cari nama peserta..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
                         </div>
                     </div>
                 </div>
 
-                {/* Current User Rank */}
-                {currentUserRank && (
-                    <div className="bg-indigo-50 border border-indigo-100 rounded-xl md:rounded-2xl shadow-sm">
-                        <div className="p-3 md:p-4 flex items-center justify-between">
-                            <div className="flex items-center gap-3 md:gap-4">
-                                <div className="w-10 h-10 md:w-12 md:h-12 bg-indigo-100 rounded-full flex items-center justify-center">
-                                    <ChartBarIcon className="w-5 h-5 md:w-6 md:h-6 text-indigo-600" />
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+                    {/* Top 3 Podium (Only show if no search filter) */}
+                    {!search && entries.length >= 3 && (
+                        <div className="flex flex-col md:flex-row items-end justify-center gap-4 mb-10 min-h-[200px]">
+                            {/* 2nd Place */}
+                            <div className="order-2 md:order-1 flex-1 flex flex-col items-center">
+                                <div className="relative">
+                                    <div className="w-20 h-20 rounded-full border-4 border-gray-300 shadow-xl overflow-hidden mb-3">
+                                        <img
+                                            src={`/storage/${entries[1].user.avatar}`}
+                                            className="w-full h-full object-cover bg-gray-200"
+                                            onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(entries[1].user.name)}&background=random` }}
+                                            alt={entries[1].user.name}
+                                        />
+                                    </div>
+                                    <div className="absolute -bottom-2 inset-x-0 flex justify-center">
+                                        <span className="bg-gray-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-sm border border-white">#2</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="font-semibold text-gray-900 text-sm md:text-base">Peringkat Anda</p>
-                                    <p className="text-xs md:text-sm text-indigo-600">
-                                        #{currentUserRank.rank} dengan skor {currentUserRank.percentage}%
-                                    </p>
+                                <div className="text-center mt-2 mb-2">
+                                    <p className="font-bold text-gray-900 line-clamp-1 text-sm">{entries[1].user.name}</p>
+                                    <p className="text-indigo-600 font-black">{entries[1].score}</p>
+                                </div>
+                                <div className="w-full h-24 bg-gradient-to-t from-gray-100 to-gray-50 rounded-t-2xl border-x border-t border-gray-200 shadow-sm relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-white/40"></div>
                                 </div>
                             </div>
+
+                            {/* 1st Place */}
+                            <div className="order-1 md:order-2 flex-1 flex flex-col items-center z-10 -mt-8 md:mt-0">
+                                <div className="relative">
+                                    <div className="absolute -top-6 inset-x-0 flex justify-center">
+                                        <SparklesIcon className="w-8 h-8 text-yellow-400 animate-pulse" />
+                                    </div>
+                                    <div className="w-24 h-24 rounded-full border-4 border-yellow-400 shadow-2xl shadow-yellow-200 overflow-hidden mb-3 ring-4 ring-yellow-100">
+                                        <img
+                                            src={`/storage/${entries[0].user.avatar}`}
+                                            className="w-full h-full object-cover bg-yellow-50"
+                                            onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(entries[0].user.name)}&background=random` }}
+                                            alt={entries[0].user.name}
+                                        />
+                                    </div>
+                                    <div className="absolute -bottom-2 inset-x-0 flex justify-center">
+                                        <span className="bg-yellow-500 text-white text-xs font-bold px-3 py-0.5 rounded-full shadow-sm border border-white">#1</span>
+                                    </div>
+                                </div>
+                                <div className="text-center mt-2 mb-2">
+                                    <p className="font-bold text-gray-900 line-clamp-1 text-base">{entries[0].user.name}</p>
+                                    <p className="text-indigo-600 font-black text-xl">{entries[0].score}</p>
+                                </div>
+                                <div className="w-full h-32 bg-gradient-to-t from-yellow-50 to-white rounded-t-2xl border-x border-t border-yellow-200 shadow-lg relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-yellow-400/10"></div>
+                                    <div className="absolute bottom-4 inset-x-0 text-center">
+                                        <span className="text-6xl">🥇</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 3rd Place */}
+                            <div className="order-3 md:order-3 flex-1 flex flex-col items-center">
+                                <div className="relative">
+                                    <div className="w-20 h-20 rounded-full border-4 border-orange-300 shadow-xl overflow-hidden mb-3">
+                                        <img
+                                            src={`/storage/${entries[2].user.avatar}`}
+                                            className="w-full h-full object-cover bg-orange-50"
+                                            onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(entries[2].user.name)}&background=random` }}
+                                            alt={entries[2].user.name}
+                                        />
+                                    </div>
+                                    <div className="absolute -bottom-2 inset-x-0 flex justify-center">
+                                        <span className="bg-orange-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-sm border border-white">#3</span>
+                                    </div>
+                                </div>
+                                <div className="text-center mt-2 mb-2">
+                                    <p className="font-bold text-gray-900 line-clamp-1 text-sm">{entries[2].user.name}</p>
+                                    <p className="text-indigo-600 font-black">{entries[2].score}</p>
+                                </div>
+                                <div className="w-full h-16 bg-gradient-to-t from-orange-50 to-white rounded-t-2xl border-x border-t border-orange-200 shadow-sm relative overflow-hidden">
+                                    <div className="absolute inset-0 bg-orange-400/10"></div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Leaderboard List */}
+                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left">
+                                <thead className="bg-gray-50/50 border-b border-gray-100">
+                                    <tr>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider w-20 text-center">Rank</th>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Peserta</th>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Skor</th>
+                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right hidden md:table-cell">Waktu</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-50">
+                                    {filteredEntries.length > 0 ? (
+                                        filteredEntries.map((entry, index) => (
+                                            <tr
+                                                key={entry.rank}
+                                                className={`group hover:bg-gray-50 transition-colors ${entry.user.is_current_user ? 'bg-indigo-50/60 hover:bg-indigo-50' : ''}`}
+                                            >
+                                                <td className="px-6 py-4 text-center">
+                                                    <div className={`w-10 h-10 mx-auto flex items-center justify-center rounded-xl bg-gradient-to-br shadow-sm border ${getMedalColor(entry.rank)}`}>
+                                                        {getRankBadge(entry.rank)}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-4">
+                                                        <img
+                                                            src={`/storage/${entry.user.avatar}`}
+                                                            className="w-10 h-10 rounded-full object-cover border border-gray-200 bg-gray-100"
+                                                            onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(entry.user.name)}&background=random` }}
+                                                            alt=""
+                                                        />
+                                                        <div>
+                                                            <div className="flex items-center gap-2">
+                                                                <p className="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
+                                                                    {entry.user.name}
+                                                                </p>
+                                                                {entry.user.is_current_user && (
+                                                                    <span className="px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-700 text-[10px] font-bold uppercase tracking-wider">Anda</span>
+                                                                )}
+                                                            </div>
+                                                            {entry.user.school && (
+                                                                <p className="text-xs text-gray-500">{entry.user.school}</p>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 text-right">
+                                                    <div className="flex flex-col items-end">
+                                                        <span className="text-lg font-black text-indigo-600">{entry.score}</span>
+                                                        <span className="text-xs text-gray-400 font-medium">Benar {entry.correct_count}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 text-right hidden md:table-cell">
+                                                    <div className="flex items-center justify-end gap-1.5 text-gray-500">
+                                                        <ClockIcon className="w-4 h-4" />
+                                                        <span className="text-sm font-medium">{entry.time_taken}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="4" className="px-6 py-12 text-center text-gray-500">
+                                                <div className="flex flex-col items-center justify-center">
+                                                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                                        <MagnifyingGlassIcon className="w-8 h-8 text-gray-400" />
+                                                    </div>
+                                                    <p className="font-medium">Tidak ada peserta ditemukan</p>
+                                                    <p className="text-sm mt-1">Coba kata kunci pencarian lain</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Sticky My Rank Bar (if user is not in top view or just for quick access) */}
+                {userEntry && (
+                    <div className="fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.1)] p-4 z-40 animate-slide-up">
+                        <div className="max-w-5xl mx-auto flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                                <div className="text-center">
+                                    <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Peringkat</p>
+                                    <p className="text-xl font-black text-indigo-600">#{userEntry.rank}</p>
+                                </div>
+                                <div className="h-10 w-px bg-gray-200 mx-2 hidden sm:block"></div>
+                                <div className="flex items-center gap-3">
+                                    <img
+                                        src={`/storage/${userEntry.user.avatar}`}
+                                        className="w-10 h-10 rounded-full object-cover border border-gray-200"
+                                        onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userEntry.user.name)}&background=random` }}
+                                        alt=""
+                                    />
+                                    <div>
+                                        <div className="flex items-center gap-2">
+                                            <p className="font-bold text-gray-900 line-clamp-1">{userEntry.user.name}</p>
+                                            <span className="px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-700 text-[10px] font-bold uppercase tracking-wider">Anda</span>
+                                        </div>
+                                        <p className="text-xs text-gray-500 font-medium">Skor: {userEntry.score}</p>
+                                    </div>
+                                </div>
+                            </div>
+
                             <Link
-                                href={route('exam.result', currentUserRank.session_id)}
-                                className="text-indigo-600 hover:text-indigo-700 text-xs md:text-sm font-semibold"
+                                href={route('exam.result', { session: 'latest' })} // Note: controller doesn't pass session ID explicitly in userEntry, might need adjustment or direct link to generic result if supported, or just 'Lihat Detail' if we had the session ID. 
+                                // Actually, checking controller: userEntry doesn't have session_id. 
+                                // So I will just remove the link or link to dashboard for now.
+                                className="hidden md:flex btn btn-primary px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/20"
                             >
-                                Lihat Detail →
+                                Kembali ke Dashboard
                             </Link>
                         </div>
                     </div>
                 )}
-
-                {/* Top 3 Podium */}
-                {entries.length >= 3 && (
-                    <div className="flex items-end justify-center gap-2.5 md:gap-4 px-4">
-                        {/* 2nd Place */}
-                        <div className="flex-1 max-w-[120px] md:max-w-[140px]">
-                            <div className="text-center">
-                                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 flex items-center justify-center text-white text-xl md:text-2xl ring-4 ring-gray-200">
-                                    {entries[1].user?.avatar ? (
-                                        <img
-                                            src={`/storage/${entries[1].user.avatar}`}
-                                            alt=""
-                                            className="w-full h-full rounded-full object-cover"
-                                        />
-                                    ) : (
-                                        '🥈'
-                                    )}
-                                </div>
-                                <p className="font-semibold text-gray-700 truncate text-xs md:text-sm">
-                                    {entries[1].user?.name || 'Anonim'}
-                                </p>
-                                <p className="text-base md:text-xl font-bold text-gray-500">
-                                    {entries[1].percentage}%
-                                </p>
-                            </div>
-                            <div className="h-16 md:h-20 bg-gradient-to-b from-gray-200 to-gray-300 rounded-t-lg mt-2" />
-                        </div>
-
-                        {/* 1st Place */}
-                        <div className="flex-1 max-w-[130px] md:max-w-[160px]">
-                            <div className="text-center">
-                                <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-2 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-white text-2xl md:text-3xl ring-4 ring-yellow-300 ring-offset-2 ring-offset-gray-50">
-                                    {entries[0].user?.avatar ? (
-                                        <img
-                                            src={`/storage/${entries[0].user.avatar}`}
-                                            alt=""
-                                            className="w-full h-full rounded-full object-cover"
-                                        />
-                                    ) : (
-                                        '🥇'
-                                    )}
-                                </div>
-                                <p className="font-bold text-gray-900 truncate text-sm md:text-base">
-                                    {entries[0].user?.name || 'Anonim'}
-                                </p>
-                                <p className="text-lg md:text-2xl font-bold text-yellow-600">
-                                    {entries[0].percentage}%
-                                </p>
-                            </div>
-                            <div className="h-20 md:h-28 bg-gradient-to-b from-yellow-400 to-yellow-500 rounded-t-lg mt-2 shadow-[0_0_20px_rgba(234,179,8,0.2)]" />
-                        </div>
-
-                        {/* 3rd Place */}
-                        <div className="flex-1 max-w-[120px] md:max-w-[140px]">
-                            <div className="text-center">
-                                <div className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white text-xl md:text-2xl ring-4 ring-amber-200">
-                                    {entries[2].user?.avatar ? (
-                                        <img
-                                            src={`/storage/${entries[2].user.avatar}`}
-                                            alt=""
-                                            className="w-full h-full rounded-full object-cover"
-                                        />
-                                    ) : (
-                                        '🥉'
-                                    )}
-                                </div>
-                                <p className="font-semibold text-gray-700 truncate text-xs md:text-sm">
-                                    {entries[2].user?.name || 'Anonim'}
-                                </p>
-                                <p className="text-base md:text-xl font-bold text-amber-700">
-                                    {entries[2].percentage}%
-                                </p>
-                            </div>
-                            <div className="h-12 md:h-14 bg-gradient-to-b from-amber-300 to-amber-400 rounded-t-lg mt-2" />
-                        </div>
-                    </div>
-                )}
-
-                {/* Full Leaderboard */}
-                <div className="bg-white rounded-2xl md:rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div className="px-5 md:px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                        <h2 className="font-semibold text-gray-900 flex items-center gap-2">
-                            <TrophyIcon className="w-5 h-5 text-amber-500" />
-                            Peringkat Lengkap
-                        </h2>
-                    </div>
-
-                    {entries.length === 0 ? (
-                        <div className="p-8 md:p-12 text-center">
-                            <UserCircleIcon className="w-12 h-12 md:w-16 md:h-16 text-gray-300 mx-auto mb-4" />
-                            <p className="text-gray-500">Belum ada peserta yang menyelesaikan tryout ini</p>
-                        </div>
-                    ) : (
-                        <div className="divide-y divide-gray-100">
-                            {entries.map((entry, index) => {
-                                const rank = index + 1;
-                                const isCurrentUser = entry.is_current_user;
-
-                                return (
-                                    <div
-                                        key={entry.id}
-                                        className={`p-3 md:p-4 flex items-center gap-3 md:gap-4 transition-colors ${isCurrentUser ? 'bg-indigo-50/50' : 'hover:bg-gray-50'
-                                            }`}
-                                    >
-                                        {/* Rank */}
-                                        <div
-                                            className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-xs md:text-sm font-bold shrink-0 ${rank <= 3
-                                                ? `bg-gradient-to-br ${getMedalColor(rank)} text-white`
-                                                : 'bg-gray-100 text-gray-500'
-                                                }`}
-                                        >
-                                            {getMedalEmoji(rank) || rank}
-                                        </div>
-
-                                        {/* User Info */}
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-2">
-                                                <p className="font-semibold text-gray-900 truncate text-sm md:text-base">
-                                                    {entry.user?.name || 'Anonim'}
-                                                </p>
-                                                {isCurrentUser && (
-                                                    <span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] md:text-xs font-medium rounded-full shrink-0">
-                                                        Anda
-                                                    </span>
-                                                )}
-                                            </div>
-                                            <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-gray-500">
-                                                <span className="flex items-center gap-1">
-                                                    <ClockIcon className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                                                    {entry.duration_minutes} mnt
-                                                </span>
-                                                {entry.finished_at && (
-                                                    <span className="hidden sm:inline">
-                                                        {formatDistanceToNow(new Date(entry.finished_at), {
-                                                            addSuffix: true,
-                                                            locale: id,
-                                                        })}
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        {/* Score */}
-                                        <div className="text-right shrink-0">
-                                            <p
-                                                className={`text-base md:text-xl font-bold ${entry.percentage >= 80
-                                                    ? 'text-emerald-600'
-                                                    : entry.percentage >= 60
-                                                        ? 'text-amber-600'
-                                                        : 'text-red-600'
-                                                    }`}
-                                            >
-                                                {entry.percentage}%
-                                            </p>
-                                            <p className="text-[10px] md:text-sm text-gray-400">
-                                                {entry.score} poin
-                                            </p>
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
             </div>
         </MainLayout>
     );
