@@ -225,11 +225,13 @@ php artisan serve
 # Reverb WebSocket server (terminal terpisah)
 php artisan reverb:start
 
-# Queue worker (terminal terpisah)
+# Queue worker (terminal terpisah - wajib untuk timer ujian)
 php artisan queue:work
 ```
 
 ## Akun Default
+
+> **Note:** Password default untuk semua akun adalah `password`.
 
 | Role | Email | Password |
 |------|-------|----------|
