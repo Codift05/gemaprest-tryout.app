@@ -13,7 +13,7 @@ import {
     ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 
-export default function Welcome() {
+export default function Welcome({ leaderboard, tryoutTitle }) {
     const [clickCount, setClickCount] = useState(0);
     const clickTimerRef = useRef(null);
 
@@ -183,7 +183,7 @@ export default function Welcome() {
                         {/* Section Header */}
                         <div className="text-center mb-12">
                             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-                                Siswa <span className="text-blue-600">Terbaik</span> Minggu Ini
+                                Siswa <span className="text-blue-600">Terbaik</span> {tryoutTitle ? <span className="text-gray-900 text-lg block md:inline font-medium md:ml-2">{tryoutTitle}</span> : 'Minggu Ini'}
                             </h2>
                             <p className="text-sm text-gray-600 max-w-xl mx-auto">
                                 Selesaikan tryout dan lihat namamu di leaderboard bersama peserta lainnya
@@ -202,101 +202,56 @@ export default function Welcome() {
                             </div>
 
                             {/* Leaderboard Items */}
+                            {/* Leaderboard Items */}
                             <div className="divide-y divide-gray-100 bg-gray-50">
-                                {/* Rank 1 */}
-                                <div className="px-8 py-5 bg-white hover:bg-blue-50 transition-colors">
-                                    <div className="grid grid-cols-12 gap-4 items-center">
-                                        <div className="col-span-1 flex justify-center">
-                                            <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-md">
-                                                <TrophyIcon className="w-5 h-5 text-white" />
+                                {leaderboard && leaderboard.length > 0 ? (
+                                    leaderboard.map((entry, index) => (
+                                        <div key={index} className="px-8 py-5 bg-white hover:bg-blue-50 transition-colors">
+                                            <div className="grid grid-cols-12 gap-4 items-center">
+                                                <div className="col-span-1 flex justify-center">
+                                                    {entry.rank === 1 && (
+                                                        <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-md">
+                                                            <TrophyIcon className="w-5 h-5 text-white" />
+                                                        </div>
+                                                    )}
+                                                    {entry.rank === 2 && (
+                                                        <div className="w-10 h-10 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center shadow-md">
+                                                            <TrophyIcon className="w-5 h-5 text-white" />
+                                                        </div>
+                                                    )}
+                                                    {entry.rank === 3 && (
+                                                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center shadow-md">
+                                                            <TrophyIcon className="w-5 h-5 text-white" />
+                                                        </div>
+                                                    )}
+                                                    {entry.rank > 3 && (
+                                                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm">
+                                                            {entry.rank}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="col-span-7 md:col-span-8">
+                                                    <div className="font-semibold text-gray-900 text-sm truncate">{entry.user.name}</div>
+                                                    <div className="text-xs text-gray-500 mt-0.5 truncate">{entry.user.school || '-'}</div>
+                                                </div>
+                                                <div className="col-span-4 md:col-span-3 text-right">
+                                                    <div className="text-xl font-bold text-blue-600">{Math.round(entry.score)}</div>
+                                                    <div className="text-xs text-gray-500 mt-0.5">Skor Akhir</div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div className="col-span-7 md:col-span-8">
-                                            <div className="font-semibold text-gray-900 text-sm">Ahmad Rizki Pratama</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">SMA Negeri 1 Manado</div>
+                                    ))
+                                ) : (
+                                    <div className="px-8 py-12 text-center">
+                                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
+                                            <TrophyIcon className="w-8 h-8 text-gray-400" />
                                         </div>
-                                        <div className="col-span-4 md:col-span-3 text-right">
-                                            <div className="text-xl font-bold text-blue-600">985</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">dari 1000</div>
-                                        </div>
+                                        <h3 className="text-lg font-medium text-gray-900 mb-1">Belum Ada Data</h3>
+                                        <p className="text-sm text-gray-500">
+                                            Jadilah yang pertama menempati leaderboard ini!
+                                        </p>
                                     </div>
-                                </div>
-
-                                {/* Rank 2 */}
-                                <div className="px-8 py-5 bg-white hover:bg-blue-50 transition-colors">
-                                    <div className="grid grid-cols-12 gap-4 items-center">
-                                        <div className="col-span-1 flex justify-center">
-                                            <div className="w-10 h-10 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center shadow-md">
-                                                <TrophyIcon className="w-5 h-5 text-white" />
-                                            </div>
-                                        </div>
-                                        <div className="col-span-7 md:col-span-8">
-                                            <div className="font-semibold text-gray-900 text-sm">Siti Nurhaliza</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">SMA Negeri 3 Manado</div>
-                                        </div>
-                                        <div className="col-span-4 md:col-span-3 text-right">
-                                            <div className="text-xl font-bold text-blue-600">978</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">dari 1000</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Rank 3 */}
-                                <div className="px-8 py-5 bg-white hover:bg-blue-50 transition-colors">
-                                    <div className="grid grid-cols-12 gap-4 items-center">
-                                        <div className="col-span-1 flex justify-center">
-                                            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center shadow-md">
-                                                <TrophyIcon className="w-5 h-5 text-white" />
-                                            </div>
-                                        </div>
-                                        <div className="col-span-7 md:col-span-8">
-                                            <div className="font-semibold text-gray-900 text-sm">Budi Santoso</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">SMA Negeri 2 Manado</div>
-                                        </div>
-                                        <div className="col-span-4 md:col-span-3 text-right">
-                                            <div className="text-xl font-bold text-blue-600">972</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">dari 1000</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Rank 4 */}
-                                <div className="px-8 py-5 bg-white hover:bg-blue-50 transition-colors">
-                                    <div className="grid grid-cols-12 gap-4 items-center">
-                                        <div className="col-span-1 flex justify-center">
-                                            <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm">
-                                                4
-                                            </div>
-                                        </div>
-                                        <div className="col-span-7 md:col-span-8">
-                                            <div className="font-semibold text-gray-900 text-sm">Dewi Lestari</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">SMA Negeri 5 Manado</div>
-                                        </div>
-                                        <div className="col-span-4 md:col-span-3 text-right">
-                                            <div className="text-xl font-bold text-blue-600">965</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">dari 1000</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Rank 5 */}
-                                <div className="px-8 py-5 bg-white hover:bg-blue-50 transition-colors">
-                                    <div className="grid grid-cols-12 gap-4 items-center">
-                                        <div className="col-span-1 flex justify-center">
-                                            <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm">
-                                                5
-                                            </div>
-                                        </div>
-                                        <div className="col-span-7 md:col-span-8">
-                                            <div className="font-semibold text-gray-900 text-sm">Andi Wijaya</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">SMA Negeri 4 Manado</div>
-                                        </div>
-                                        <div className="col-span-4 md:col-span-3 text-right">
-                                            <div className="text-xl font-bold text-blue-600">958</div>
-                                            <div className="text-xs text-gray-500 mt-0.5">dari 1000</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                )}
                             </div>
 
                             {/* CTA Footer */}
