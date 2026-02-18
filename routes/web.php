@@ -76,7 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // History
     Route::get('/history', function () {
         $sessions = \App\Models\ExamSession::where('user_id', auth()->id())
-            ->whereIn('status', ['completed', 'timeout', 'violated'])
+            ->whereIn('status', ['completed', 'timeout'])
             ->with('tryout:id,title,slug')
             ->orderByDesc('finished_at')
             ->paginate(20);
