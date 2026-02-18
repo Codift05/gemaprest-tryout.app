@@ -264,6 +264,9 @@ php artisan queue:work
     └── channels.php         # Broadcast channels
 ```
 
+## Screenshots
+(Tambahkan screenshot aplikasi di sini)
+
 ## Anti-Cheating System
 
 Sistem anti-kecurangan terintegrasi yang mendeteksi berbagai jenis pelanggaran:
