@@ -69,9 +69,10 @@ Platform tryout online untuk persiapan UTBK SNBT. Dibangun dengan arsitektur mod
 |------------|---------|-------------|
 | **React** | 18.3 | JavaScript library untuk building user interfaces |
 | **Inertia.js** | 1.2 | Modern monolith tanpa API, server-side routing dengan client-side rendering |
-| **Tailwind CSS** | 3.4 | Utility-first CSS framework |
+| **Tailwind CSS** | 3.4 | Utility-first CSS framework untuk styling cepat |
 | **Headless UI** | 2.1 | Unstyled, accessible UI components untuk React |
 | **Heroicons** | 2.1 | Hand-crafted SVG icons dari Tailwind CSS team |
+| **Framer Motion** | 11.x | Library animasi untuk transisi halaman yang halus |
 
 ### State Management dan Utilities
 
