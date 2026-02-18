@@ -229,6 +229,14 @@ php artisan reverb:start
 php artisan queue:work
 ```
 
+## Testing
+
+Untuk menjalankan automated testing:
+
+```bash
+php artisan test
+```
+
 ## Akun Default
 
 > **Note:** Password default untuk semua akun adalah `password`.
