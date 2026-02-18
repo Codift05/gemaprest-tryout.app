@@ -338,6 +338,22 @@ Sesuaikan `max_violations` di setiap tryout melalui admin panel
 
 ---
 
+## Troubleshooting
+
+### 419 Page Expired
+Biasanya terjadi karena masalah CSRF token. Coba:
+1. Clear browser cache/cookies
+2. Pastikan file `.env` memiliki `APP_URL` yang sesuai
+3. Jalankan `php artisan optimize:clear`
+
+### WebSocket Error
+Jika realtime fitur tidak berjalan:
+1. Pastikan Reverb server berjalan (`php artisan reverb:start`)
+2. Periksa port 8080 tidak digunakan aplikasi lain
+3. Cek console browser untuk error koneksi
+
+---
+
 ## Lisensi
 
 Proyek ini dilisensikan di bawah [MIT License](LICENSE).
