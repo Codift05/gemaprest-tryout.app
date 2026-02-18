@@ -36,7 +36,9 @@ Platform tryout online untuk persiapan UTBK SNBT. Dibangun dengan arsitektur mod
 | Anti-Cheating System | Deteksi pelanggaran (tab switch, copy-paste, dll) |
 | Auto-Save | Jawaban tersimpan otomatis setiap kali menjawab |
 | Review Pembahasan | Lihat jawaban dan penjelasan setelah ujian |
-| Realtime Leaderboard | Peringkat live menggunakan WebSocket |
+| Realtime Leaderboard | Peringkat live menggunakan WebSocket saat ujian berlangsung |
+| Dynamic Landing Page | Leaderboard publik yang terupdate otomatis berdasarkan hasil tryout terbaru |
+| History Sync | Sinkronisasi data riwayat ujian dengan dashboard untuk akurasi skor |
 
 ### Untuk Admin
 | Fitur | Deskripsi |
