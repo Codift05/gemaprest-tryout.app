@@ -26,7 +26,42 @@ Route::get('/', function () {
             ? redirect()->route('admin.dashboard')
             : redirect()->route('dashboard');
     }
-    return inertia('Welcome');
+
+    // Get latest published tryout with leaderboard enabled
+    $latestTryout = \App\Models\Tryout::where('is_published', true)
+        ->where('show_leaderboard', true)
+        ->latest('created_at')
+        ->first();
+
+    $leaderboard = [];
+
+    if ($latestTryout) {
+        $leaderboard = \App\Models\Leaderboard::where('tryout_id', $latestTryout->id)
+            ->with([
+                'user' => function ($query) {
+                    $query->select('id', 'name', 'school', 'avatar');
+                }
+            ])
+            ->orderBy('rank')
+            ->take(5)
+            ->get()
+            ->map(function ($entry) {
+                return [
+                    'rank' => $entry->rank,
+                    'user' => [
+                        'name' => $entry->user->name,
+                        'school' => $entry->user->school,
+                        'avatar' => $entry->user->avatar,
+                    ],
+                    'score' => $entry->score,
+                ];
+            });
+    }
+
+    return inertia('Welcome', [
+        'leaderboard' => $leaderboard,
+        'tryoutTitle' => $latestTryout ? $latestTryout->title : null,
+    ]);
 })->name('home');
 
 // Auth Routes
