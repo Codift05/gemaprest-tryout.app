@@ -22,18 +22,18 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
 
     const getMedalColor = (rank) => {
         switch (rank) {
-            case 1: return 'from-yellow-300 to-yellow-500 text-yellow-900 border-yellow-200';
-            case 2: return 'from-gray-300 to-gray-400 text-gray-800 border-gray-300';
-            case 3: return 'from-orange-300 to-orange-500 text-orange-900 border-orange-200';
-            default: return 'from-gray-50 to-gray-100 text-gray-600 border-gray-200';
+            case 1: return 'bg-gradient-to-br from-yellow-400 to-yellow-500 shadow-yellow-200';
+            case 2: return 'bg-gradient-to-br from-gray-300 to-gray-400 shadow-gray-200';
+            case 3: return 'bg-gradient-to-br from-orange-400 to-orange-500 shadow-orange-200';
+            default: return 'bg-gray-100 text-gray-600 font-bold';
         }
     };
 
     const getRankBadge = (rank) => {
-        if (rank === 1) return <span className="text-2xl">🥇</span>;
-        if (rank === 2) return <span className="text-2xl">🥈</span>;
-        if (rank === 3) return <span className="text-2xl">🥉</span>;
-        return <span className="font-bold text-gray-500">#{rank}</span>;
+        if (rank <= 3) {
+            return <TrophyIcon className="w-5 h-5 text-white" />;
+        }
+        return <span>{rank}</span>;
     };
 
     return (
@@ -48,20 +48,22 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                             <div>
                                 <Link
                                     href={route('dashboard')}
-                                    className="inline-flex items-center text-gray-500 hover:text-indigo-600 transition-colors font-medium text-sm mb-2 group"
+                                    className="inline-flex items-center text-gray-500 hover:text-blue-600 transition-colors font-medium text-sm mb-2 group"
                                 >
                                     <ArrowLeftIcon className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
                                     Kembali ke Dashboard
                                 </Link>
                                 <h1 className="text-2xl md:text-3xl font-black text-gray-900 flex items-center gap-2">
-                                    <TrophyIcon className="w-8 h-8 text-amber-500" />
+                                    <div className="p-2 bg-blue-100 rounded-2xl">
+                                        <TrophyIcon className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />
+                                    </div>
                                     Leaderboard
                                 </h1>
-                                <p className="text-gray-500 mt-1">{tryout.title}</p>
+                                <p className="text-gray-500 mt-1 ml-14">{tryout.title}</p>
                             </div>
 
                             <div className="flex items-center gap-3">
-                                <div className="px-4 py-2 bg-indigo-50 text-indigo-700 rounded-xl font-bold text-sm border border-indigo-100 flex items-center gap-2">
+                                <div className="px-4 py-2 bg-blue-50 text-blue-700 rounded-full font-bold text-sm border border-blue-100 flex items-center gap-2">
                                     <UserCircleIcon className="w-5 h-5" />
                                     {totalParticipants} Peserta
                                 </div>
@@ -75,7 +77,7 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                             </div>
                             <input
                                 type="text"
-                                className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 sm:text-sm transition-all shadow-sm"
+                                className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 sm:text-sm transition-all shadow-sm"
                                 placeholder="Cari nama peserta..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
@@ -85,7 +87,7 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                 </div>
 
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-                    {/* Top 3 Podium (Only show if no search filter) */}
+                    {/* Top 3 Podium */}
                     {!search && entries.length >= 3 && (
                         <div className="flex flex-col md:flex-row items-end justify-center gap-4 mb-10 min-h-[200px]">
                             {/* 2nd Place */}
@@ -105,7 +107,7 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                                 </div>
                                 <div className="text-center mt-2 mb-2">
                                     <p className="font-bold text-gray-900 line-clamp-1 text-sm">{entries[1].user.name}</p>
-                                    <p className="text-indigo-600 font-black">{entries[1].score}</p>
+                                    <p className="text-blue-600 font-black">{entries[1].score}</p>
                                 </div>
                                 <div className="w-full h-24 bg-gradient-to-t from-gray-100 to-gray-50 rounded-t-2xl border-x border-t border-gray-200 shadow-sm relative overflow-hidden">
                                     <div className="absolute inset-0 bg-white/40"></div>
@@ -132,7 +134,7 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                                 </div>
                                 <div className="text-center mt-2 mb-2">
                                     <p className="font-bold text-gray-900 line-clamp-1 text-base">{entries[0].user.name}</p>
-                                    <p className="text-indigo-600 font-black text-xl">{entries[0].score}</p>
+                                    <p className="text-blue-600 font-black text-xl">{entries[0].score}</p>
                                 </div>
                                 <div className="w-full h-32 bg-gradient-to-t from-yellow-50 to-white rounded-t-2xl border-x border-t border-yellow-200 shadow-lg relative overflow-hidden">
                                     <div className="absolute inset-0 bg-yellow-400/10"></div>
@@ -159,7 +161,7 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                                 </div>
                                 <div className="text-center mt-2 mb-2">
                                     <p className="font-bold text-gray-900 line-clamp-1 text-sm">{entries[2].user.name}</p>
-                                    <p className="text-indigo-600 font-black">{entries[2].score}</p>
+                                    <p className="text-blue-600 font-black">{entries[2].score}</p>
                                 </div>
                                 <div className="w-full h-16 bg-gradient-to-t from-orange-50 to-white rounded-t-2xl border-x border-t border-orange-200 shadow-sm relative overflow-hidden">
                                     <div className="absolute inset-0 bg-orange-400/10"></div>
@@ -169,26 +171,26 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                     )}
 
                     {/* Leaderboard List */}
-                    <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
                         <div className="overflow-x-auto">
-                            <table className="w-full text-left">
-                                <thead className="bg-gray-50/50 border-b border-gray-100">
+                            <table className="w-full text-left border-collapse">
+                                <thead className="bg-blue-600 text-white">
                                     <tr>
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider w-20 text-center">Rank</th>
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider">Peserta</th>
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right">Skor</th>
-                                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-wider text-right hidden md:table-cell">Waktu</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider w-20 text-center">Rank</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider">Peserta</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right">Skor</th>
+                                        <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-right hidden md:table-cell">Waktu</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-50">
+                                <tbody className="divide-y divide-gray-100 bg-white">
                                     {filteredEntries.length > 0 ? (
                                         filteredEntries.map((entry, index) => (
                                             <tr
                                                 key={entry.rank}
-                                                className={`group hover:bg-gray-50 transition-colors ${entry.user.is_current_user ? 'bg-indigo-50/60 hover:bg-indigo-50' : ''}`}
+                                                className={`group hover:bg-blue-50 transition-colors ${entry.user.is_current_user ? 'bg-blue-50/60' : ''}`}
                                             >
                                                 <td className="px-6 py-4 text-center">
-                                                    <div className={`w-10 h-10 mx-auto flex items-center justify-center rounded-xl bg-gradient-to-br shadow-sm border ${getMedalColor(entry.rank)}`}>
+                                                    <div className={`w-10 h-10 mx-auto flex items-center justify-center rounded-full shadow-sm ${getMedalColor(entry.rank)}`}>
                                                         {getRankBadge(entry.rank)}
                                                     </div>
                                                 </td>
@@ -196,17 +198,17 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                                                     <div className="flex items-center gap-4">
                                                         <img
                                                             src={`/storage/${entry.user.avatar}`}
-                                                            className="w-10 h-10 rounded-full object-cover border border-gray-200 bg-gray-100"
+                                                            className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm bg-gray-100"
                                                             onError={(e) => { e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(entry.user.name)}&background=random` }}
                                                             alt=""
                                                         />
                                                         <div>
                                                             <div className="flex items-center gap-2">
-                                                                <p className="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
+                                                                <p className="font-bold text-gray-900 group-hover:text-blue-700 transition-colors">
                                                                     {entry.user.name}
                                                                 </p>
                                                                 {entry.user.is_current_user && (
-                                                                    <span className="px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-700 text-[10px] font-bold uppercase tracking-wider">Anda</span>
+                                                                    <span className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider">Anda</span>
                                                                 )}
                                                             </div>
                                                             {entry.user.school && (
@@ -217,7 +219,7 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                     <div className="flex flex-col items-end">
-                                                        <span className="text-lg font-black text-indigo-600">{entry.score}</span>
+                                                        <span className="text-lg font-black text-blue-600">{entry.score}</span>
                                                         <span className="text-xs text-gray-400 font-medium">Benar {entry.correct_count}</span>
                                                     </div>
                                                 </td>
@@ -248,14 +250,14 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                     </div>
                 </div>
 
-                {/* Sticky My Rank Bar (if user is not in top view or just for quick access) */}
+                {/* Sticky My Rank Bar */}
                 {userEntry && (
                     <div className="fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.1)] p-4 z-40 animate-slide-up">
                         <div className="max-w-5xl mx-auto flex items-center justify-between">
                             <div className="flex items-center gap-4">
                                 <div className="text-center">
                                     <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Peringkat</p>
-                                    <p className="text-xl font-black text-indigo-600">#{userEntry.rank}</p>
+                                    <p className="text-xl font-black text-blue-600">#{userEntry.rank}</p>
                                 </div>
                                 <div className="h-10 w-px bg-gray-200 mx-2 hidden sm:block"></div>
                                 <div className="flex items-center gap-3">
@@ -268,7 +270,7 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                                     <div>
                                         <div className="flex items-center gap-2">
                                             <p className="font-bold text-gray-900 line-clamp-1">{userEntry.user.name}</p>
-                                            <span className="px-2 py-0.5 rounded-md bg-indigo-100 text-indigo-700 text-[10px] font-bold uppercase tracking-wider">Anda</span>
+                                            <span className="px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 text-[10px] font-bold uppercase tracking-wider">Anda</span>
                                         </div>
                                         <p className="text-xs text-gray-500 font-medium">Skor: {userEntry.score}</p>
                                     </div>
@@ -276,10 +278,8 @@ export default function Show({ tryout, entries, userEntry, totalParticipants }) 
                             </div>
 
                             <Link
-                                href={route('exam.result', { session: 'latest' })} // Note: controller doesn't pass session ID explicitly in userEntry, might need adjustment or direct link to generic result if supported, or just 'Lihat Detail' if we had the session ID. 
-                                // Actually, checking controller: userEntry doesn't have session_id. 
-                                // So I will just remove the link or link to dashboard for now.
-                                className="hidden md:flex btn btn-primary px-6 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/20"
+                                href={route('dashboard')}
+                                className="hidden md:flex items-center px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-blue-500/20 transition-all"
                             >
                                 Kembali ke Dashboard
                             </Link>
