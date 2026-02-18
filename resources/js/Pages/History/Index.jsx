@@ -178,9 +178,11 @@ export default function HistoryIndex({ sessions }) {
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
                                     {sessions.data.map((session) => {
-                                        const percentage = session.total_questions > 0
-                                            ? Math.round((session.correct_count / session.total_questions) * 100)
-                                            : 0;
+                                        const totalQuestions = session.total_questions || (session.correct_count + session.wrong_count + session.unanswered_count);
+                                        const percentage = session.percentage !== undefined
+                                            ? Math.round(parseFloat(session.percentage))
+                                            : (totalQuestions > 0 ? Math.round((session.correct_count / totalQuestions) * 100) : 0);
+
                                         const { grade, color, bg } = getGrade(percentage);
 
                                         return (
@@ -188,7 +190,7 @@ export default function HistoryIndex({ sessions }) {
                                                 <td className="px-6 py-4">
                                                     <div className="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">{session.tryout?.title}</div>
                                                     <div className="text-xs text-gray-500 mt-0.5">
-                                                        {session.total_questions} butir soal
+                                                        {totalQuestions} butir soal
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
@@ -240,9 +242,11 @@ export default function HistoryIndex({ sessions }) {
                         {/* Mobile Cards */}
                         <div className="md:hidden space-y-4">
                             {sessions.data.map((session) => {
-                                const percentage = session.total_questions > 0
-                                    ? Math.round((session.correct_count / session.total_questions) * 100)
-                                    : 0;
+                                const totalQuestions = session.total_questions || (session.correct_count + session.wrong_count + session.unanswered_count);
+                                const percentage = session.percentage !== undefined
+                                    ? Math.round(parseFloat(session.percentage))
+                                    : (totalQuestions > 0 ? Math.round((session.correct_count / totalQuestions) * 100) : 0);
+
                                 const { grade, color, bg } = getGrade(percentage);
 
                                 return (

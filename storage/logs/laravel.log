@@ -1872,3 +1872,35 @@
 [stacktrace]
 #0 {main}
 "} 
+[2026-02-18 15:35:18] local.ERROR: Call to undefined method App\Models\User::withTrashed() {"exception":"[object] (BadMethodCallException(code: 0): Call to undefined method App\\Models\\User::withTrashed() at C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php:67)
+[stacktrace]
+#0 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(36): Illuminate/Database/Eloquent/Model::throwBadMethodCallException('withTrashed')
+#1 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'withTrashed', Array)
+#2 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('withTrashed', Array)
+#3 C:/laragon/www/tryout-utbk/debug_session_8.php(15): Illuminate/Database/Eloquent/Model::__callStatic('withTrashed', Array)
+#4 {main}
+"} 
+[2026-02-18 15:36:52] local.ERROR: Call to undefined method App\Models\User::withTrashed() {"exception":"[object] (BadMethodCallException(code: 0): Call to undefined method App\\Models\\User::withTrashed() at C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php:67)
+[stacktrace]
+#0 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(36): Illuminate/Database/Eloquent/Model::throwBadMethodCallException('withTrashed')
+#1 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'withTrashed', Array)
+#2 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('withTrashed', Array)
+#3 C:/laragon/www/tryout-utbk/debug_user_7_active.php(7): Illuminate/Database/Eloquent/Model::__callStatic('withTrashed', Array)
+#4 {main}
+"} 
+[2026-02-18 15:37:18] local.ERROR: Call to undefined method App\Models\User::withTrashed() {"exception":"[object] (BadMethodCallException(code: 0): Call to undefined method App\\Models\\User::withTrashed() at C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php:67)
+[stacktrace]
+#0 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(36): Illuminate/Database/Eloquent/Model::throwBadMethodCallException('withTrashed')
+#1 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'withTrashed', Array)
+#2 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('withTrashed', Array)
+#3 C:/laragon/www/tryout-utbk/debug_user_7_safe.php(7): Illuminate/Database/Eloquent/Model::__callStatic('withTrashed', Array)
+#4 {main}
+"} 
+[2026-02-18 15:38:37] local.ERROR: Call to undefined method App\Models\User::withTrashed() {"exception":"[object] (BadMethodCallException(code: 0): Call to undefined method App\\Models\\User::withTrashed() at C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php:67)
+[stacktrace]
+#0 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php(36): Illuminate/Database/Eloquent/Model::throwBadMethodCallException('withTrashed')
+#1 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2372): Illuminate/Database/Eloquent/Model->forwardCallTo(Object(Illuminate/Database/Eloquent/Builder), 'withTrashed', Array)
+#2 C:/laragon/www/tryout-utbk/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php(2384): Illuminate/Database/Eloquent/Model->__call('withTrashed', Array)
+#3 C:/laragon/www/tryout-utbk/debug_100.php(13): Illuminate/Database/Eloquent/Model::__callStatic('withTrashed', Array)
+#4 {main}
+"} 
