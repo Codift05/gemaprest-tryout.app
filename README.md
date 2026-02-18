@@ -370,6 +370,8 @@ Kontribusi sangat diterima. Untuk perubahan besar, silakan buka issue terlebih d
 4. Push ke branch (`git push origin feature/AmazingFeature`)
 5. Buat Pull Request
 
+Pastikan untuk menjalankan testing sebelum membuat PR.
+
 ---
 
 <p align="center">
