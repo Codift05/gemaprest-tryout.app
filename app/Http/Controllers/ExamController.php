@@ -308,7 +308,7 @@ class ExamController extends Controller
     /**
      * Display exam result
      */
-    public function result(ExamSession $session): Response
+    public function result(ExamSession $session): Response|RedirectResponse
     {
         // Authorization
         if ($session->user_id !== auth()->id()) {
@@ -407,7 +407,7 @@ class ExamController extends Controller
     /**
      * Display exam review (with answers & explanations)
      */
-    public function review(ExamSession $session): Response
+    public function review(ExamSession $session): Response|RedirectResponse
     {
         // Authorization
         if ($session->user_id !== auth()->id()) {
