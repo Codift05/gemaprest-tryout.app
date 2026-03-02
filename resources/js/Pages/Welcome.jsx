@@ -176,92 +176,91 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
 
 
                 {/* Leaderboard Section */}
-                <section id="benefits" className="relative py-20 px-6 bg-white">
+                <section id="benefits" className="relative py-12 md:py-20 px-4 md:px-6 bg-white">
                     <div className="max-w-4xl mx-auto">
                         {/* Section Header */}
-                        <div className="text-center mb-12">
-                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-                                Siswa <span className="text-blue-600">Terbaik</span> {tryoutTitle ? <span className="text-gray-900 text-lg block md:inline font-medium md:ml-2">{tryoutTitle}</span> : 'Minggu Ini'}
+                        <div className="text-center mb-8 md:mb-12">
+                            <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">
+                                Siswa <span className="text-blue-600">Terbaik</span>
                             </h2>
-                            <p className="text-sm text-gray-600 max-w-xl mx-auto">
-                                Selesaikan tryout dan lihat namamu di leaderboard bersama peserta lainnya
+                            {tryoutTitle && <p className="text-xs md:text-sm text-gray-700 font-medium">{tryoutTitle}</p>}
+                            <p className="text-xs text-gray-600 max-w-xl mx-auto mt-2">
+                                Selesaikan tryout dan lihat namamu di leaderboard
                             </p>
                         </div>
 
                         {/* Leaderboard Card */}
                         <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                             {/* Leaderboard Header */}
-                            <div className="bg-blue-600 px-8 py-4">
-                                <div className="grid grid-cols-12 gap-4 text-white text-xs font-semibold uppercase tracking-wide">
-                                    <div className="col-span-1 text-center">Rank</div>
-                                    <div className="col-span-7 md:col-span-8">Nama Siswa</div>
-                                    <div className="col-span-4 md:col-span-3 text-right">Skor</div>
+                            <div className="bg-blue-600 px-4 md:px-8 py-3">
+                                <div className="flex items-center text-white text-[10px] md:text-xs font-semibold uppercase tracking-wide">
+                                    <div className="w-12 text-center shrink-0">#</div>
+                                    <div className="flex-1 min-w-0">Nama</div>
+                                    <div className="w-16 text-right shrink-0">Skor</div>
                                 </div>
                             </div>
 
                             {/* Leaderboard Items */}
-                            {/* Leaderboard Items */}
                             <div className="divide-y divide-gray-100 bg-gray-50">
                                 {leaderboard && leaderboard.length > 0 ? (
                                     leaderboard.map((entry, index) => (
-                                        <div key={index} className="px-8 py-5 bg-white hover:bg-blue-50 transition-colors">
-                                            <div className="grid grid-cols-12 gap-4 items-center">
-                                                <div className="col-span-1 flex justify-center">
+                                        <div key={index} className="px-4 md:px-8 py-3 md:py-4 bg-white hover:bg-blue-50 transition-colors">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-12 flex justify-center shrink-0">
                                                     {entry.rank === 1 && (
-                                                        <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-md">
-                                                            <TrophyIcon className="w-5 h-5 text-white" />
+                                                        <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center shadow-md">
+                                                            <TrophyIcon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                                                         </div>
                                                     )}
                                                     {entry.rank === 2 && (
-                                                        <div className="w-10 h-10 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center shadow-md">
-                                                            <TrophyIcon className="w-5 h-5 text-white" />
+                                                        <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center shadow-md">
+                                                            <TrophyIcon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                                                         </div>
                                                     )}
                                                     {entry.rank === 3 && (
-                                                        <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center shadow-md">
-                                                            <TrophyIcon className="w-5 h-5 text-white" />
+                                                        <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center shadow-md">
+                                                            <TrophyIcon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                                                         </div>
                                                     )}
                                                     {entry.rank > 3 && (
-                                                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-sm">
+                                                        <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-bold text-xs md:text-sm">
                                                             {entry.rank}
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div className="col-span-7 md:col-span-8">
-                                                    <div className="font-semibold text-gray-900 text-sm truncate">{entry.user.name}</div>
-                                                    <div className="text-xs text-gray-500 mt-0.5 truncate">{entry.user.school || '-'}</div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="font-semibold text-gray-900 text-xs md:text-sm truncate">{entry.user.name}</div>
+                                                    <div className="text-[10px] md:text-xs text-gray-500 truncate">{entry.user.school || '-'}</div>
                                                 </div>
-                                                <div className="col-span-4 md:col-span-3 text-right">
-                                                    <div className="text-xl font-bold text-blue-600">{Math.round(entry.score)}</div>
-                                                    <div className="text-xs text-gray-500 mt-0.5">Skor Akhir</div>
+                                                <div className="w-16 text-right shrink-0">
+                                                    <div className="text-base md:text-xl font-bold text-blue-600">{Math.round(entry.score)}</div>
                                                 </div>
                                             </div>
                                         </div>
                                     ))
                                 ) : (
-                                    <div className="px-8 py-12 text-center">
-                                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                                            <TrophyIcon className="w-8 h-8 text-gray-400" />
+                                    <div className="px-6 py-8 text-center">
+                                        <div className="inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-3">
+                                            <TrophyIcon className="w-6 h-6 text-gray-400" />
                                         </div>
-                                        <h3 className="text-lg font-medium text-gray-900 mb-1">Belum Ada Data</h3>
-                                        <p className="text-sm text-gray-500">
-                                            Jadilah yang pertama menempati leaderboard ini!
+                                        <h3 className="text-sm font-medium text-gray-900 mb-1">Belum Ada Data</h3>
+                                        <p className="text-xs text-gray-500">
+                                            Jadilah yang pertama!
                                         </p>
                                     </div>
                                 )}
                             </div>
 
                             {/* CTA Footer */}
-                            <div className="bg-gray-50 px-6 py-6 text-center border-t border-gray-100">
-                                <p className="text-sm text-gray-600 mb-4">
-                                    Ingin namamu muncul di leaderboard? Daftar sekarang dan mulai tryout!
+                            <div className="bg-gray-50 px-4 py-4 text-center border-t border-gray-100">
+                                <p className="text-xs text-gray-600 mb-3">
+                                    Daftar sekarang dan mulai tryout!
                                 </p>
                                 <Link
                                     href={route('register')}
-                                    className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
+                                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-all shadow-md hover:shadow-lg"
                                 >
-                                    Daftar Sekarang Gratis
+                                    Daftar Gratis
                                     <ArrowRightIcon className="w-4 h-4" />
                                 </Link>
                             </div>
