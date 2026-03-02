@@ -89,13 +89,13 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
             <div className="min-h-screen bg-gray-50" style={{ fontFamily: 'Montserrat, sans-serif' }}>
                 {/* Navigation */}
                 <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-100 shadow-sm">
-                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                        <div className="flex justify-between items-center h-20">
+                    <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+                        <div className="flex justify-between items-center h-16 md:h-20">
                             <div
                                 onClick={handleLogoClick}
                                 className="cursor-pointer"
                             >
-                                <img src="/logo.png" alt="Gemaprest Logo" className="h-10 w-auto" />
+                                <img src="/logo.png" alt="Gemaprest Logo" className="h-8 md:h-10 w-auto" />
                             </div>
                             <div className="hidden md:flex items-center gap-8">
                                 <a href="#features" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
@@ -111,10 +111,10 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
                 </nav>
 
                 {/* Hero Section with Banner Image */}
-                <section className="relative pt-32 pb-20 px-6">
+                <section className="relative pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
                     <div className="max-w-7xl mx-auto">
                         {/* Banner Image Container */}
-                        <div className="relative rounded-[40px] overflow-hidden shadow-2xl mb-12">
+                        <div className="relative rounded-2xl md:rounded-[40px] overflow-hidden shadow-xl md:shadow-2xl mb-8 md:mb-12">
                             <img
                                 src="/Banner Web 2.png"
                                 alt="Gemaprest Try Out UTBK - Platform tryout online dari Beasiswa Karya Salembah Empat (KSE) UNSRAT"
@@ -123,17 +123,17 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
                         </div>
 
                         {/* CTA Buttons */}
-                        <div className="flex flex-row gap-3 justify-center items-center">
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
                             <Link
                                 href={route('register')}
-                                className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm md:text-base"
+                                className="w-full sm:w-auto px-5 md:px-6 py-2.5 md:py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm"
                             >
                                 Mulai Tryout Gratis
                                 <ArrowRightIcon className="w-4 h-4" />
                             </Link>
                             <Link
                                 href={route('login')}
-                                className="px-6 py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-full transition-all border-2 border-gray-200 hover:border-gray-300 shadow-sm text-sm md:text-base"
+                                className="w-full sm:w-auto px-5 md:px-6 py-2.5 md:py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-full transition-all border-2 border-gray-200 hover:border-gray-300 shadow-sm text-sm"
                             >
                                 Masuk ke Platform
                             </Link>
@@ -142,18 +142,18 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
                 </section>
 
                 {/* Features Section */}
-                <section id="features" className="relative py-16 px-6 bg-white">
+                <section id="features" className="relative py-12 md:py-16 px-4 md:px-6 bg-white">
                     <div className="max-w-6xl mx-auto">
-                        <div className="text-center mb-12">
-                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+                        <div className="text-center mb-8 md:mb-12">
+                            <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-2">
                                 Fitur <span className="text-blue-600">Unggulan</span>
                             </h2>
-                            <p className="text-sm text-gray-600 max-w-2xl mx-auto">
+                            <p className="text-xs md:text-sm text-gray-600 max-w-2xl mx-auto">
                                 Platform tryout paling lengkap untuk persiapan UTBK
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                             {features.map((feature, index) => (
                                 <div
                                     key={index}
