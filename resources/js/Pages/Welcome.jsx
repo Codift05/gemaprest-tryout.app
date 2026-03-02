@@ -126,14 +126,14 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
                         <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
                             <Link
                                 href={route('register')}
-                                className="w-full sm:w-auto px-5 md:px-6 py-2.5 md:py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm"
+                                className="w-full sm:w-auto px-5 md:px-6 py-2.5 md:py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full transition-all inline-flex items-center justify-center gap-2 shadow-lg hover:shadow-xl text-sm text-center"
                             >
                                 Mulai Tryout Gratis
                                 <ArrowRightIcon className="w-4 h-4" />
                             </Link>
                             <Link
                                 href={route('login')}
-                                className="w-full sm:w-auto px-5 md:px-6 py-2.5 md:py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-full transition-all border-2 border-gray-200 hover:border-gray-300 shadow-sm text-sm"
+                                className="w-full sm:w-auto px-5 md:px-6 py-2.5 md:py-3 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-full transition-all border-2 border-gray-200 hover:border-gray-300 shadow-sm text-sm text-center inline-flex items-center justify-center"
                             >
                                 Masuk ke Platform
                             </Link>
