@@ -1,0 +1,233 @@
+@startuml architecture-diagram
+!theme cerulean
+skinparam backgroundColor #FEFEFE
+skinparam handwritten false
+skinparam defaultFontName Inter
+skinparam defaultFontSize 11
+skinparam componentStyle uml2
+skinparam linetype ortho
+
+skinparam component {
+    BackgroundColor #ECFDF5
+    BorderColor #10B981
+    FontColor #374151
+}
+
+skinparam package {
+    BackgroundColor #F0FDF4
+    BorderColor #047857
+    FontColor #374151
+}
+
+skinparam interface {
+    BackgroundColor #10B981
+    BorderColor #059669
+}
+
+skinparam database {
+    BackgroundColor #F5F5F5
+    BorderColor #6B7280
+}
+
+skinparam cloud {
+    BackgroundColor #EFF6FF
+    BorderColor #3B82F6
+}
+
+skinparam node {
+    BackgroundColor #FEF3C7
+    BorderColor #F59E0B
+}
+
+title **Gemaprest Tryout - Architecture Diagram**\n//Component & Layer View//
+
+' ========================================
+' CLIENT LAYER (Frontend)
+' ========================================
+package "Client Layer (Frontend)" as ClientLayer #E0F2FE {
+    
+    component "Web Browser" as Browser {
+        component "React SPA (Inertia)" as ReactApp #ECFDF5 {
+            component "Pages" as Pages {
+                [Welcome]
+                [Auth (Login/Register)]
+                [Dashboard (Student/Admin)]
+                [Tryouts List & Detail]
+                [Exam Interface (Take)]
+                [Leaderboard]
+                [History & Result]
+                [Profile]
+            }
+            
+            component "Layouts" as Layouts {
+                [GuestLayout]
+                [AuthenticatedLayout]
+                [AdminLayout]
+            }
+            
+            component "State Management (Zustand)" as StateManage {
+                [useExamStore]
+                [useLeaderboardStore]
+                [useTimer]
+            }
+            
+            component "Hooks & Utils" as Hooks {
+                [useWebSocket (Reverb)]
+                [usePage (Inertia)]
+            }
+            
+            component "UI Components" as UIComponents {
+                [Cards]
+                [Buttons]
+                [Modals]
+                [Forms]
+                [Charts]
+            }
+        }
+        
+        component "Inertia Client Adapter" as InertiaClient #E0F2FE
+    }
+}
+
+' ========================================
+' APPLICATION LAYER (Backend)
+' ========================================
+package "Application Layer (Backend)" as AppLayer #F0FDF4 {
+    
+    component "Laravel Framework (11.x)" as LaravelApp {
+        
+        component "HTTP Layer" as HTTPLayer {
+            component "Middleware" as Middleware {
+                [Authenticate]
+                [RedirectIfAuthenticated]
+                [AdminMiddleware]
+                [HandleInertiaRequests]
+                [VerifyCsrfToken]
+            }
+            
+            component "Public Controllers" as Controllers {
+                [AuthController]
+                [DashboardController]
+                [TryoutController]
+                [ExamController]
+                [LeaderboardController]
+                [ProfileController]
+            }
+            
+            component "Admin Controllers" as AdminControllers {
+                [Admin\DashboardController]
+                [CategoryController]
+                [QuestionController]
+                [Admin\TryoutController]
+                [UserController]
+                [ReportController]
+                [SettingController]
+            }
+        }
+        
+        component "Inertia Server Adapter" as InertiaServer #E0F2FE
+        
+        component "Business Logic Layer" as BusinessLogic {
+            component "Services" as Services {
+                [ExamScoringService]
+            }
+            
+            component "Events" as Events {
+                [ExamFinished]
+                [LeaderboardUpdated]
+            }
+        }
+        
+        component "Data Access Layer" as DataLayer {
+            component "Models (Eloquent)" as Models {
+                [User]
+                [Category]
+                [Subcategory]
+                [Question]
+                [Tryout]
+                [ExamSession]
+                [ExamAnswer]
+                [ExamViolation]
+                [Leaderboard]
+                [ActivityLog]
+                [Setting]
+            }
+        }
+    }
+}
+
+' ========================================
+' INFRASTRUCTURE LAYER
+' ========================================
+package "Infrastructure Layer" as InfraLayer #FFF7ED {
+    
+    component "Real-time Server" as WSServer {
+        component "Laravel Reverb" as Reverb #ECFDF5 {
+            [Channel Manager]
+            [Event Broadcaster]
+        }
+    }
+    
+    database "MySQL Database" as MySQL {
+        [users]
+        [categories]
+        [subcategories]
+        [questions]
+        [tryouts]
+        [exam_sessions]
+        [exam_answers]
+        [exam_violations]
+        [leaderboards]
+        [activity_logs]
+        [settings]
+    }
+    
+    component "File Storage (Local/S3)" as FileStorage {
+        [Question Images]
+        [Thumbnails]
+        [Avatars]
+    }
+    
+    component "Cache & Session" as CacheLayer {
+        [Redis/File Cache]
+    }
+}
+
+' ========================================
+' CONNECTIONS
+' ========================================
+
+' Client to Backend
+Browser -down-> HTTPLayer : "HTTPS / XHR"
+Browser <..> WSServer : "WebSocket (WSS)"
+
+' Inertia Bridge
+InertiaClient <--> InertiaServer : "JSON Protocol"
+ReactApp ..> InertiaClient
+
+' Frontend Internal
+Pages --> Layouts
+Pages --> UIComponents
+Pages --> StateManage
+Pages --> Hooks
+
+' Backend Internal
+HTTPLayer --> InertiaServer
+Controllers --> Services
+Controllers --> Models
+AdminControllers --> Models
+Middleware --> Controllers
+
+' Logic Internal
+Services --> Models
+Services --> Events
+Events ..> WSServer : "Broadcast"
+
+' Data Access
+Models --> MySQL : "PDO/SQL"
+
+' Infrastructure Access
+LaravelApp --> FileStorage
+LaravelApp --> CacheLayer
+
+@enduml

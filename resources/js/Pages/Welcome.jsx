@@ -153,23 +153,21 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             {features.map((feature, index) => (
                                 <div
                                     key={index}
-                                    className="bg-white rounded-lg p-4 hover:shadow-lg transition-all duration-200 border border-gray-200 hover:border-gray-300"
+                                    className="bg-white rounded-lg p-3 sm:p-4 hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-gray-300 flex items-center gap-3"
                                 >
-                                    {/* Solid Color Icon Background */}
-                                    <div className={`w-10 h-10 ${feature.color} rounded-lg flex items-center justify-center mb-3`}>
-                                        <feature.icon className="w-5 h-5 text-white" />
+                                    {/* Icon */}
+                                    <div className={`w-8 h-8 sm:w-10 sm:h-10 ${feature.color} rounded-lg flex items-center justify-center flex-shrink-0`}>
+                                        <feature.icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                                     </div>
 
-                                    <h3 className="text-base font-semibold text-gray-900 mb-2">
+                                    {/* Title Only */}
+                                    <h3 className="text-xs sm:text-sm font-semibold text-gray-900 leading-tight">
                                         {feature.title}
                                     </h3>
-                                    <p className="text-xs text-gray-600 leading-relaxed">
-                                        {feature.description}
-                                    </p>
                                 </div>
                             ))}
                         </div>

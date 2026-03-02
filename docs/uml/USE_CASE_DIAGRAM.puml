@@ -1,0 +1,160 @@
+@startuml use-case-diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam handwritten false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam actorStyle awesome
+skinparam packageStyle rectangle
+skinparam usecaseBorderColor #10B981
+skinparam usecaseBackgroundColor #D1FAE5
+skinparam actorBorderColor #059669
+skinparam packageBorderColor #6B7280
+skinparam packageBackgroundColor #F9FAFB
+skinparam arrowColor #374151
+skinparam shadowing false
+skinparam ranksep 20
+skinparam nodesep 10
+
+title Gemaprest Tryout Platform\nDetailed Use Case Diagram
+
+' ========================================
+' ACTORS
+' ========================================
+:Pengunjung: as Guest
+:Siswa: as Student
+:Administrator: as Admin
+:Sistem: as System
+
+Guest <|-- Student
+Guest <|-- Admin
+
+' ========================================
+' SYSTEM BOUNDARY
+' ========================================
+rectangle "Gemaprest Tryout Platform" {
+
+    package "Otentikasi & Akun" as Pkg_Auth {
+        (Registrasi) as UC_Register
+        (Login) as UC_Login
+        (Logout) as UC_Logout
+        (Edit Profil) as UC_EditProfile
+        (Ubah Password) as UC_ChangePassword
+    }
+    
+    package "Halaman Publik" as Pkg_Public {
+        (Lihat Landing Page) as UC_Landing
+        (Lihat Leaderboard Top 5) as UC_LandingLeaderboard
+    }
+    
+    package "Manajemen Tryout (Siswa)" as Pkg_Student {
+        (Lihat Daftar Tryout) as UC_ListTryout
+        (Lihat Detail Tryout) as UC_DetailTryout
+        (Filter Tryout) as UC_FilterTryout
+        (Lihat Riwayat Ujian) as UC_History
+        (Lihat Leaderboard Full) as UC_FullLeaderboard
+    }
+    
+    package "Pelaksanaan Ujian" as Pkg_Exam {
+        (Mulai Tryout) as UC_StartExam
+        (Mengerjakan Soal) as UC_TakeExam
+        (Simpan Jawaban) as UC_SaveAnswer
+        (Laporkan Pelanggaran) as UC_ReportViolation
+        (Submit Ujian) as UC_SubmitExam
+        (Lihat Hasil/Skor) as UC_ViewResult
+        (Review Pembahasan) as UC_Review
+    }
+    
+    package "Manajemen Konten (Admin)" as Pkg_Content {
+        (Dashboard Admin) as UC_AdminDashboard
+        (Kelola Kategori & Sub) as UC_ManageCategory
+        (Kelola Soal) as UC_ManageQuestion
+        (Import Soal Excel) as UC_ImportQuestion
+        (Bulk Delete Soal) as UC_BulkDeleteQuestion
+        (Kelola Tryout) as UC_ManageTryout
+        (Kelola Soal Tryout) as UC_ManageTryoutQuestions
+        (Auto Assign Soal) as UC_AutoAssign
+    }
+    
+    package "Manajemen Pengguna & Laporan" as Pkg_Users {
+        (Kelola Pengguna) as UC_ManageUser
+        (Nonaktifkan Pengguna) as UC_ToggleUser
+        (Lihat Laporan) as UC_ViewReports
+        (Lihat Laporan Pelanggaran) as UC_ViewViolations
+        (Pengaturan Sistem) as UC_Settings
+    }
+    
+    package "Proses Sistem" as Pkg_System {
+        (Hitung Skor Otomatis) as UC_CalcScore
+        (Update Leaderboard) as UC_UpdateLeaderboard
+        (Deteksi Alt-Tab/Blur) as UC_DetectBlur
+    }
+}
+
+' ========================================
+' LAYOUT ENFORCEMENT (VERTICAL STACK)
+' ========================================
+Pkg_Auth -[hidden]-> Pkg_Public
+Pkg_Public -[hidden]-> Pkg_Student
+Pkg_Student -[hidden]-> Pkg_Exam
+Pkg_Exam -[hidden]-> Pkg_Content
+Pkg_Content -[hidden]-> Pkg_Users
+Pkg_Users -[hidden]-> Pkg_System
+
+' ========================================
+' RELATIONSHIPS
+' ========================================
+
+' Guest
+Guest --> UC_Landing
+Guest --> UC_LandingLeaderboard
+Guest --> UC_Login
+Guest --> UC_Register
+
+' Student
+Student --> UC_Logout
+Student --> UC_EditProfile
+Student --> UC_ListTryout
+Student --> UC_DetailTryout
+Student --> UC_History
+Student --> UC_FullLeaderboard
+Student --> UC_StartExam
+Student --> UC_TakeExam
+Student --> UC_SubmitExam
+Student --> UC_ViewResult
+Student --> UC_Review
+
+' Admin
+Admin --> UC_Logout
+Admin --> UC_AdminDashboard
+Admin --> UC_ManageCategory
+Admin --> UC_ManageQuestion
+Admin --> UC_ManageTryout
+Admin --> UC_ManageUser
+Admin --> UC_ViewReports
+Admin --> UC_Settings
+
+' Includes & Extends
+UC_EditProfile ..> UC_ChangePassword : <<include>>
+UC_ListTryout ..> UC_FilterTryout : <<extend>>
+UC_TakeExam ..> UC_SaveAnswer : <<include>>
+UC_TakeExam ..> UC_DetectBlur : <<include>>
+UC_ManageQuestion <.. UC_ImportQuestion : <<extend>>
+UC_ManageQuestion <.. UC_BulkDeleteQuestion : <<extend>>
+UC_ManageTryout ..> UC_ManageTryoutQuestions : <<include>>
+UC_ManageTryoutQuestions ..> UC_AutoAssign : <<extend>>
+UC_ManageUser ..> UC_ToggleUser : <<extend>>
+UC_ViewReports ..> UC_ViewViolations : <<include>>
+
+' System Automation
+UC_SubmitExam ..> UC_CalcScore : <<include>>
+UC_CalcScore ..> UC_UpdateLeaderboard : <<include>>
+UC_DetectBlur ..> UC_ReportViolation : <<include>>
+UC_ReportViolation ..> UC_ViewViolations : <<include>> 
+
+' System Actor Relationships
+System --> UC_CalcScore
+System --> UC_UpdateLeaderboard
+System --> UC_DetectBlur
+
+@enduml

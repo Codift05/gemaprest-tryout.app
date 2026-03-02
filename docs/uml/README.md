@@ -7,12 +7,14 @@ Dokumentasi UML lengkap untuk sistem Gemaprest Tryout Platform.
 ```
 docs/uml/
 ├── README.md                     # Dokumentasi ini
-├── 01-use-case.puml              # Use Case Diagram
+├── USE_CASE_DIAGRAM.puml         # Use Case Diagram (Detailed & Updated)
+├── ARCHITECTURE_DIAGRAM.puml     # Architecture Diagram (Detailed & Updated)
+├── 01-use-case.puml              # Use Case Diagram (Legacy)
 ├── 02-class-diagram.puml         # Class Diagram (Domain Model)
 ├── 03-erd.puml                   # Entity Relationship Diagram
 ├── 04-sequence-exam.puml         # Sequence Diagram: Alur Ujian
 ├── 05-sequence-auth.puml         # Sequence Diagram: Autentikasi
-├── 06-component.puml             # Component Diagram (Arsitektur)
+├── 06-component.puml             # Component Diagram (Arsitektur Legacy)
 ├── 07-deployment.puml            # Deployment Diagram (Infrastruktur)
 ├── 08-activity-exam.puml         # Activity Diagram: Proses Ujian
 ├── 09-state-exam-session.puml    # State Machine: Exam Session Lifecycle
