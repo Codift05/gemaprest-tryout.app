@@ -271,37 +271,37 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
 
                 {/* Footer */}
                 <footer className="relative border-t border-gray-200 bg-white">
-                    <div className="max-w-4xl mx-auto px-6 py-10">
+                    <div className="max-w-4xl mx-auto px-4 py-6">
                         {/* Footer Content */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                             {/* About Section */}
-                            <div>
-                                <div className="flex items-center gap-2 mb-3">
-                                    <img src="/logo.png" alt="Gemaprest Logo" className="h-7 w-auto" />
-                                    <span className="text-base font-bold text-gray-900">Gemaprest</span>
+                            <div className="col-span-2 md:col-span-1">
+                                <div className="flex items-center gap-2 mb-2">
+                                    <img src="/logo.png" alt="Gemaprest Logo" className="h-6 w-auto" />
+                                    <span className="text-sm font-bold text-gray-900">Gemaprest</span>
                                 </div>
-                                <p className="text-xs text-gray-600 leading-relaxed">
-                                    Platform tryout UTBK online terlengkap dari Program Beasiswa Karya Salembah Empat UNSRAT.
+                                <p className="text-[10px] text-gray-600 leading-snug">
+                                    Platform tryout UTBK online dari Program KSE UNSRAT.
                                 </p>
                             </div>
 
                             {/* Quick Links */}
                             <div>
-                                <h4 className="text-xs font-bold text-gray-900 mb-3 uppercase tracking-wide">Menu</h4>
-                                <ul className="space-y-2">
+                                <h4 className="text-[10px] font-bold text-gray-900 mb-2 uppercase tracking-wide">Menu</h4>
+                                <ul className="space-y-1">
                                     <li>
-                                        <a href="#features" className="text-xs text-gray-600 hover:text-blue-600 transition-colors">
+                                        <a href="#features" className="text-[10px] text-gray-600 hover:text-blue-600 transition-colors">
                                             Fitur
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#benefits" className="text-xs text-gray-600 hover:text-blue-600 transition-colors">
+                                        <a href="#benefits" className="text-[10px] text-gray-600 hover:text-blue-600 transition-colors">
                                             Keunggulan
                                         </a>
                                     </li>
                                     <li>
-                                        <Link href={route('register')} className="text-xs text-gray-600 hover:text-blue-600 transition-colors">
-                                            Daftar Gratis
+                                        <Link href={route('register')} className="text-[10px] text-gray-600 hover:text-blue-600 transition-colors">
+                                            Daftar
                                         </Link>
                                     </li>
                                 </ul>
@@ -309,31 +309,23 @@ export default function Welcome({ leaderboard, tryoutTitle }) {
 
                             {/* Contact/Info */}
                             <div>
-                                <h4 className="text-xs font-bold text-gray-900 mb-3 uppercase tracking-wide">Informasi</h4>
-                                <ul className="space-y-2">
-                                    <li className="text-xs text-gray-600">
-                                        Program KSE UNSRAT
+                                <h4 className="text-[10px] font-bold text-gray-900 mb-2 uppercase tracking-wide">Info</h4>
+                                <ul className="space-y-1">
+                                    <li className="text-[10px] text-gray-600">
+                                        KSE UNSRAT
                                     </li>
-                                    <li className="text-xs text-gray-600">
-                                        Universitas Sam Ratulangi
-                                    </li>
-                                    <li className="text-xs text-gray-600">
-                                        Manado, Sulawesi Utara
+                                    <li className="text-[10px] text-gray-600">
+                                        Manado, Sulut
                                     </li>
                                 </ul>
                             </div>
                         </div>
 
                         {/* Bottom Bar */}
-                        <div className="pt-6 border-t border-gray-200">
-                            <div className="flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-600">
-                                <div>
-                                    © 2026 Gemaprest. All rights reserved.
-                                </div>
-                                <div className="flex items-center gap-1.5">
-                                    <span>Developed by</span>
-                                    <span className="font-semibold text-gray-900">mfthsarsyd</span>
-                                </div>
+                        <div className="pt-3 border-t border-gray-200">
+                            <div className="flex flex-row justify-between items-center text-[10px] text-gray-600">
+                                <span>© 2026 Gemaprest</span>
+                                <span>by <span className="font-semibold text-gray-900">mfthsarsyd</span></span>
                             </div>
                         </div>
                     </div>
