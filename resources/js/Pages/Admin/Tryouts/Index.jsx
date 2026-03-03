@@ -50,14 +50,14 @@ export default function Index({ tryouts, filters }) {
         <AdminLayout title="Kelola Tryout">
             <Head title="Kelola Tryout" />
 
-            <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Kelola Tryout</h1>
-                    <p className="text-gray-500 mt-1">Daftar semua paket tryout yang tersedia.</p>
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Kelola Tryout</h1>
+                    <p className="text-sm sm:text-base text-gray-500 mt-1">Daftar semua paket tryout.</p>
                 </div>
                 <Link
                     href={route('admin.tryouts.create')}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200"
                 >
                     <PlusIcon className="w-5 h-5" />
                     Tambah Tryout
@@ -65,25 +65,25 @@ export default function Index({ tryouts, filters }) {
             </div>
 
             {/* Search */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-8">
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 mb-6 sm:mb-8">
                 <form onSubmit={handleSearch} className="relative">
-                    <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                    <MagnifyingGlassIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 sm:left-4 top-1/2 -translate-y-1/2" />
                     <input
                         type="text"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         placeholder="Cari judul tryout..."
-                        className="w-full pl-12 pr-4 py-3 bg-gray-50 border-transparent focus:border-indigo-500 focus:bg-white focus:ring-0 rounded-xl text-sm transition-all text-gray-900 placeholder-gray-500"
+                        className="w-full pl-9 sm:pl-12 pr-4 py-2.5 sm:py-3 bg-gray-50 border-transparent focus:border-indigo-500 focus:bg-white focus:ring-0 rounded-lg sm:rounded-xl text-sm transition-all text-gray-900 placeholder-gray-500"
                     />
                 </form>
             </div>
 
             {/* Tryouts Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {tryouts.data.length === 0 ? (
                     <div className="col-span-full">
-                        <div className="bg-white rounded-2xl border border-dashed border-gray-300 p-12 text-center">
-                            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <div className="bg-white rounded-xl sm:rounded-2xl border border-dashed border-gray-300 p-8 sm:p-12 text-center">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <DocumentTextIcon className="w-8 h-8 text-gray-400" />
                             </div>
                             <h3 className="text-lg font-bold text-gray-900 mb-1">
@@ -103,9 +103,9 @@ export default function Index({ tryouts, filters }) {
                     </div>
                 ) : (
                     tryouts.data.map((tryout) => (
-                        <div key={tryout.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col h-full">
+                        <div key={tryout.id} className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col h-full">
                             {/* Thumbnail */}
-                            <div className="h-40 bg-indigo-600 relative overflow-hidden group-hover:opacity-95 transition-opacity">
+                            <div className="h-32 sm:h-40 bg-indigo-600 relative overflow-hidden group-hover:opacity-95 transition-opacity">
                                 {tryout.thumbnail ? (
                                     <img
                                         src={`/storage/${tryout.thumbnail}`}
@@ -124,9 +124,9 @@ export default function Index({ tryouts, filters }) {
                             </div>
 
                             {/* Content */}
-                            <div className="p-5 flex-1 flex flex-col">
-                                <div className="mb-4">
-                                    <h3 className="font-bold text-gray-900 text-lg mb-1 line-clamp-1" title={tryout.title}>
+                            <div className="p-4 sm:p-5 flex-1 flex flex-col">
+                                <div className="mb-3 sm:mb-4">
+                                    <h3 className="font-bold text-gray-900 text-base sm:text-lg mb-1 line-clamp-1" title={tryout.title}>
                                         {tryout.title}
                                     </h3>
 

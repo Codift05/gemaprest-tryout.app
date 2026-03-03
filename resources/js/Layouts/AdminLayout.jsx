@@ -144,7 +144,7 @@ export default function AdminLayout({ children, title }) {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+                <main className="flex-1 py-5 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
                     {children}
                 </main>
             </div>

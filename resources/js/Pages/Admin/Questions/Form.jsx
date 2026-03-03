@@ -110,31 +110,31 @@ export default function Form({ question = null, categories = [] }) {
         <AdminLayout>
             <Head title={isEditing ? 'Edit Soal' : 'Tambah Soal'} />
 
-            <div className="max-w-4xl mx-auto pb-12">
+            <div className="max-w-4xl mx-auto pb-8 sm:pb-12">
                 {/* Header */}
-                <div className="mb-8">
+                <div className="mb-6 sm:mb-8">
                     <Link
                         href={route('admin.questions.index')}
-                        className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-indigo-600 mb-4 transition-colors p-2 -ml-2 rounded-lg hover:bg-indigo-50"
+                        className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-indigo-600 mb-3 sm:mb-4 transition-colors p-1.5 sm:p-2 -ml-1.5 sm:-ml-2 rounded-lg hover:bg-indigo-50"
                     >
-                        <ArrowLeftIcon className="w-4 h-4 mr-2" />
+                        <ArrowLeftIcon className="w-4 h-4 mr-1.5 sm:mr-2" />
                         Kembali ke Bank Soal
                     </Link>
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
                         {isEditing ? 'Edit Soal' : 'Buat Soal Baru'}
                     </h1>
-                    <p className="mt-2 text-gray-500">
+                    <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-gray-500">
                         {isEditing ? 'Perbarui detail pertanyaan dan jawaban.' : 'Isi form di bawah untuk menambahkan soal baru.'}
                     </p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-8">
+                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-8">
                     {/* Question Content */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                            <h2 className="text-lg font-semibold text-gray-900">Pertanyaan</h2>
+                    <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Pertanyaan</h2>
                         </div>
-                        <div className="p-8 space-y-6">
+                        <div className="p-4 sm:p-8 space-y-5 sm:space-y-6">
                             {/* Content Editor */}
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -156,25 +156,25 @@ export default function Form({ question = null, categories = [] }) {
                                     Gambar (Opsional)
                                 </label>
                                 {imagePreview ? (
-                                    <div className="relative w-full max-w-md rounded-2xl overflow-hidden group border border-gray-200 shadow-sm">
+                                    <div className="relative w-full max-w-md rounded-xl sm:rounded-2xl overflow-hidden group border border-gray-200 shadow-sm">
                                         <img
                                             src={imagePreview}
                                             alt="Preview"
                                             className="w-full h-auto object-cover"
                                         />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <div className="absolute inset-0 bg-black/50 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                             <button
                                                 type="button"
                                                 onClick={removeImage}
                                                 className="p-2 bg-white text-red-600 rounded-full hover:bg-red-50 transition-colors shadow-lg"
                                             >
-                                                <XMarkIcon className="w-6 h-6" />
+                                                <XMarkIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                                             </button>
                                         </div>
                                     </div>
                                 ) : (
                                     <label
-                                        className={`flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-200 ${isDragOver
+                                        className={`flex flex-col items-center justify-center w-full h-40 sm:h-48 border-2 border-dashed rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-200 ${isDragOver
                                             ? 'border-indigo-500 bg-indigo-50'
                                             : 'border-gray-300 bg-gray-50 hover:bg-white hover:border-indigo-400'
                                             }`}
@@ -182,8 +182,8 @@ export default function Form({ question = null, categories = [] }) {
                                         onDragLeave={() => setIsDragOver(false)}
                                         onDrop={handleDrop}
                                     >
-                                        <div className="p-3 bg-white rounded-full shadow-sm mb-3">
-                                            <PhotoIcon className="w-6 h-6 text-indigo-600" />
+                                        <div className="p-2.5 sm:p-3 bg-white rounded-full shadow-sm mb-2 sm:mb-3">
+                                            <PhotoIcon className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600" />
                                         </div>
                                         <span className="text-sm font-medium text-gray-900">
                                             Klik untuk upload gambar
@@ -207,18 +207,18 @@ export default function Form({ question = null, categories = [] }) {
                     </div>
 
                     {/* Answer Options */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                            <h2 className="text-lg font-semibold text-gray-900">Pilihan Jawaban</h2>
+                    <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Pilihan Jawaban</h2>
                         </div>
-                        <div className="p-8 space-y-6">
-                            <div className="grid grid-cols-1 gap-6">
+                        <div className="p-4 sm:p-8 space-y-4 sm:space-y-6">
+                            <div className="grid grid-cols-1 gap-3 sm:gap-6">
                                 {data.options.map((option, index) => (
-                                    <div key={option.key} className={`flex items-start gap-4 p-4 rounded-xl border transition-all ${data.correct_answer === option.key ? 'border-emerald-500 bg-emerald-50/30' : 'border-gray-200 hover:border-indigo-200'}`}>
+                                    <div key={option.key} className={`flex items-start gap-2.5 sm:gap-4 p-3 sm:p-4 rounded-lg sm:rounded-xl border transition-all ${data.correct_answer === option.key ? 'border-emerald-500 bg-emerald-50/30' : 'border-gray-200 hover:border-indigo-200'}`}>
                                         <button
                                             type="button"
                                             onClick={() => setData('correct_answer', option.key)}
-                                            className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold shrink-0 transition-all ${data.correct_answer === option.key
+                                            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center font-bold shrink-0 transition-all text-sm sm:text-base ${data.correct_answer === option.key
                                                 ? 'bg-emerald-500 text-white shadow-md shadow-emerald-200'
                                                 : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700'
                                                 }`}
@@ -226,12 +226,12 @@ export default function Form({ question = null, categories = [] }) {
                                         >
                                             {option.key}
                                         </button>
-                                        <div className="flex-1">
+                                        <div className="flex-1 min-w-0">
                                             <textarea
                                                 value={option.text}
                                                 onChange={(e) => handleOptionChange(index, e.target.value)}
                                                 rows={2}
-                                                className={`w-full px-4 py-2.5 bg-white border rounded-xl focus:ring-indigo-500 focus:border-indigo-500 text-sm transition-all ${data.correct_answer === option.key
+                                                className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 bg-white border rounded-lg sm:rounded-xl focus:ring-indigo-500 focus:border-indigo-500 text-sm transition-all ${data.correct_answer === option.key
                                                     ? 'border-emerald-300'
                                                     : 'border-gray-200'
                                                     }`}
@@ -257,11 +257,11 @@ export default function Form({ question = null, categories = [] }) {
                     </div>
 
                     {/* Explanation */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                            <h2 className="text-lg font-semibold text-gray-900">Pembahasan</h2>
+                    <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Pembahasan</h2>
                         </div>
-                        <div className="p-8">
+                        <div className="p-4 sm:p-8">
                             <label className="block text-sm font-bold text-gray-700 mb-2">
                                 Penjelasan Jawaban
                             </label>
@@ -277,11 +277,11 @@ export default function Form({ question = null, categories = [] }) {
                     </div>
 
                     {/* Settings */}
-                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50">
-                            <h2 className="text-lg font-semibold text-gray-900">Pengaturan</h2>
+                    <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-gray-50/50">
+                            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Pengaturan</h2>
                         </div>
-                        <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="p-4 sm:p-8 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
                             {/* Subcategory */}
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-2">
@@ -344,17 +344,17 @@ export default function Form({ question = null, categories = [] }) {
                     </div>
 
                     {/* Submit */}
-                    <div className="flex items-center justify-end gap-4 pt-4 border-t border-gray-100">
+                    <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 sm:gap-4 pt-4 border-t border-gray-100">
                         <Link
                             href={route('admin.questions.index')}
-                            className="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 hover:text-gray-900 transition-colors"
+                            className="px-5 sm:px-6 py-2.5 rounded-lg sm:rounded-xl border border-gray-200 text-gray-700 font-medium hover:bg-gray-50 hover:text-gray-900 transition-colors text-center text-sm sm:text-base"
                         >
                             Batal
                         </Link>
                         <button
                             type="submit"
                             disabled={processing}
-                            className="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-100 transition-all shadow-sm hover:shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="px-5 sm:px-6 py-2.5 rounded-lg sm:rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-100 transition-all shadow-sm hover:shadow-md disabled:opacity-70 disabled:cursor-not-allowed text-sm sm:text-base"
                         >
                             {processing ? 'Menyimpan...' : isEditing ? 'Simpan Perubahan' : 'Simpan Soal'}
                         </button>

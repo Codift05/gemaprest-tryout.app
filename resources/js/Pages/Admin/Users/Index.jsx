@@ -96,14 +96,14 @@ export default function Index({ users, filters }) {
         <AdminLayout title="Kelola Pengguna">
             <Head title="Kelola Pengguna" />
 
-            <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Kelola Pengguna</h1>
-                    <p className="text-gray-500 mt-1">{users.total} pengguna terdaftar di sistem.</p>
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Kelola Pengguna</h1>
+                    <p className="text-sm sm:text-base text-gray-500 mt-1">{users.total} pengguna terdaftar.</p>
                 </div>
                 <button
                     onClick={() => openModal()}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200"
                 >
                     <PlusIcon className="w-5 h-5" />
                     Tambah Pengguna
@@ -111,25 +111,25 @@ export default function Index({ users, filters }) {
             </div>
 
             {/* Filters */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-6">
-                <div className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-1 relative">
-                        <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 mb-4 sm:mb-6">
+                <div className="flex flex-col gap-3 sm:gap-4">
+                    <div className="relative">
+                        <MagnifyingGlassIcon className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2" />
                         <input
                             type="text"
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             placeholder="Cari nama, email, atau sekolah..."
-                            className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 text-sm transition-all"
+                            className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 bg-gray-50 border border-gray-200 rounded-lg sm:rounded-xl focus:border-indigo-500 focus:ring-0 text-sm transition-all"
                             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                         />
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-2 sm:gap-3">
                         <select
                             value={roleFilter}
                             onChange={(e) => setRoleFilter(e.target.value)}
-                            className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 text-sm transition-all min-w-[150px] cursor-pointer"
+                            className="flex-1 px-3 sm:px-4 py-2 sm:py-2.5 bg-gray-50 border border-gray-200 rounded-lg sm:rounded-xl focus:border-indigo-500 focus:ring-0 text-sm transition-all cursor-pointer"
                         >
                             <option value="">Semua Role</option>
                             <option value="admin">Admin</option>
@@ -138,7 +138,7 @@ export default function Index({ users, filters }) {
 
                         <button
                             onClick={handleSearch}
-                            className="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                            className="px-4 sm:px-6 py-2 sm:py-2.5 bg-white border border-gray-200 text-gray-700 text-sm font-semibold rounded-lg sm:rounded-xl hover:bg-gray-50 transition-colors"
                         >
                             Filter
                         </button>
@@ -147,10 +147,10 @@ export default function Index({ users, filters }) {
             </div>
 
             {/* Users Table */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 {users.data.length === 0 ? (
-                    <div className="p-12 text-center">
-                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="p-8 sm:p-12 text-center">
+                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
                             <UserCircleIcon className="w-8 h-8 text-gray-400" />
                         </div>
                         <h3 className="text-lg font-bold text-gray-900 mb-1">
@@ -162,25 +162,25 @@ export default function Index({ users, filters }) {
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="w-full">
+                        <table className="w-full min-w-[700px]">
                             <thead className="bg-gray-50/50 border-b border-gray-100">
                                 <tr>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Pengguna
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Sekolah
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Role
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Bergabung
                                     </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Aktivitas
                                     </th>
-                                    <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Aksi
                                     </th>
                                 </tr>
@@ -188,31 +188,31 @@ export default function Index({ users, filters }) {
                             <tbody className="divide-y divide-gray-100">
                                 {users.data.map((user) => (
                                     <tr key={user.id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 bg-indigo-50 border border-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-sm">
+                                        <td className="px-4 sm:px-6 py-3 sm:py-4">
+                                            <div className="flex items-center gap-2 sm:gap-3">
+                                                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 border border-indigo-100 rounded-full flex items-center justify-center text-indigo-600 font-bold text-xs sm:text-sm">
                                                     {user.name?.charAt(0).toUpperCase() || '?'}
                                                 </div>
                                                 <div>
-                                                    <p className="font-semibold text-gray-900 text-sm">
+                                                    <p className="font-semibold text-gray-900 text-sm truncate max-w-[120px] sm:max-w-none">
                                                         {user.name}
                                                     </p>
-                                                    <p className="text-xs text-gray-500 mt-0.5">
+                                                    <p className="text-xs text-gray-500 mt-0.5 truncate max-w-[120px] sm:max-w-none">
                                                         {user.email}
                                                     </p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-600 font-medium">
+                                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-600 font-medium">
                                             {user.school || '-'}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 sm:px-6 py-3 sm:py-4">
                                             {getRoleBadge(user.role)}
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">
+                                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-500">
                                             {format(new Date(user.created_at), 'dd MMM yyyy', { locale: id })}
                                         </td>
-                                        <td className="px-6 py-4">
+                                        <td className="px-4 sm:px-6 py-3 sm:py-4">
                                             <div className="text-sm">
                                                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
                                                     {user.sessions_count || 0} ujian
@@ -224,8 +224,8 @@ export default function Index({ users, filters }) {
                                                 )}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-2">
+                                        <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
+                                            <div className="flex items-center justify-end gap-1 sm:gap-2">
                                                 <button
                                                     onClick={() => openModal(user)}
                                                     className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"

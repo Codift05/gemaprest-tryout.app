@@ -40,17 +40,17 @@ export default function SettingsIndex({ settings = {} }) {
         <AdminLayout title="Pengaturan">
             <Head title="Pengaturan" />
 
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
                 {/* Header */}
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Pengaturan</h1>
-                    <p className="mt-1 text-gray-500">Konfigurasi sistem & preferensi aplikasi</p>
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Pengaturan</h1>
+                    <p className="mt-1 text-sm sm:text-base text-gray-500">Konfigurasi sistem & preferensi</p>
                 </div>
 
-                <div className="flex flex-col lg:flex-row gap-8">
-                    {/* Sidebar Tabs */}
+                <div className="flex flex-col lg:flex-row gap-4 sm:gap-8">
+                    {/* Sidebar Tabs - horizontal scroll on mobile */}
                     <div className="lg:w-64 flex-shrink-0">
-                        <nav className="space-y-1">
+                        <nav className="flex lg:flex-col gap-2 sm:gap-1 overflow-x-auto pb-2 lg:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0">
                             {tabs.map((tab) => {
                                 const Icon = tab.icon;
                                 const isActive = activeTab === tab.id;
@@ -58,12 +58,12 @@ export default function SettingsIndex({ settings = {} }) {
                                     <button
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
-                                        className={`w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all ${isActive
+                                        className={`flex-shrink-0 flex items-center px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-medium rounded-lg sm:rounded-xl transition-all whitespace-nowrap ${isActive
                                                 ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
-                                                : 'text-gray-600 hover:bg-white hover:text-indigo-600'
+                                                : 'text-gray-600 hover:bg-white hover:text-indigo-600 bg-gray-50 lg:bg-transparent'
                                             }`}
                                     >
-                                        <Icon className={`w-5 h-5 mr-3 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-indigo-600'}`} />
+                                        <Icon className={`w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-indigo-600'}`} />
                                         {tab.label}
                                     </button>
                                 );
@@ -73,16 +73,16 @@ export default function SettingsIndex({ settings = {} }) {
 
                     {/* Settings Form */}
                     <div className="flex-1">
-                        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col min-h-[500px]">
+                        <form onSubmit={handleSubmit} className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 flex flex-col min-h-[400px] sm:min-h-[500px]">
                             {/* General Settings */}
                             {activeTab === 'general' && (
-                                <div className="p-8 space-y-8 flex-1">
-                                    <div className="border-b border-gray-100 pb-5">
-                                        <h2 className="text-lg font-bold text-gray-900">Pengaturan Umum</h2>
-                                        <p className="text-sm text-gray-500 mt-1">Informasi dasar situs dan mode pemeliharaan</p>
+                                <div className="p-4 sm:p-8 space-y-6 sm:space-y-8 flex-1">
+                                    <div className="border-b border-gray-100 pb-4 sm:pb-5">
+                                        <h2 className="text-base sm:text-lg font-bold text-gray-900">Pengaturan Umum</h2>
+                                        <p className="text-xs sm:text-sm text-gray-500 mt-1">Informasi dasar situs dan mode pemeliharaan</p>
                                     </div>
 
-                                    <div className="space-y-6">
+                                    <div className="space-y-4 sm:space-y-6">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">
                                                 Nama Situs
@@ -125,16 +125,16 @@ export default function SettingsIndex({ settings = {} }) {
                                             />
                                         </div>
 
-                                        <div className="bg-amber-50 rounded-xl p-5 border border-amber-100">
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-start gap-4">
+                                        <div className="bg-amber-50 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-amber-100">
+                                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                                <div className="flex items-start gap-3 sm:gap-4">
                                                     <div className="p-2 bg-amber-100 rounded-lg text-amber-600">
-                                                        <ExclamationTriangleIcon className="w-6 h-6" />
+                                                        <ExclamationTriangleIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                                                     </div>
                                                     <div>
-                                                        <h3 className="font-bold text-amber-900">Mode Maintenance</h3>
-                                                        <p className="text-sm text-amber-700 mt-1">
-                                                            Aktifkan untuk menutup akses publik sementara saat perbaikan.
+                                                        <h3 className="font-bold text-amber-900 text-sm sm:text-base">Mode Maintenance</h3>
+                                                        <p className="text-xs sm:text-sm text-amber-700 mt-1">
+                                                            Aktifkan untuk menutup akses publik sementara.
                                                         </p>
                                                     </div>
                                                 </div>
@@ -157,13 +157,13 @@ export default function SettingsIndex({ settings = {} }) {
 
                             {/* Exam Settings */}
                             {activeTab === 'exam' && (
-                                <div className="p-8 space-y-8 flex-1">
-                                    <div className="border-b border-gray-100 pb-5">
-                                        <h2 className="text-lg font-bold text-gray-900">Pengaturan Ujian</h2>
-                                        <p className="text-sm text-gray-500 mt-1">Parameter default untuk sesi ujian baru</p>
+                                <div className="p-4 sm:p-8 space-y-6 sm:space-y-8 flex-1">
+                                    <div className="border-b border-gray-100 pb-4 sm:pb-5">
+                                        <h2 className="text-base sm:text-lg font-bold text-gray-900">Pengaturan Ujian</h2>
+                                        <p className="text-xs sm:text-sm text-gray-500 mt-1">Parameter default untuk sesi ujian</p>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">
                                                 Durasi Default (menit)
@@ -199,7 +199,7 @@ export default function SettingsIndex({ settings = {} }) {
                                         </div>
                                     </div>
 
-                                    <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                    <div className="bg-gray-50 rounded-lg sm:rounded-xl p-4 sm:p-6 border border-gray-100">
                                         <h3 className="font-bold text-gray-900 mb-4">Opsi Default Tryout</h3>
                                         <div className="space-y-4">
                                             {[
@@ -232,10 +232,10 @@ export default function SettingsIndex({ settings = {} }) {
 
                             {/* Security Settings */}
                             {activeTab === 'security' && (
-                                <div className="p-8 space-y-8 flex-1">
-                                    <div className="border-b border-gray-100 pb-5">
-                                        <h2 className="text-lg font-bold text-gray-900">Pengaturan Keamanan</h2>
-                                        <p className="text-sm text-gray-500 mt-1">Konfigurasi anti-cheat dan integritas ujian</p>
+                                <div className="p-4 sm:p-8 space-y-6 sm:space-y-8 flex-1">
+                                    <div className="border-b border-gray-100 pb-4 sm:pb-5">
+                                        <h2 className="text-base sm:text-lg font-bold text-gray-900">Pengaturan Keamanan</h2>
+                                        <p className="text-xs sm:text-sm text-gray-500 mt-1">Konfigurasi anti-cheat dan integritas ujian</p>
                                     </div>
 
                                     <div>
@@ -255,10 +255,10 @@ export default function SettingsIndex({ settings = {} }) {
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="flex items-center justify-between p-5 bg-gray-50 rounded-xl border border-gray-100">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                                        <div className="flex items-center justify-between p-4 sm:p-5 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-100">
                                             <div>
-                                                <h3 className="font-bold text-gray-900">Deteksi Kecurangan</h3>
+                                                <h3 className="font-bold text-gray-900 text-sm sm:text-base">Deteksi Kecurangan</h3>
                                                 <p className="text-xs text-gray-500 mt-1">
                                                     Pantau tab switching & copy-paste
                                                 </p>
@@ -276,9 +276,9 @@ export default function SettingsIndex({ settings = {} }) {
                                             </button>
                                         </div>
 
-                                        <div className="flex items-center justify-between p-5 bg-gray-50 rounded-xl border border-gray-100">
+                                        <div className="flex items-center justify-between p-4 sm:p-5 bg-gray-50 rounded-lg sm:rounded-xl border border-gray-100">
                                             <div>
-                                                <h3 className="font-bold text-gray-900">Mode Fullscreen</h3>
+                                                <h3 className="font-bold text-gray-900 text-sm sm:text-base">Mode Fullscreen</h3>
                                                 <p className="text-xs text-gray-500 mt-1">
                                                     Paksa layar penuh saat ujian
                                                 </p>
@@ -297,7 +297,7 @@ export default function SettingsIndex({ settings = {} }) {
                                         </div>
                                     </div>
 
-                                    <div className="bg-rose-50 rounded-xl p-5 border border-rose-100">
+                                    <div className="bg-rose-50 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-rose-100">
                                         <div className="flex gap-3">
                                             <ShieldCheckIcon className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
                                             <div>
@@ -317,21 +317,21 @@ export default function SettingsIndex({ settings = {} }) {
 
                             {/* Email Settings */}
                             {activeTab === 'email' && (
-                                <div className="p-8 space-y-8 flex-1">
-                                    <div className="border-b border-gray-100 pb-5">
-                                        <h2 className="text-lg font-bold text-gray-900">Pengaturan Email</h2>
-                                        <p className="text-sm text-gray-500 mt-1">Konfigurasi SMTP server untuk notifikasi</p>
+                                <div className="p-4 sm:p-8 space-y-6 sm:space-y-8 flex-1">
+                                    <div className="border-b border-gray-100 pb-4 sm:pb-5">
+                                        <h2 className="text-base sm:text-lg font-bold text-gray-900">Pengaturan Email</h2>
+                                        <p className="text-xs sm:text-sm text-gray-500 mt-1">Konfigurasi SMTP server</p>
                                     </div>
 
-                                    <div className="flex flex-col items-center justify-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                                        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mb-6 shadow-sm border border-gray-100">
-                                            <EnvelopeIcon className="w-10 h-10 text-indigo-600" />
+                                    <div className="flex flex-col items-center justify-center py-8 sm:py-12 bg-gray-50 rounded-lg sm:rounded-xl border border-dashed border-gray-200">
+                                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center mb-4 sm:mb-6 shadow-sm border border-gray-100">
+                                            <EnvelopeIcon className="w-8 h-8 sm:w-10 sm:h-10 text-indigo-600" />
                                         </div>
-                                        <h3 className="text-lg font-bold text-gray-900 mb-2">Konfigurasi SMTP</h3>
-                                        <p className="text-gray-500 mb-6 text-center max-w-md text-sm">
-                                            Untuk keamanan, konfigurasi email dikelola secara langsung melalui file environment (.env) di server.
+                                        <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">Konfigurasi SMTP</h3>
+                                        <p className="text-gray-500 mb-4 sm:mb-6 text-center max-w-md text-xs sm:text-sm px-4">
+                                            Konfigurasi email dikelola via file environment (.env) di server.
                                         </p>
-                                        <div className="w-full max-w-md bg-gray-800 rounded-xl p-5 text-left shadow-lg">
+                                        <div className="w-full max-w-md bg-gray-800 rounded-lg sm:rounded-xl p-4 sm:p-5 text-left shadow-lg mx-4">
                                             <div className="flex gap-1.5 mb-4">
                                                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
                                                 <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -351,7 +351,7 @@ export default function SettingsIndex({ settings = {} }) {
                             )}
 
                             {/* Submit Button */}
-                            <div className="px-8 py-5 bg-gray-50/50 border-t border-gray-100 rounded-b-2xl flex justify-end">
+                            <div className="px-4 sm:px-8 py-4 sm:py-5 bg-gray-50/50 border-t border-gray-100 rounded-b-xl sm:rounded-b-2xl flex justify-end">
                                 <button
                                     type="submit"
                                     disabled={processing}
