@@ -109,17 +109,21 @@ export default function Index({ questions, categories, filters }) {
         formData.append('file', importFile);
         
         try {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+            
             const response = await fetch(route('admin.questions.import.preview'), {
                 method: 'POST',
                 body: formData,
                 headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
                 },
+                credentials: 'same-origin',
             });
             
             const data = await response.json();
             
-            if (data.success) {
+            if (response.ok && data.success) {
                 setPreviewQuestions(data.questions);
                 if (data.questions.length === 0) {
                     setImportError('Tidak ada soal yang ditemukan. Pastikan format PDF sesuai.');
@@ -128,7 +132,8 @@ export default function Index({ questions, categories, filters }) {
                 setImportError(data.error || 'Gagal memproses PDF');
             }
         } catch (error) {
-            setImportError('Terjadi kesalahan saat memproses file');
+            console.error('Preview fetch error:', error);
+            setImportError('Gagal mengunggah file. Pastikan ukuran file tidak melebihi 10MB.');
         } finally {
             setIsPreviewLoading(false);
         }

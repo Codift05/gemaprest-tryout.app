@@ -256,9 +256,17 @@ class QuestionController extends Controller
      */
     public function previewImport(Request $request)
     {
-        $request->validate([
-            'file' => 'required|mimes:pdf|max:10240',
-        ]);
+        try {
+            $request->validate([
+                'file' => 'required|mimes:pdf|max:10240',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'File tidak valid. Pastikan file berformat PDF dan tidak melebihi 10MB.',
+                'validation_errors' => $e->errors(),
+            ], 422);
+        }
 
         try {
             $parser = new \Smalot\PdfParser\Parser();
@@ -270,12 +278,12 @@ class QuestionController extends Controller
             return response()->json([
                 'success' => true,
                 'questions' => $questions,
-                'raw_text' => $text, // For debugging
+                'total' => count($questions),
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => $e->getMessage(),
+                'error' => 'Gagal memproses PDF: ' . $e->getMessage(),
             ], 500);
         }
     }
