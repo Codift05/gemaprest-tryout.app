@@ -46,6 +46,8 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
                 });
             } else if (key === 'thumbnail' && value) {
                 formData.append('thumbnail', value);
+            } else if (typeof value === 'boolean') {
+                formData.append(key, value ? '1' : '0');
             } else if (value !== null && value !== '') {
                 formData.append(key, value);
             }

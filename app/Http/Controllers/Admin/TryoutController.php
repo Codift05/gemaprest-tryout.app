@@ -252,23 +252,40 @@ class TryoutController extends Controller
                 'id' => $tryout->id,
                 'title' => $tryout->title,
                 'total_questions' => $tryout->total_questions,
+                'duration_minutes' => $tryout->duration_minutes,
             ],
             'assignedQuestions' => $tryout->questions->map(fn($q) => [
                 'id' => $q->id,
-                'content' => Str::limit(strip_tags($q->content), 100),
+                'content' => $q->content,
                 'type' => $q->type,
                 'difficulty' => $q->difficulty,
-                'category' => $q->subcategory->category->name,
-                'subcategory' => $q->subcategory->name,
-                'sort_order' => $q->pivot->sort_order,
+                'correct_answer' => $q->correct_answer,
+                'subcategory' => [
+                    'id' => $q->subcategory->id,
+                    'name' => $q->subcategory->name,
+                    'category' => [
+                        'id' => $q->subcategory->category->id,
+                        'name' => $q->subcategory->category->name,
+                        'color' => $q->subcategory->category->color,
+                    ],
+                ],
+                'sort_order' => $q->pivot->sort_order ?? 0,
             ]),
             'availableQuestions' => $availableQuestions->map(fn($q) => [
                 'id' => $q->id,
-                'content' => Str::limit(strip_tags($q->content), 100),
+                'content' => $q->content,
                 'type' => $q->type,
                 'difficulty' => $q->difficulty,
-                'category' => $q->subcategory->category->name,
-                'subcategory' => $q->subcategory->name,
+                'subcategory' => [
+                    'id' => $q->subcategory->id,
+                    'name' => $q->subcategory->name,
+                    'category_id' => $q->subcategory->category_id,
+                    'category' => [
+                        'id' => $q->subcategory->category->id,
+                        'name' => $q->subcategory->category->name,
+                        'color' => $q->subcategory->category->color,
+                    ],
+                ],
             ]),
         ]);
     }
