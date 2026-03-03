@@ -73,29 +73,29 @@ export default function Register() {
                 </div>
 
                 {/* Right Side - Form */}
-                <div className="flex-1 flex items-center justify-center p-8 relative z-10">
-                    <div className="w-full max-w-md">
+                <div className="flex-1 flex items-center justify-center px-4 py-6 sm:p-8 relative z-10">
+                    <div className="w-full max-w-sm sm:max-w-md">
                         {/* Logo */}
-                        <Link href="/" className="flex items-center gap-3 mb-8">
-                            <img src="/logo.png" alt="Gemaprest" className="h-10 w-auto" />
-                            <span className="font-bold text-lg text-gray-900">
+                        <Link href="/" className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
+                            <img src="/logo.png" alt="Gemaprest" className="h-8 sm:h-10 w-auto" />
+                            <span className="font-bold text-base sm:text-lg text-gray-900">
                                 Gemaprest Tryout
                             </span>
                         </Link>
 
-                        <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm">
-                            <h1 className="text-xl font-bold text-gray-900">Buat akun baru</h1>
-                            <p className="mt-2 text-sm text-gray-600">
+                        <div className="bg-white rounded-xl p-5 sm:p-8 border border-gray-200 shadow-sm">
+                            <h1 className="text-lg sm:text-xl font-bold text-gray-900">Buat akun baru</h1>
+                            <p className="mt-1.5 sm:mt-2 text-sm text-gray-600">
                                 Sudah punya akun?{' '}
                                 <Link href={route('login')} className="text-blue-600 hover:text-blue-700 font-medium">
                                     Masuk
                                 </Link>
                             </p>
 
-                            <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                            <form onSubmit={handleSubmit} className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
                                 {/* Name */}
                                 <div>
-                                    <label htmlFor="name" className="block text-xs font-semibold text-gray-900 mb-2">
+                                    <label htmlFor="name" className="block text-xs font-semibold text-gray-900 mb-1.5 sm:mb-2">
                                         Nama Lengkap
                                     </label>
                                     <input
@@ -103,7 +103,7 @@ export default function Register() {
                                         type="text"
                                         value={data.name}
                                         onChange={(e) => setData('name', e.target.value)}
-                                        className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="Nama lengkap Anda"
                                         autoFocus
                                     />
@@ -114,7 +114,7 @@ export default function Register() {
 
                                 {/* Email */}
                                 <div>
-                                    <label htmlFor="email" className="block text-xs font-semibold text-gray-900 mb-2">
+                                    <label htmlFor="email" className="block text-xs font-semibold text-gray-900 mb-1.5 sm:mb-2">
                                         Email
                                     </label>
                                     <input
@@ -122,7 +122,7 @@ export default function Register() {
                                         type="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="nama@email.com"
                                         autoComplete="email"
                                     />
@@ -132,34 +132,34 @@ export default function Register() {
                                 </div>
 
                                 {/* Phone & School */}
-                                <div className="grid grid-cols-2 gap-4">
+                                <div className="grid grid-cols-2 gap-2 sm:gap-4">
                                     <div>
-                                        <label htmlFor="phone" className="block text-xs font-semibold text-gray-900 mb-2">
-                                            No. HP (opsional)
+                                        <label htmlFor="phone" className="block text-xs font-semibold text-gray-900 mb-1.5 sm:mb-2">
+                                            No. HP <span className="font-normal text-gray-500 hidden sm:inline">(opsional)</span>
                                         </label>
                                         <input
                                             id="phone"
                                             type="tel"
                                             value={data.phone}
                                             onChange={(e) => setData('phone', e.target.value)}
-                                            className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
-                                            placeholder="08xxxxxxxxxx"
+                                            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
+                                            placeholder="08xxx"
                                         />
                                         {errors.phone && (
                                             <p className="mt-1 text-xs text-red-600">{errors.phone}</p>
                                         )}
                                     </div>
                                     <div>
-                                        <label htmlFor="school" className="block text-xs font-semibold text-gray-900 mb-2">
-                                            Asal Sekolah (opsional)
+                                        <label htmlFor="school" className="block text-xs font-semibold text-gray-900 mb-1.5 sm:mb-2">
+                                            Sekolah <span className="font-normal text-gray-500 hidden sm:inline">(opsional)</span>
                                         </label>
                                         <input
                                             id="school"
                                             type="text"
                                             value={data.school}
                                             onChange={(e) => setData('school', e.target.value)}
-                                            className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.school ? 'border-red-500' : 'border-gray-300'}`}
-                                            placeholder="Nama sekolah"
+                                            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.school ? 'border-red-500' : 'border-gray-300'}`}
+                                            placeholder="Sekolah"
                                         />
                                         {errors.school && (
                                             <p className="mt-1 text-xs text-red-600">{errors.school}</p>
@@ -169,7 +169,7 @@ export default function Register() {
 
                                 {/* Password */}
                                 <div>
-                                    <label htmlFor="password" className="block text-xs font-semibold text-gray-900 mb-2">
+                                    <label htmlFor="password" className="block text-xs font-semibold text-gray-900 mb-1.5 sm:mb-2">
                                         Password
                                     </label>
                                     <div className="relative">
@@ -178,19 +178,19 @@ export default function Register() {
                                             type={showPassword ? 'text' : 'password'}
                                             value={data.password}
                                             onChange={(e) => setData('password', e.target.value)}
-                                            className={`w-full px-4 py-2.5 pr-12 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
-                                            placeholder="Minimal 8 karakter"
+                                            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-10 sm:pr-12 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                                            placeholder="Min. 8 karakter"
                                             autoComplete="new-password"
                                         />
                                         <button
                                             type="button"
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
+                                            className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
                                             onClick={() => setShowPassword(!showPassword)}
                                         >
                                             {showPassword ? (
-                                                <EyeSlashIcon className="w-5 h-5" />
+                                                <EyeSlashIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                                             ) : (
-                                                <EyeIcon className="w-5 h-5" />
+                                                <EyeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                                             )}
                                         </button>
                                     </div>
@@ -201,7 +201,7 @@ export default function Register() {
 
                                 {/* Confirm Password */}
                                 <div>
-                                    <label htmlFor="password_confirmation" className="block text-xs font-semibold text-gray-900 mb-2">
+                                    <label htmlFor="password_confirmation" className="block text-xs font-semibold text-gray-900 mb-1.5 sm:mb-2">
                                         Konfirmasi Password
                                     </label>
                                     <input
@@ -209,7 +209,7 @@ export default function Register() {
                                         type="password"
                                         value={data.password_confirmation}
                                         onChange={(e) => setData('password_confirmation', e.target.value)}
-                                        className="w-full px-4 py-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                                        className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                                         placeholder="Ulangi password"
                                         autoComplete="new-password"
                                     />
@@ -219,7 +219,7 @@ export default function Register() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors text-sm mt-6"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 sm:py-3 px-6 rounded-lg transition-colors text-sm mt-4 sm:mt-6"
                                 >
                                     {processing ? 'Memproses...' : 'Daftar Gratis'}
                                 </button>

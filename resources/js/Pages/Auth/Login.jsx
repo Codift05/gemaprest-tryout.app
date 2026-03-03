@@ -36,29 +36,29 @@ export default function Login() {
 
             <div className="min-h-screen flex relative overflow-hidden bg-white" style={{ fontFamily: 'Montserrat, sans-serif' }}>
                 {/* Left Side - Form */}
-                <div className="flex-1 flex items-center justify-center p-8 relative z-10">
-                    <div className="w-full max-w-md">
+                <div className="flex-1 flex items-center justify-center px-4 py-6 sm:p-8 relative z-10">
+                    <div className="w-full max-w-sm sm:max-w-md">
                         {/* Logo */}
-                        <Link href="/" className="flex items-center gap-3 mb-8">
-                            <img src="/logo.png" alt="Gemaprest" className="h-10 w-auto" />
-                            <span className="font-bold text-lg text-gray-900">
+                        <Link href="/" className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
+                            <img src="/logo.png" alt="Gemaprest" className="h-8 sm:h-10 w-auto" />
+                            <span className="font-bold text-base sm:text-lg text-gray-900">
                                 Gemaprest Tryout
                             </span>
                         </Link>
 
-                        <div className="bg-white rounded-xl p-8 border border-gray-200 shadow-sm">
-                            <h1 className="text-xl font-bold text-gray-900">Masuk ke akun Anda</h1>
-                            <p className="mt-2 text-sm text-gray-600">
+                        <div className="bg-white rounded-xl p-5 sm:p-8 border border-gray-200 shadow-sm">
+                            <h1 className="text-lg sm:text-xl font-bold text-gray-900">Masuk ke akun Anda</h1>
+                            <p className="mt-1.5 sm:mt-2 text-sm text-gray-600">
                                 Belum punya akun?{' '}
                                 <Link href={route('register')} className="text-blue-600 hover:text-blue-700 font-medium">
                                     Daftar sekarang
                                 </Link>
                             </p>
 
-                            <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+                            <form onSubmit={handleSubmit} className="mt-4 sm:mt-6 space-y-3 sm:space-y-4">
                                 {/* Email */}
                                 <div>
-                                    <label htmlFor="email" className="block text-xs font-semibold text-gray-900 mb-2">
+                                    <label htmlFor="email" className="block text-xs font-semibold text-gray-900 mb-1.5 sm:mb-2">
                                         Email
                                     </label>
                                     <input
@@ -66,7 +66,7 @@ export default function Login() {
                                         type="email"
                                         value={data.email}
                                         onChange={(e) => setData('email', e.target.value)}
-                                        className={`w-full px-4 py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                                        className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                                         placeholder="nama@email.com"
                                         autoComplete="email"
                                         autoFocus
@@ -78,7 +78,7 @@ export default function Login() {
 
                                 {/* Password */}
                                 <div>
-                                    <label htmlFor="password" className="block text-xs font-semibold text-gray-900 mb-2">
+                                    <label htmlFor="password" className="block text-xs font-semibold text-gray-900 mb-1.5 sm:mb-2">
                                         Password
                                     </label>
                                     <div className="relative">
@@ -87,19 +87,19 @@ export default function Login() {
                                             type={showPassword ? 'text' : 'password'}
                                             value={data.password}
                                             onChange={(e) => setData('password', e.target.value)}
-                                            className={`w-full px-4 py-2.5 pr-12 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+                                            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-10 sm:pr-12 text-sm text-gray-900 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
                                             placeholder="Masukkan password"
                                             autoComplete="current-password"
                                         />
                                         <button
                                             type="button"
-                                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
+                                            className="absolute right-2.5 sm:right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
                                             onClick={() => setShowPassword(!showPassword)}
                                         >
                                             {showPassword ? (
-                                                <EyeSlashIcon className="w-5 h-5" />
+                                                <EyeSlashIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                                             ) : (
-                                                <EyeIcon className="w-5 h-5" />
+                                                <EyeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                                             )}
                                         </button>
                                     </div>
@@ -131,7 +131,7 @@ export default function Login() {
                                 <button
                                     type="submit"
                                     disabled={processing}
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors text-sm mt-6"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 sm:py-3 px-6 rounded-lg transition-colors text-sm mt-4 sm:mt-6"
                                 >
                                     {processing ? 'Memproses...' : 'Masuk'}
                                 </button>
