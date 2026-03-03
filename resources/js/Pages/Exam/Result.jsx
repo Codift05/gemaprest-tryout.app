@@ -9,8 +9,7 @@ import {
     ArrowLeftIcon,
     ArrowPathIcon,
     BookOpenIcon,
-    ShareIcon,
-    SparklesIcon
+    ShareIcon
 } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
@@ -51,19 +50,15 @@ export default function Result({ session, stats, rank, tryout }) {
         <MainLayout>
             <Head title={`Hasil - ${tryout.title || 'Ujian'}`} />
 
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
                 {/* Header Section */}
-                <div className="text-center mb-8 md:mb-12">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-bold tracking-wider uppercase mb-4 shadow-sm">
-                        <SparklesIcon className="w-3.5 h-3.5" />
-                        Laporan Hasil
-                    </div>
-                    <h1 className="text-2xl md:text-4xl font-black text-gray-900 mb-3 tracking-tight leading-tight">
+                <div className="text-center mb-6 sm:mb-8 md:mb-12">
+                    <h1 className="text-xl sm:text-2xl md:text-4xl font-black text-gray-900 mb-2 sm:mb-3 tracking-tight leading-tight">
                         {tryout.title || 'Hasil Ujian'}
                     </h1>
-                    <div className="flex items-center justify-center gap-2 text-gray-500 text-sm font-medium bg-white inline-flex px-4 py-1.5 rounded-full border border-gray-100 shadow-sm">
-                        <ClockIcon className="w-4 h-4 text-gray-400" />
-                        <span>Diselesaikan pada {session.finished_at ? format(new Date(session.finished_at), 'dd MMMM yyyy, HH:mm', { locale: id }) : '-'}</span>
+                    <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-gray-500 text-xs sm:text-sm font-medium bg-white inline-flex px-3 sm:px-4 py-1 sm:py-1.5 rounded-full border border-gray-100 shadow-sm">
+                        <ClockIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400" />
+                        <span>{session.finished_at ? format(new Date(session.finished_at), 'dd MMM yyyy, HH:mm', { locale: id }) : '-'}</span>
                     </div>
                 </div>
 
