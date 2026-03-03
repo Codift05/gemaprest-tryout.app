@@ -144,6 +144,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('questions', QuestionController::class)->except(['show']);
     Route::delete('/questions/bulk', [QuestionController::class, 'bulkDestroy'])->name('questions.bulk-destroy');
     Route::post('/questions/import', [QuestionController::class, 'import'])->name('questions.import');
+    Route::post('/questions/import/preview', [QuestionController::class, 'previewImport'])->name('questions.import.preview');
 
     // Tryouts
     Route::resource('tryouts', AdminTryoutController::class)->except(['show']);

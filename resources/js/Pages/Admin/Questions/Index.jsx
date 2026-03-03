@@ -8,14 +8,28 @@ import {
     DocumentTextIcon,
     FunnelIcon,
     Bars3CenterLeftIcon,
-    CheckCircleIcon
+    CheckCircleIcon,
+    ArrowUpTrayIcon,
+    DocumentArrowUpIcon,
+    XMarkIcon,
+    ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export default function Index({ questions, categories, filters }) {
     const [search, setSearch] = useState(filters.search || '');
     const [categoryFilter, setCategoryFilter] = useState(filters.category || '');
     const [difficultyFilter, setDifficultyFilter] = useState(filters.difficulty || '');
+    
+    // Import modal state
+    const [showImportModal, setShowImportModal] = useState(false);
+    const [importFile, setImportFile] = useState(null);
+    const [importSubcategory, setImportSubcategory] = useState('');
+    const [previewQuestions, setPreviewQuestions] = useState([]);
+    const [isPreviewLoading, setIsPreviewLoading] = useState(false);
+    const [isImporting, setIsImporting] = useState(false);
+    const [importError, setImportError] = useState(null);
+    const [dragActive, setDragActive] = useState(false);
 
     const handleFilter = () => {
         router.get(route('admin.questions.index'), {
@@ -49,6 +63,110 @@ export default function Index({ questions, categories, filters }) {
         );
     };
 
+    // Drag and drop handlers
+    const handleDrag = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.type === "dragenter" || e.type === "dragover") {
+            setDragActive(true);
+        } else if (e.type === "dragleave") {
+            setDragActive(false);
+        }
+    }, []);
+
+    const handleDrop = useCallback((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+        
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            const file = e.dataTransfer.files[0];
+            if (file.type === 'application/pdf') {
+                setImportFile(file);
+                setImportError(null);
+                setPreviewQuestions([]);
+            } else {
+                setImportError('Hanya file PDF yang diperbolehkan');
+            }
+        }
+    }, []);
+
+    const handleFileSelect = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            setImportFile(e.target.files[0]);
+            setImportError(null);
+            setPreviewQuestions([]);
+        }
+    };
+
+    const handlePreview = async () => {
+        if (!importFile) return;
+        
+        setIsPreviewLoading(true);
+        setImportError(null);
+        
+        const formData = new FormData();
+        formData.append('file', importFile);
+        
+        try {
+            const response = await fetch(route('admin.questions.import.preview'), {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                },
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                setPreviewQuestions(data.questions);
+                if (data.questions.length === 0) {
+                    setImportError('Tidak ada soal yang ditemukan. Pastikan format PDF sesuai.');
+                }
+            } else {
+                setImportError(data.error || 'Gagal memproses PDF');
+            }
+        } catch (error) {
+            setImportError('Terjadi kesalahan saat memproses file');
+        } finally {
+            setIsPreviewLoading(false);
+        }
+    };
+
+    const handleImport = () => {
+        if (!importFile || !importSubcategory) return;
+        
+        setIsImporting(true);
+        
+        const formData = new FormData();
+        formData.append('file', importFile);
+        formData.append('subcategory_id', importSubcategory);
+        
+        router.post(route('admin.questions.import'), formData, {
+            forceFormData: true,
+            onSuccess: () => {
+                setShowImportModal(false);
+                setImportFile(null);
+                setPreviewQuestions([]);
+                setImportSubcategory('');
+                setIsImporting(false);
+            },
+            onError: (errors) => {
+                setImportError(errors.file || errors.subcategory_id || 'Gagal import soal');
+                setIsImporting(false);
+            },
+        });
+    };
+
+    const resetImportModal = () => {
+        setShowImportModal(false);
+        setImportFile(null);
+        setPreviewQuestions([]);
+        setImportSubcategory('');
+        setImportError(null);
+    };
+
     return (
         <AdminLayout title="Bank Soal">
             <Head title="Bank Soal" />
@@ -60,13 +178,22 @@ export default function Index({ questions, categories, filters }) {
                         Kelola data soal, kategori, dan tingkat kesulitan.
                     </p>
                 </div>
-                <Link
-                    href={route('admin.questions.create')}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200"
-                >
-                    <PlusIcon className="w-5 h-5" />
-                    Tambah Soal
-                </Link>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => setShowImportModal(true)}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 transition-colors shadow-sm shadow-emerald-200"
+                    >
+                        <ArrowUpTrayIcon className="w-5 h-5" />
+                        Import PDF
+                    </button>
+                    <Link
+                        href={route('admin.questions.create')}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200"
+                    >
+                        <PlusIcon className="w-5 h-5" />
+                        Tambah Soal
+                    </Link>
+                </div>
             </div>
 
             {/* Filters */}
@@ -254,6 +381,200 @@ export default function Index({ questions, categories, filters }) {
                             />
                         ))}
                     </nav>
+                </div>
+            )}
+
+            {/* Import PDF Modal */}
+            {showImportModal && (
+                <div className="fixed inset-0 z-50 overflow-y-auto">
+                    <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
+                        <div className="fixed inset-0 bg-gray-900/50 transition-opacity" onClick={resetImportModal}></div>
+                        
+                        <div className="relative inline-block w-full max-w-2xl bg-white rounded-2xl text-left shadow-xl transform transition-all my-8">
+                            {/* Modal Header */}
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                                <h3 className="text-lg font-bold text-gray-900">Import Soal dari PDF</h3>
+                                <button
+                                    onClick={resetImportModal}
+                                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                                >
+                                    <XMarkIcon className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* Modal Body */}
+                            <div className="px-6 py-4 max-h-[60vh] overflow-y-auto">
+                                {/* Drag & Drop Area */}
+                                <div
+                                    onDragEnter={handleDrag}
+                                    onDragLeave={handleDrag}
+                                    onDragOver={handleDrag}
+                                    onDrop={handleDrop}
+                                    className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+                                        dragActive 
+                                            ? 'border-emerald-500 bg-emerald-50' 
+                                            : importFile 
+                                                ? 'border-emerald-300 bg-emerald-50' 
+                                                : 'border-gray-300 hover:border-gray-400'
+                                    }`}
+                                >
+                                    {importFile ? (
+                                        <div className="space-y-3">
+                                            <div className="w-16 h-16 mx-auto bg-emerald-100 rounded-full flex items-center justify-center">
+                                                <DocumentTextIcon className="w-8 h-8 text-emerald-600" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-semibold text-gray-900">{importFile.name}</p>
+                                                <p className="text-xs text-gray-500">{(importFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                                            </div>
+                                            <button
+                                                onClick={() => {
+                                                    setImportFile(null);
+                                                    setPreviewQuestions([]);
+                                                }}
+                                                className="text-sm text-red-600 hover:text-red-700 font-medium"
+                                            >
+                                                Ganti File
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-3">
+                                            <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
+                                                <DocumentArrowUpIcon className="w-8 h-8 text-gray-400" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-semibold text-gray-900">Drag & drop file PDF di sini</p>
+                                                <p className="text-xs text-gray-500 mt-1">atau klik untuk memilih file</p>
+                                            </div>
+                                            <input
+                                                type="file"
+                                                accept=".pdf"
+                                                onChange={handleFileSelect}
+                                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Error Message */}
+                                {importError && (
+                                    <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
+                                        <ExclamationTriangleIcon className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                                        <p className="text-sm text-red-700">{importError}</p>
+                                    </div>
+                                )}
+
+                                {/* Subcategory Selection */}
+                                <div className="mt-4">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        Pilih Subkategori Tujuan
+                                    </label>
+                                    <select
+                                        value={importSubcategory}
+                                        onChange={(e) => setImportSubcategory(e.target.value)}
+                                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-0 text-sm"
+                                    >
+                                        <option value="">-- Pilih Subkategori --</option>
+                                        {categories.map((cat) => (
+                                            <optgroup key={cat.id} label={cat.name}>
+                                                {cat.subcategories?.map((sub) => (
+                                                    <option key={sub.id} value={sub.id}>
+                                                        {sub.name}
+                                                    </option>
+                                                ))}
+                                            </optgroup>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Preview Button */}
+                                {importFile && previewQuestions.length === 0 && (
+                                    <button
+                                        onClick={handlePreview}
+                                        disabled={isPreviewLoading}
+                                        className="mt-4 w-full py-2.5 bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-200 transition-colors disabled:opacity-50"
+                                    >
+                                        {isPreviewLoading ? 'Memproses...' : 'Preview Soal'}
+                                    </button>
+                                )}
+
+                                {/* Preview Results */}
+                                {previewQuestions.length > 0 && (
+                                    <div className="mt-4">
+                                        <div className="flex items-center justify-between mb-3">
+                                            <h4 className="text-sm font-bold text-gray-900">
+                                                Preview: {previewQuestions.length} Soal Ditemukan
+                                            </h4>
+                                            <span className="text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg font-medium">
+                                                Siap Import
+                                            </span>
+                                        </div>
+                                        <div className="space-y-3 max-h-60 overflow-y-auto">
+                                            {previewQuestions.slice(0, 5).map((q, idx) => (
+                                                <div key={idx} className="p-3 bg-gray-50 rounded-xl border border-gray-200">
+                                                    <div className="flex items-start gap-2">
+                                                        <span className="w-6 h-6 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold shrink-0">
+                                                            {idx + 1}
+                                                        </span>
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className="text-sm text-gray-900 line-clamp-2">{q.content}</p>
+                                                            <div className="mt-2 flex flex-wrap gap-1">
+                                                                {q.options.map((opt) => (
+                                                                    <span
+                                                                        key={opt.key}
+                                                                        className={`text-xs px-2 py-0.5 rounded ${
+                                                                            opt.key === q.correct_answer
+                                                                                ? 'bg-emerald-100 text-emerald-700 font-semibold'
+                                                                                : 'bg-gray-100 text-gray-600'
+                                                                        }`}
+                                                                    >
+                                                                        {opt.key}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {previewQuestions.length > 5 && (
+                                                <p className="text-xs text-gray-500 text-center py-2">
+                                                    ... dan {previewQuestions.length - 5} soal lainnya
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Format Info */}
+                                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+                                    <h4 className="text-xs font-bold text-blue-800 mb-1">Format PDF yang Didukung:</h4>
+                                    <ul className="text-xs text-blue-700 space-y-0.5 list-disc list-inside">
+                                        <li>Soal bernomor (1., 2., 3., ...)</li>
+                                        <li>Pilihan jawaban A., B., C., D., E.</li>
+                                        <li>Jawaban: A (Keterangan) atau Kunci: A</li>
+                                        <li>Pembahasan: (opsional)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            {/* Modal Footer */}
+                            <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-end gap-3">
+                                <button
+                                    onClick={resetImportModal}
+                                    className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    onClick={handleImport}
+                                    disabled={!importFile || !importSubcategory || isImporting}
+                                    className="px-6 py-2 bg-emerald-600 text-white text-sm font-semibold rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    {isImporting ? 'Mengimport...' : `Import ${previewQuestions.length > 0 ? previewQuestions.length : ''} Soal`}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </AdminLayout>
