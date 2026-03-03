@@ -24,14 +24,13 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
         max_attempts: tryout?.max_attempts || 1,
         max_violations: tryout?.max_violations || defaultSettings.max_violations || 5,
         passing_score: tryout?.passing_score || defaultSettings.passing_score || 60,
-        is_active: tryout?.is_active ?? true,
+        is_published: tryout?.is_published ?? false,
         is_randomized: tryout?.is_randomized ?? false,
-        show_result: tryout?.show_result ?? true,
+        show_result_immediately: tryout?.show_result_immediately ?? true,
         show_leaderboard: tryout?.show_leaderboard ?? true,
-        allow_review: tryout?.allow_review ?? true,
-        start_date: tryout?.start_date ? tryout.start_date.slice(0, 16) : '',
-        end_date: tryout?.end_date ? tryout.end_date.slice(0, 16) : '',
-        category_ids: tryout?.categories?.map((c) => c.id) || [],
+        start_time: tryout?.start_time || '',
+        end_time: tryout?.end_time || '',
+        categories: tryout?.categories?.map((c) => ({ id: c.id, question_count: c.question_count || 0 })) || [],
         thumbnail: null,
     });
 
@@ -40,8 +39,11 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
 
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
-            if (key === 'category_ids') {
-                value.forEach((id) => formData.append('category_ids[]', id));
+            if (key === 'categories') {
+                value.forEach((cat, index) => {
+                    formData.append(`categories[${index}][id]`, cat.id);
+                    formData.append(`categories[${index}][question_count]`, cat.question_count);
+                });
             } else if (key === 'thumbnail' && value) {
                 formData.append('thumbnail', value);
             } else if (value !== null && value !== '') {
@@ -81,12 +83,28 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
     };
 
     const toggleCategory = (categoryId) => {
-        const current = data.category_ids;
-        if (current.includes(categoryId)) {
-            setData('category_ids', current.filter((id) => id !== categoryId));
+        const current = data.categories;
+        const exists = current.find((c) => c.id === categoryId);
+        if (exists) {
+            setData('categories', current.filter((c) => c.id !== categoryId));
         } else {
-            setData('category_ids', [...current, categoryId]);
+            setData('categories', [...current, { id: categoryId, question_count: 0 }]);
         }
+    };
+
+    const updateCategoryQuestionCount = (categoryId, count) => {
+        setData('categories', data.categories.map((c) => 
+            c.id === categoryId ? { ...c, question_count: parseInt(count) || 0 } : c
+        ));
+    };
+
+    const isCategorySelected = (categoryId) => {
+        return data.categories.some((c) => c.id === categoryId);
+    };
+
+    const getCategoryQuestionCount = (categoryId) => {
+        const cat = data.categories.find((c) => c.id === categoryId);
+        return cat ? cat.question_count : 0;
     };
 
     return (
@@ -208,20 +226,45 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
                                 <label className="block text-sm font-bold text-gray-700 mb-2 sm:mb-3">
                                     Kategori
                                 </label>
-                                <div className="flex flex-wrap gap-2 sm:gap-2.5 bg-gray-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-gray-100">
-                                    {categories.map((category) => (
-                                        <button
-                                            key={category.id}
-                                            type="button"
-                                            onClick={() => toggleCategory(category.id)}
-                                            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 border ${data.category_ids.includes(category.id)
-                                                ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200'
-                                                : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-sm'
-                                                }`}
-                                        >
-                                            {category.name}
-                                        </button>
-                                    ))}
+                                <div className="space-y-3">
+                                    <div className="flex flex-wrap gap-2 sm:gap-2.5 bg-gray-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border border-gray-100">
+                                        {categories.map((category) => (
+                                            <button
+                                                key={category.id}
+                                                type="button"
+                                                onClick={() => toggleCategory(category.id)}
+                                                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 border ${isCategorySelected(category.id)
+                                                    ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200'
+                                                    : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:text-indigo-600 hover:shadow-sm'
+                                                    }`}
+                                            >
+                                                {category.name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    
+                                    {/* Question count per category */}
+                                    {data.categories.length > 0 && (
+                                        <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+                                            <p className="text-sm font-medium text-gray-700">Jumlah soal per kategori:</p>
+                                            {data.categories.map((cat) => {
+                                                const categoryInfo = categories.find((c) => c.id === cat.id);
+                                                return (
+                                                    <div key={cat.id} className="flex items-center justify-between gap-4">
+                                                        <span className="text-sm text-gray-600">{categoryInfo?.name || 'Unknown'}</span>
+                                                        <input
+                                                            type="number"
+                                                            min="0"
+                                                            value={cat.question_count}
+                                                            onChange={(e) => updateCategoryQuestionCount(cat.id, e.target.value)}
+                                                            className="w-20 px-3 py-1.5 text-sm rounded-lg border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
+                                                            placeholder="0"
+                                                        />
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -300,7 +343,7 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
                                 </div>
                             </div>
 
-                            {/* Start Date */}
+                            {/* Start Time */}
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Waktu Mulai
@@ -308,15 +351,15 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
                                 <div className="relative">
                                     <input
                                         type="datetime-local"
-                                        value={data.start_date}
-                                        onChange={(e) => setData('start_date', e.target.value)}
+                                        value={data.start_time}
+                                        onChange={(e) => setData('start_time', e.target.value)}
                                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                                     />
                                     <CalendarIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                                 </div>
                             </div>
 
-                            {/* End Date */}
+                            {/* End Time */}
                             <div>
                                 <label className="block text-sm font-bold text-gray-700 mb-1.5">
                                     Waktu Berakhir
@@ -324,8 +367,8 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
                                 <div className="relative">
                                     <input
                                         type="datetime-local"
-                                        value={data.end_date}
-                                        onChange={(e) => setData('end_date', e.target.value)}
+                                        value={data.end_time}
+                                        onChange={(e) => setData('end_time', e.target.value)}
                                         className="w-full pl-10 pr-4 py-2.5 rounded-xl border-gray-200 focus:border-indigo-500 focus:ring-indigo-500"
                                     />
                                     <CalendarIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -341,11 +384,10 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
                         </div>
                         <div className="p-4 sm:p-8 space-y-4 sm:space-y-6">
                             {[
-                                { key: 'is_active', label: 'Aktif', desc: 'Tryout dapat diakses oleh siswa' },
+                                { key: 'is_published', label: 'Publikasikan', desc: 'Tryout dapat diakses oleh siswa' },
                                 { key: 'is_randomized', label: 'Acak Soal', desc: 'Urutan soal akan diacak secara otomatis untuk setiap siswa' },
-                                { key: 'show_result', label: 'Tampilkan Hasil', desc: 'Siswa dapat melihat detail hasil setelah selesai ujian' },
+                                { key: 'show_result_immediately', label: 'Tampilkan Hasil', desc: 'Siswa dapat melihat detail hasil setelah selesai ujian' },
                                 { key: 'show_leaderboard', label: 'Tampilkan Leaderboard', desc: 'Nama siswa akan muncul di papan peringkat jika tersedia' },
-                                { key: 'allow_review', label: 'Izinkan Review', desc: 'Siswa diperbolehkan melihat pembahasan soal setelah ujian selesai' },
                             ].map(({ key, label, desc }) => (
                                 <label key={key} className="flex items-center justify-between cursor-pointer group p-2 sm:p-3 -mx-2 sm:-mx-3 rounded-lg sm:rounded-xl hover:bg-gray-50 transition-colors gap-3">
                                     <div className="flex-1 min-w-0">
