@@ -15,6 +15,8 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedQuestions, setSelectedQuestions] = useState([]);
     const [filterCategory, setFilterCategory] = useState('');
+    const [filterSubcategory, setFilterSubcategory] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const handleRemoveQuestion = (questionId) => {
         if (confirm('Hapus soal dari tryout ini?')) {
@@ -44,14 +46,32 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
     };
 
     const filteredAvailable = availableQuestions.filter((q) => {
-        if (!filterCategory) return true;
-        return q.subcategory?.category_id == filterCategory;
+        // Filter by category
+        if (filterCategory && q.subcategory?.category?.id != filterCategory) return false;
+        // Filter by subcategory
+        if (filterSubcategory && q.subcategory?.id != filterSubcategory) return false;
+        // Filter by search query
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            const content = q.content?.toLowerCase() || '';
+            const subcatName = q.subcategory?.name?.toLowerCase() || '';
+            if (!content.includes(query) && !subcatName.includes(query)) return false;
+        }
+        return true;
     });
 
+    // Get unique categories
     const categories = [...new Map(
         availableQuestions
             .filter((q) => q.subcategory?.category)
             .map((q) => [q.subcategory.category.id, q.subcategory.category])
+    ).values()];
+
+    // Get unique subcategories (filtered by selected category if any)
+    const subcategories = [...new Map(
+        availableQuestions
+            .filter((q) => q.subcategory && (!filterCategory || q.subcategory.category?.id == filterCategory))
+            .map((q) => [q.subcategory.id, q.subcategory])
     ).values()];
 
     return (
@@ -192,28 +212,78 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                                     {selectedQuestions.length} soal dipilih
                                 </p>
                             </div>
-                            <button
-                                onClick={() => setShowAddModal(false)}
-                                className="p-2 text-gray-400 hover:text-gray-600"
-                            >
-                                ✕
-                            </button>
+                            <div className="flex items-center gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        if (selectedQuestions.length === filteredAvailable.length) {
+                                            setSelectedQuestions([]);
+                                        } else {
+                                            setSelectedQuestions(filteredAvailable.map(q => q.id));
+                                        }
+                                    }}
+                                    className="px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
+                                >
+                                    {selectedQuestions.length === filteredAvailable.length && filteredAvailable.length > 0 
+                                        ? 'Batal Pilih Semua' 
+                                        : 'Pilih Semua'}
+                                </button>
+                                <button
+                                    onClick={() => setShowAddModal(false)}
+                                    className="p-2 text-gray-400 hover:text-gray-600"
+                                >
+                                    ✕
+                                </button>
+                            </div>
                         </div>
 
                         {/* Filter */}
-                        <div className="p-4 border-b bg-gray-50">
-                            <select
-                                value={filterCategory}
-                                onChange={(e) => setFilterCategory(e.target.value)}
+                        <div className="p-4 border-b bg-gray-50 space-y-3">
+                            {/* Search */}
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Cari soal..."
                                 className="w-full px-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-indigo-500 text-sm transition-all"
-                            >
-                                <option value="">Semua Kategori</option>
-                                {categories.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>
-                                        {cat.name}
-                                    </option>
-                                ))}
-                            </select>
+                            />
+                            
+                            <div className="flex gap-3">
+                                {/* Category Filter */}
+                                <select
+                                    value={filterCategory}
+                                    onChange={(e) => {
+                                        setFilterCategory(e.target.value);
+                                        setFilterSubcategory(''); // Reset subcategory when category changes
+                                    }}
+                                    className="flex-1 px-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-indigo-500 text-sm transition-all"
+                                >
+                                    <option value="">Semua Kategori</option>
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.name}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                {/* Subcategory Filter */}
+                                <select
+                                    value={filterSubcategory}
+                                    onChange={(e) => setFilterSubcategory(e.target.value)}
+                                    className="flex-1 px-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-indigo-500 focus:ring-indigo-500 text-sm transition-all"
+                                >
+                                    <option value="">Semua Subkategori</option>
+                                    {subcategories.map((sub) => (
+                                        <option key={sub.id} value={sub.id}>
+                                            {sub.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            
+                            <p className="text-xs text-gray-500">
+                                {filteredAvailable.length} soal ditemukan
+                            </p>
                         </div>
 
                         {/* Questions List */}
@@ -245,12 +315,31 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                                                     )}
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <div className="flex items-center gap-2 mb-1">
+                                                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                                                        {question.subcategory?.category && (
+                                                            <span 
+                                                                className="px-2 py-0.5 rounded text-xs font-medium"
+                                                                style={{
+                                                                    backgroundColor: `${question.subcategory.category.color}20`,
+                                                                    color: question.subcategory.category.color,
+                                                                }}
+                                                            >
+                                                                {question.subcategory.category.name}
+                                                            </span>
+                                                        )}
                                                         {question.subcategory && (
-                                                            <span className="text-xs text-gray-500">
+                                                            <span className="text-xs text-gray-500 font-medium">
                                                                 {question.subcategory.name}
                                                             </span>
                                                         )}
+                                                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${
+                                                            question.difficulty === 'easy' ? 'bg-emerald-100 text-emerald-700' :
+                                                            question.difficulty === 'medium' ? 'bg-amber-100 text-amber-700' :
+                                                            'bg-red-100 text-red-700'
+                                                        }`}>
+                                                            {question.difficulty === 'easy' ? 'Mudah' : 
+                                                             question.difficulty === 'medium' ? 'Sedang' : 'Sulit'}
+                                                        </span>
                                                     </div>
                                                     <div
                                                         className="prose prose-sm max-w-none text-gray-900 line-clamp-2"
