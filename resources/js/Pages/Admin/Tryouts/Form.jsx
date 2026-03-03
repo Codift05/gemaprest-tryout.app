@@ -53,11 +53,22 @@ export default function Form({ tryout = null, categories = [], defaultSettings =
             }
         });
 
+        const options = {
+            preserveScroll: true,
+            onError: () => {
+                // Scroll to first error
+                const errorElement = document.querySelector('[class*="text-red"]');
+                if (errorElement) {
+                    errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            },
+        };
+
         if (isEditing) {
             formData.append('_method', 'PUT');
-            router.post(route('admin.tryouts.update', tryout.id), formData);
+            router.post(route('admin.tryouts.update', tryout.id), formData, options);
         } else {
-            router.post(route('admin.tryouts.store'), formData);
+            router.post(route('admin.tryouts.store'), formData, options);
         }
     };
 
