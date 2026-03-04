@@ -77,8 +77,8 @@ export default function MainLayout({ children, title, isFullWidth = false }) {
                                         </button>
                                     </div>
 
-                                    <Menu as="div" className="relative h-full flex items-center">
-                                        <Menu.Button className="flex items-center gap-2 focus:outline-none group">
+                                    <Menu as="div" className="relative flex items-center">
+                                        <Menu.Button className="flex items-center gap-2 focus:outline-none group py-2">
                                             <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
                                                 <span className="text-sm font-bold">
                                                     {auth.user.name?.charAt(0).toUpperCase()}
@@ -95,7 +95,7 @@ export default function MainLayout({ children, title, isFullWidth = false }) {
                                             leaveFrom="transform opacity-100 scale-100"
                                             leaveTo="transform opacity-0 scale-95"
                                         >
-                                            <Menu.Items className="absolute right-0 top-[52px] md:top-[60px] mt-1 w-56 origin-top-right rounded-xl bg-white py-2 shadow-lg ring-1 ring-black/5 focus:outline-none border border-gray-100">
+                                            <Menu.Items className="absolute right-0 top-full mt-2 w-56 origin-top-right rounded-xl bg-white py-2 shadow-lg ring-1 ring-black/5 focus:outline-none border border-gray-100">
                                                 <div className="px-4 py-3 border-b border-gray-100">
                                                     <p className="text-sm font-medium text-gray-900 truncate">{auth.user.name}</p>
                                                     <p className="text-xs text-gray-500 truncate">{auth.user.email}</p>
