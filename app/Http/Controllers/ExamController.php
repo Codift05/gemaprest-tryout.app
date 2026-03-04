@@ -140,7 +140,7 @@ class ExamController extends Controller
     public function take(ExamSession $session): Response|RedirectResponse
     {
         // Authorization
-        if ($session->user_id !== auth()->id()) {
+        if ($session->user_id != auth()->id()) {
             abort(403);
         }
 
@@ -206,7 +206,7 @@ class ExamController extends Controller
     public function saveAnswer(Request $request, ExamSession $session): JsonResponse
     {
         // Authorization
-        if ($session->user_id !== auth()->id()) {
+        if ($session->user_id != auth()->id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -248,7 +248,7 @@ class ExamController extends Controller
     public function reportViolation(Request $request, ExamSession $session): JsonResponse
     {
         // Authorization
-        if ($session->user_id !== auth()->id()) {
+        if ($session->user_id != auth()->id()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -292,7 +292,7 @@ class ExamController extends Controller
     public function submit(Request $request, ExamSession $session): RedirectResponse
     {
         // Authorization
-        if ($session->user_id !== auth()->id()) {
+        if ($session->user_id != auth()->id()) {
             abort(403);
         }
 
@@ -311,7 +311,7 @@ class ExamController extends Controller
     public function result(ExamSession $session): Response|RedirectResponse
     {
         // Authorization
-        if ($session->user_id !== auth()->id()) {
+        if ($session->user_id != auth()->id()) {
             abort(403);
         }
 
@@ -410,7 +410,7 @@ class ExamController extends Controller
     public function review(ExamSession $session): Response|RedirectResponse
     {
         // Authorization
-        if ($session->user_id !== auth()->id()) {
+        if ($session->user_id != auth()->id()) {
             abort(403);
         }
 

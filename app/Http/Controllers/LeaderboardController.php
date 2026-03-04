@@ -35,7 +35,7 @@ class LeaderboardController extends Controller
                         'name' => $entry->user->name,
                         'school' => $entry->user->school,
                         'avatar' => $entry->user->avatar,
-                        'is_current_user' => $entry->user_id === $user->id,
+                        'is_current_user' => $entry->user_id == $user->id,
                     ],
                     'score' => $entry->score,
                     'percentage' => $entry->percentage,
@@ -104,7 +104,7 @@ class LeaderboardController extends Controller
                     'user' => [
                         'id' => $entry->user->id,
                         'name' => $entry->user->name,
-                        'is_current_user' => $entry->user_id === $user->id,
+                        'is_current_user' => $entry->user_id == $user->id,
                     ],
                     'score' => $entry->score,
                     'percentage' => $entry->percentage,

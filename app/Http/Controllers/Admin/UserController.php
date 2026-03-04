@@ -143,7 +143,7 @@ class UserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
-        if ($user->id === auth()->id()) {
+        if ($user->id == auth()->id()) {
             return back()->withErrors(['error' => 'Tidak dapat menghapus akun sendiri.']);
         }
 
@@ -163,7 +163,7 @@ class UserController extends Controller
      */
     public function toggleActive(User $user): RedirectResponse
     {
-        if ($user->id === auth()->id()) {
+        if ($user->id == auth()->id()) {
             return back()->withErrors(['error' => 'Tidak dapat menonaktifkan akun sendiri.']);
         }
 
