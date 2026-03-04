@@ -206,6 +206,22 @@ class QuestionController extends Controller
     }
 
     /**
+     * Delete all questions by category
+     */
+    public function destroyByCategory(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $count = Question::whereHas('subcategory', function ($q) use ($request) {
+            $q->where('category_id', $request->category_id);
+        })->delete();
+
+        return back()->with('success', "$count soal berhasil dihapus.");
+    }
+
+    /**
      * Import questions from PDF file
      */
     public function import(Request $request): RedirectResponse

@@ -18,8 +18,10 @@ import { useState, useCallback } from 'react';
 
 export default function Index({ questions, categories, filters }) {
     const [search, setSearch] = useState(filters.search || '');
-    const [categoryFilter, setCategoryFilter] = useState(filters.category || '');
+    const [categoryFilter, setCategoryFilter] = useState(filters.category_id || '');
     const [difficultyFilter, setDifficultyFilter] = useState(filters.difficulty || '');
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     
     // Import modal state
     const [showImportModal, setShowImportModal] = useState(false);
@@ -34,10 +36,29 @@ export default function Index({ questions, categories, filters }) {
     const handleFilter = () => {
         router.get(route('admin.questions.index'), {
             search,
-            category: categoryFilter,
+            category_id: categoryFilter,
             difficulty: difficultyFilter,
         }, { preserveState: true });
     };
+
+    const handleDeleteByCategory = () => {
+        if (!categoryFilter) return;
+        setIsDeleting(true);
+        router.delete(route('admin.questions.destroy-by-category'), {
+            data: { category_id: categoryFilter },
+            onSuccess: () => {
+                setShowDeleteModal(false);
+                setIsDeleting(false);
+            },
+            onError: () => {
+                setIsDeleting(false);
+            },
+        });
+    };
+
+    const selectedCategoryName = categoryFilter 
+        ? categories.find(c => c.id.toString() === categoryFilter.toString())?.name 
+        : '';
 
     const handleDelete = (question) => {
         if (confirm('Hapus soal ini? Tindakan ini tidak dapat dibatalkan.')) {
@@ -252,9 +273,55 @@ export default function Index({ questions, categories, filters }) {
                             <FunnelIcon className="w-4 h-4" />
                             Filter
                         </button>
+
+                        {categoryFilter && (
+                            <button
+                                onClick={() => setShowDeleteModal(true)}
+                                className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-2.5 bg-red-600 text-white text-sm font-semibold rounded-lg sm:rounded-xl hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+                            >
+                                <TrashIcon className="w-4 h-4" />
+                                Hapus Semua
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+                        <div className="flex items-center gap-3 mb-4">
+                            <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                                <ExclamationTriangleIcon className="w-6 h-6 text-red-600" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-bold text-gray-900">Hapus Semua Soal</h3>
+                                <p className="text-sm text-gray-500">Kategori: {selectedCategoryName}</p>
+                            </div>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-6">
+                            Semua soal dalam kategori <strong>{selectedCategoryName}</strong> akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.
+                        </p>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setShowDeleteModal(false)}
+                                className="flex-1 px-4 py-2.5 border border-gray-200 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
+                                disabled={isDeleting}
+                            >
+                                Batal
+                            </button>
+                            <button
+                                onClick={handleDeleteByCategory}
+                                disabled={isDeleting}
+                                className="flex-1 px-4 py-2.5 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-colors disabled:opacity-70"
+                            >
+                                {isDeleting ? 'Menghapus...' : 'Ya, Hapus Semua'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Questions Table */}
             <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
