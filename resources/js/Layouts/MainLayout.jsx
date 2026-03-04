@@ -37,7 +37,7 @@ export default function MainLayout({ children, title, isFullWidth = false }) {
                             {/* Logo */}
                             <Link href={route('dashboard')} className="flex items-center gap-2 group">
                                 <img src="/logo.png" alt="Gemaprest" className="w-8 h-8 md:w-9 md:h-9" />
-                                <span className="hidden sm:block text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Gemaprest</span>
+                                <span className="hidden sm:block text-xl font-medium bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Gemaprest</span>
                             </Link>
 
                             {/* Desktop Navigation */}
@@ -69,16 +69,8 @@ export default function MainLayout({ children, title, isFullWidth = false }) {
                         <div className="flex items-center gap-3 md:gap-4 h-full">
                             {auth.user ? (
                                 <div className="flex items-center h-full gap-4 md:gap-6">
-                                    {/* Badges / Notifications hidden on very small screens */}
+                                    {/* Notifications hidden on very small screens */}
                                     <div className="hidden sm:flex items-center gap-4 border-r border-gray-200 pr-4 md:pr-5 h-8">
-                                        <div className="flex items-center gap-1.5 text-gray-600">
-                                            <div className="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center">
-                                                <svg className="w-3.5 h-3.5 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-                                                </svg>
-                                            </div>
-                                            <span className="text-sm font-bold">2</span>
-                                        </div>
                                         <button className="text-gray-500 hover:text-gray-900 transition-colors">
                                             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
@@ -205,7 +197,7 @@ export default function MainLayout({ children, title, isFullWidth = false }) {
             </header>
 
             {/* Main Content */}
-            <main className={isFullWidth ? "w-full pt-16 md:pt-20" : "mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-8 pt-24 md:pt-28"}>
+            <main className={isFullWidth ? "w-full pt-[60px] md:pt-[68px]" : "mx-auto max-w-7xl w-full px-4 sm:px-6 lg:px-8 py-8 pt-24 md:pt-28"}>
                 {children}
             </main>
 
