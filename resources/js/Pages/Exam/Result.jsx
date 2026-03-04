@@ -9,7 +9,9 @@ import {
     ArrowLeftIcon,
     ArrowPathIcon,
     BookOpenIcon,
-    ShareIcon
+    ShareIcon,
+    ArrowRightIcon,
+    ExclamationCircleIcon
 } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
