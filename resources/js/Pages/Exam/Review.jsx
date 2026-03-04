@@ -92,12 +92,12 @@ export default function Review({ session, tryout, questions }) {
 
                         <div className="flex items-center gap-3">
                             {/* Question Counter (Desktop) */}
-                            <div className="hidden sm:flex items-center gap-2 bg-indigo-50 px-4 py-2 rounded-xl border border-indigo-100">
-                                <span className="text-indigo-700 font-bold text-sm">
+                            <div className="hidden sm:flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-xl border border-gray-200">
+                                <span className="text-gray-700 font-bold text-sm">
                                     Soal {currentIndex + 1}
                                 </span>
-                                <span className="text-indigo-300">/</span>
-                                <span className="text-indigo-600 text-sm font-medium">
+                                <span className="text-gray-400">/</span>
+                                <span className="text-gray-600 text-sm font-medium">
                                     {totalQuestions}
                                 </span>
                             </div>
@@ -127,7 +127,7 @@ export default function Review({ session, tryout, questions }) {
                                                 Kategori
                                             </span>
                                             <div className="flex gap-2">
-                                                <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-lg text-xs font-bold">
+                                                <span className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-lg text-xs font-bold">
                                                     {currentQuestion.category || 'Umum'}
                                                 </span>
                                                 {currentQuestion.subcategory && (
@@ -148,12 +148,12 @@ export default function Review({ session, tryout, questions }) {
                                 {/* Question Body */}
                                 <div className="p-6 md:p-8">
                                     <div className="flex gap-4 mb-6">
-                                        <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm md:text-lg shadow-lg shadow-indigo-200">
+                                        <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm md:text-lg shadow-md shadow-emerald-200">
                                             {currentIndex + 1}
                                         </div>
                                         <div className="flex-1 min-w-0 pt-1">
                                             <div
-                                                className="prose prose-sm md:prose-lg prose-indigo max-w-none text-gray-800 leading-relaxed"
+                                                className="prose prose-sm md:prose-lg max-w-none text-gray-800 leading-relaxed"
                                                 dangerouslySetInnerHTML={{ __html: currentQuestion.content }}
                                             />
                                         </div>
@@ -247,9 +247,9 @@ export default function Review({ session, tryout, questions }) {
                                 <div className="bg-slate-50 border-t border-gray-100 p-6 md:p-8">
                                     <button
                                         onClick={() => setShowExplanation(!showExplanation)}
-                                        className="flex items-center gap-3 text-indigo-600 font-bold hover:text-indigo-700 transition-colors mb-4 group w-full md:w-auto"
+                                        className="flex items-center gap-3 text-emerald-700 font-bold hover:text-emerald-800 transition-colors mb-4 group w-full md:w-auto"
                                     >
-                                        <div className="p-2 bg-indigo-100 rounded-lg group-hover:bg-indigo-200 transition-colors">
+                                        <div className="p-2 bg-emerald-100 text-emerald-600 rounded-lg group-hover:bg-emerald-200 transition-colors">
                                             <BookOpenIcon className="w-5 h-5" />
                                         </div>
                                         <span>{showExplanation ? 'Sembunyikan' : 'Lihat'} Pembahasan & Kunci Jawaban</span>
@@ -257,13 +257,13 @@ export default function Review({ session, tryout, questions }) {
                                     </button>
 
                                     {showExplanation && (
-                                        <div className="bg-white rounded-2xl border border-indigo-100 p-6 shadow-sm ring-4 ring-indigo-50/50 animate-fadeIn relative overflow-hidden">
+                                        <div className="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm ring-4 ring-gray-50 animate-fadeIn relative overflow-hidden">
                                             {/* Decoration */}
-                                            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-50 to-white rounded-bl-full -mr-4 -mt-4 z-0"></div>
+                                            <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-emerald-50 to-white rounded-bl-full -mr-4 -mt-4 z-0"></div>
 
                                             <div className="relative z-10">
                                                 <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-3 text-lg">
-                                                    <span className="w-1.5 h-6 bg-indigo-500 rounded-full"></span>
+                                                    <span className="w-1.5 h-6 bg-emerald-500 rounded-full"></span>
                                                     Penjelasan Lengkap
                                                 </h4>
 
@@ -279,7 +279,7 @@ export default function Review({ session, tryout, questions }) {
 
                                                 {currentQuestion.explanation ? (
                                                     <div
-                                                        className="prose prose-indigo max-w-none text-gray-700 bg-slate-50 p-6 rounded-2xl border border-slate-100"
+                                                        className="prose max-w-none text-gray-700 bg-slate-50 p-6 rounded-2xl border border-slate-100"
                                                         dangerouslySetInnerHTML={{ __html: currentQuestion.explanation }}
                                                     />
                                                 ) : (
@@ -307,7 +307,7 @@ export default function Review({ session, tryout, questions }) {
                                 <button
                                     onClick={() => goToQuestion(currentIndex + 1)}
                                     disabled={currentIndex === totalQuestions - 1}
-                                    className="btn btn-primary px-6 py-3 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 active:scale-95 transition-all flex items-center font-semibold disabled:opacity-50 disabled:shadow-none"
+                                    className="bg-emerald-600 text-white hover:bg-emerald-700 px-6 py-3 rounded-xl shadow-md shadow-emerald-600/20 transition-all flex items-center font-semibold disabled:opacity-50 disabled:shadow-none disabled:cursor-not-allowed"
                                 >
                                     <span className="hidden sm:inline">Soal </span>Selanjutnya
                                     <ChevronRightIcon className="w-5 h-5 ml-2" />
@@ -367,7 +367,7 @@ export default function Review({ session, tryout, questions }) {
                                                 className={`
                                                     relative aspect-square rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center border-2
                                                     ${isCurrent
-                                                        ? 'border-indigo-600 bg-indigo-600 text-white shadow-lg shadow-indigo-200 scale-105 z-10'
+                                                        ? 'border-emerald-600 bg-emerald-600 text-white shadow-md shadow-emerald-200 scale-105 z-10'
                                                         : `${status.color} hover:opacity-80`
                                                     }
                                                 `}
