@@ -37,7 +37,6 @@ export default function MainLayout({ children, title, isFullWidth = false }) {
                             {/* Logo */}
                             <Link href={route('dashboard')} className="flex items-center gap-2 group">
                                 <img src="/logo.png" alt="Gemaprest" className="w-8 h-8 md:w-9 md:h-9" />
-                                <span className="hidden sm:block text-xl font-medium bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Gemaprest</span>
                             </Link>
 
                             {/* Desktop Navigation */}
