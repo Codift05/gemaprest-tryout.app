@@ -59,6 +59,11 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
 
     const handleViolation = useCallback((type, count, max) => {
         addViolation(type);
+        // Auto-submit when max violations reached
+        if (count >= max) {
+            handleSubmit(true);
+            return;
+        }
         setViolationWarning({ type, count, max });
     }, [addViolation]);
 
@@ -495,49 +500,50 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
 
                 {/* Violation Warning Modal */}
                 {violationWarning && (
-                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/80 backdrop-blur-sm animate-in fade-in">
-                        <div className="bg-white rounded-3xl max-w-md w-full p-8 shadow-2xl transform transition-all scale-100 animate-in zoom-in-95 duration-200 border-t-8 border-red-500">
-                            <div className="text-center mb-6">
-                                <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6 ring-8 ring-red-50/50 animate-bounce">
-                                    <ExclamationTriangleIcon className="w-10 h-10 text-red-500" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                                    Peringatan Pelanggaran
-                                </h3>
-                                <p className="text-gray-500">
-                                    Sistem mendeteksi aktivitas mencurigakan.
-                                </p>
-                            </div>
+                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-gray-900/70 backdrop-blur-sm">
+                        <div className="bg-white rounded-2xl max-w-sm w-full shadow-xl overflow-hidden">
+                            {/* Red top bar */}
+                            <div className="h-1.5 bg-red-500" />
 
-                            <div className="bg-red-50 rounded-2xl p-5 mb-8 border border-red-100">
-                                <div className="flex justify-between items-center mb-3">
-                                    <span className="text-gray-600 font-medium">Jenis Pelanggaran</span>
-                                    <span className="font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full text-sm">
-                                        {violationWarning.type === 'tab_switch' ? 'Pindah Tab/Minimalkan Browser' :
-                                            violationWarning.type === 'window_blur' ? 'Meninggalkan Layar Ujian' :
-                                                violationWarning.type === 'fullscreen_exit' ? 'Keluar Layar Penuh' :
-                                                    violationWarning.type}
-                                    </span>
+                            <div className="p-6">
+                                <div className="flex flex-col items-center text-center mb-5">
+                                    <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-3">
+                                        <ExclamationTriangleIcon className="w-6 h-6 text-red-500" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-gray-900 mb-1">Peringatan Pelanggaran</h3>
+                                    <p className="text-sm text-gray-500">Sistem mendeteksi aktivitas mencurigakan.</p>
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-gray-600 font-medium">Total Pelanggaran</span>
-                                    <span className="font-bold text-gray-900 text-lg">
-                                        <span className="text-red-600 text-2xl">{violationWarning.count}</span>
-                                        <span className="text-gray-400 mx-1">/</span>
-                                        <span>{violationWarning.max}</span>
-                                    </span>
-                                </div>
-                                <div className="mt-4 text-xs text-red-500 text-center font-medium bg-white/50 p-2 rounded-lg">
-                                    Jika mencapai batas maksimal, ujian akan otomatis dihentikan.
-                                </div>
-                            </div>
 
-                            <button
-                                onClick={() => setViolationWarning(null)}
-                                className="btn w-full bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-500/20 hover:shadow-red-500/40 font-semibold py-3.5 rounded-xl uppercase tracking-wide transition-all active:scale-95"
-                            >
-                                Saya Mengerti & Lanjutkan
-                            </button>
+                                <div className="bg-gray-50 rounded-xl border border-gray-100 p-4 mb-5 space-y-3">
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-gray-500">Jenis Pelanggaran</span>
+                                        <span className="text-xs font-semibold text-red-600 bg-red-50 border border-red-100 px-2.5 py-1 rounded-lg">
+                                            {violationWarning.type === 'tab_switch' ? 'Pindah Tab' :
+                                                violationWarning.type === 'window_blur' ? 'Meninggalkan Layar' :
+                                                    violationWarning.type === 'fullscreen_exit' ? 'Keluar Layar Penuh' :
+                                                        violationWarning.type}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm text-gray-500">Total Pelanggaran</span>
+                                        <span className="text-sm font-bold text-gray-800">
+                                            <span className="text-red-600 text-base">{violationWarning.count}</span>
+                                            <span className="text-gray-400 mx-1">/</span>
+                                            <span>{violationWarning.max}</span>
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-red-500 text-center pt-1 border-t border-gray-100">
+                                        Jika mencapai batas maksimal, ujian akan otomatis dihentikan.
+                                    </p>
+                                </div>
+
+                                <button
+                                    onClick={() => setViolationWarning(null)}
+                                    className="w-full py-2.5 bg-gray-900 hover:bg-gray-800 text-white text-sm font-semibold rounded-xl transition-colors"
+                                >
+                                    Saya Mengerti &amp; Lanjutkan
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
