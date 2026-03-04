@@ -1,8 +1,8 @@
 import { Link, usePage } from '@inertiajs/react';
-import { useState, Fragment } from 'react'; // Added Fragment
-import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline';
-import { ChevronDownIcon } from '@heroicons/react/20/solid'; // Added ChevronDownIcon
-import { Menu, Transition } from '@headlessui/react'; // Added Menu, Transition
+import { useState } from 'react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/react';
 import clsx from 'clsx';
 
 export default function MainLayout({ children, title, isFullWidth = false }) {
@@ -78,58 +78,53 @@ export default function MainLayout({ children, title, isFullWidth = false }) {
                                     </div>
 
                                     <Menu as="div" className="relative flex items-center">
-                                        <Menu.Button className="flex items-center gap-2 focus:outline-none group py-2">
+                                        <MenuButton className="flex items-center gap-2 focus:outline-none group py-2">
                                             <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center border border-emerald-200">
                                                 <span className="text-sm font-bold">
                                                     {auth.user.name?.charAt(0).toUpperCase()}
                                                 </span>
                                             </div>
                                             <ChevronDownIcon className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" aria-hidden="true" />
-                                        </Menu.Button>
-                                        <Transition
-                                            as={Fragment}
-                                            enter="transition ease-out duration-100"
-                                            enterFrom="transform opacity-0 scale-95"
-                                            enterTo="transform opacity-100 scale-100"
-                                            leave="transition ease-in duration-75"
-                                            leaveFrom="transform opacity-100 scale-100"
-                                            leaveTo="transform opacity-0 scale-95"
+                                        </MenuButton>
+
+                                        <MenuItems
+                                            transition
+                                            anchor="bottom end"
+                                            className="absolute right-0 top-full mt-2 w-56 origin-top-right rounded-xl bg-white py-2 shadow-lg ring-1 ring-black/5 focus:outline-none border border-gray-100 z-50 transition duration-100 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
                                         >
-                                            <Menu.Items className="absolute right-0 top-full mt-2 w-56 origin-top-right rounded-xl bg-white py-2 shadow-lg ring-1 ring-black/5 focus:outline-none border border-gray-100">
-                                                <div className="px-4 py-3 border-b border-gray-100">
-                                                    <p className="text-sm font-medium text-gray-900 truncate">{auth.user.name}</p>
-                                                    <p className="text-xs text-gray-500 truncate">{auth.user.email}</p>
-                                                </div>
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <Link
-                                                            href={route('profile.edit')}
-                                                            className={clsx(
-                                                                active ? 'bg-gray-50 text-emerald-600' : 'text-gray-700',
-                                                                'block px-4 py-2.5 text-sm transition-colors'
-                                                            )}
-                                                        >
-                                                            Profil Saya
-                                                        </Link>
-                                                    )}
-                                                </Menu.Item>
-                                                <Menu.Item>
-                                                    {({ active }) => (
-                                                        <Link
-                                                            href={route('logout')}
-                                                            method="post"
-                                                            as="button"
-                                                            className={clsx(
-                                                                active ? 'bg-red-50 text-red-600' : 'text-gray-700',
-                                                                'block w-full text-left px-4 py-2.5 text-sm transition-colors'
-                                                            )}
-                                                        >
-                                                            Keluar
-                                                        </Link>
-                                                    )}
-                                                </Menu.Item>
-                                            </Menu.Items>
-                                        </Transition>
+                                            <div className="px-4 py-3 border-b border-gray-100">
+                                                <p className="text-sm font-medium text-gray-900 truncate">{auth.user.name}</p>
+                                                <p className="text-xs text-gray-500 truncate">{auth.user.email}</p>
+                                            </div>
+                                            <MenuItem>
+                                                {({ focus }) => (
+                                                    <Link
+                                                        href={route('profile.edit')}
+                                                        className={clsx(
+                                                            focus ? 'bg-gray-50 text-emerald-600' : 'text-gray-700',
+                                                            'block px-4 py-2.5 text-sm transition-colors'
+                                                        )}
+                                                    >
+                                                        Profil Saya
+                                                    </Link>
+                                                )}
+                                            </MenuItem>
+                                            <MenuItem>
+                                                {({ focus }) => (
+                                                    <Link
+                                                        href={route('logout')}
+                                                        method="post"
+                                                        as="button"
+                                                        className={clsx(
+                                                            focus ? 'bg-red-50 text-red-600' : 'text-gray-700',
+                                                            'block w-full text-left px-4 py-2.5 text-sm transition-colors'
+                                                        )}
+                                                    >
+                                                        Keluar
+                                                    </Link>
+                                                )}
+                                            </MenuItem>
+                                        </MenuItems>
                                     </Menu>
                                 </div>
                             ) : (
