@@ -133,7 +133,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                     </p>
                     <button
                         onClick={() => window.location.reload()}
-                        className="mt-6 px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+                        className="mt-6 px-6 py-2 bg-emerald-600 rounded-lg hover:bg-emerald-700 transition"
                     >
                         Refresh Halaman
                     </button>
@@ -205,12 +205,12 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                         <span>Ujian Sedang Berlangsung</span>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 bg-blue-50 px-4 py-2 rounded-xl border border-blue-100">
-                                    <span className="text-blue-700 font-semibold text-sm">
+                                <div className="flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-lg">
+                                    <span className="text-gray-700 font-semibold text-sm">
                                         Soal {currentQuestionIndex + 1}
                                     </span>
-                                    <span className="text-blue-300">/</span>
-                                    <span className="text-blue-600 text-sm">
+                                    <span className="text-gray-400">/</span>
+                                    <span className="text-gray-500 text-sm">
                                         {totalQuestions}
                                     </span>
                                 </div>
@@ -218,12 +218,12 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
 
                             {/* Center: Timer */}
                             <div
-                                className={`flex items-center gap-3 px-6 py-2.5 rounded-2xl font-mono text-xl font-bold transition-all shadow-sm ${urgencyLevel === 'critical' || urgencyLevel === 'warning'
-                                    ? 'bg-red-50 text-red-600 border border-red-200 animate-pulse'
-                                    : 'bg-white text-blue-600 border border-gray-200'
+                                className={`flex items-center gap-2 px-5 py-2 rounded-xl font-mono text-lg font-bold transition-all border ${urgencyLevel === 'critical' || urgencyLevel === 'warning'
+                                    ? 'bg-red-50 text-red-600 border-red-200 animate-pulse'
+                                    : 'bg-white text-gray-800 border-gray-200'
                                     }`}
                             >
-                                <ClockIcon className={`w-6 h-6 ${urgencyLevel === 'critical' ? 'text-red-500' : 'text-blue-500'}`} />
+                                <ClockIcon className={`w-5 h-5 ${urgencyLevel === 'critical' ? 'text-red-500' : 'text-gray-400'}`} />
                                 <span>{formattedTime}</span>
                             </div>
 
@@ -240,11 +240,11 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                 <button
                                     onClick={() => handleSubmit()}
                                     disabled={isSubmitting}
-                                    className="btn btn-primary px-6 py-2.5 rounded-xl text-sm shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all font-semibold"
+                                    className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
                                 >
                                     <span className="hidden sm:inline">Selesaikan Ujian</span>
                                     <span className="sm:hidden">Selesai</span>
-                                    <PaperAirplaneIcon className="w-4 h-4 ml-2" />
+                                    <PaperAirplaneIcon className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
@@ -256,9 +256,9 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                             <div className="max-w-3xl mx-auto">
                                 {/* Question Card */}
                                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8 transition-all hover:shadow-md">
-                                    <div className="px-8 py-6 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                                        <div className="flex items-center gap-4">
-                                            <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600 text-white font-bold text-lg shadow-lg shadow-blue-500/30">
+                                    <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                                        <div className="flex items-center gap-3">
+                                            <span className="flex items-center justify-center w-9 h-9 rounded-xl bg-emerald-600 text-white font-bold text-sm">
                                                 {currentQuestionIndex + 1}
                                             </span>
                                             <div className="flex flex-col">
@@ -266,7 +266,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                                     Pertanyaan
                                                 </span>
                                                 {currentQuestion.subcategory && (
-                                                    <span className="text-sm font-medium text-blue-600">
+                                                    <span className="text-sm font-medium text-gray-600">
                                                         {currentQuestion.subcategory.name}
                                                     </span>
                                                 )}
@@ -317,16 +317,16 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                                     <button
                                                         key={optionKey}
                                                         onClick={() => handleAnswer(optionKey)}
-                                                        className={`group w-full p-4 rounded-2xl border-2 text-left transition-all duration-200 relative overflow-hidden ${isSelected
-                                                            ? 'border-blue-500 bg-blue-50/50 shadow-md shadow-blue-100 ring-2 ring-blue-500/20'
-                                                            : 'border-gray-100 hover:border-blue-200 hover:bg-white hover:shadow-md bg-white'
+                                                        className={`group w-full p-4 rounded-xl border text-left transition-all duration-200 relative ${isSelected
+                                                            ? 'border-emerald-500 bg-emerald-50'
+                                                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white'
                                                             }`}
                                                     >
-                                                        <div className="flex items-start gap-4 relative z-10">
+                                                        <div className="flex items-start gap-3.5">
                                                             <span
-                                                                className={`w-10 h-10 rounded-xl flex items-center justify-center text-lg font-bold shrink-0 transition-all duration-200 ${isSelected
-                                                                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-110'
-                                                                    : 'bg-gray-100 text-gray-500 group-hover:bg-blue-100 group-hover:text-blue-600'
+                                                                className={`w-9 h-9 rounded-lg flex items-center justify-center font-bold shrink-0 transition-all text-sm ${isSelected
+                                                                    ? 'bg-emerald-600 text-white'
+                                                                    : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
                                                                     }`}
                                                             >
                                                                 {optionKey}
@@ -334,7 +334,7 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                                             <div className="flex-1 py-1">
                                                                 {option.text && (
                                                                     <div
-                                                                        className={`prose prose-base max-w-none transition-colors ${isSelected ? 'text-blue-900' : 'text-gray-700 group-hover:text-gray-900'}`}
+                                                                        className={`prose prose-sm max-w-none ${isSelected ? 'text-emerald-900' : 'text-gray-700'}`}
                                                                         dangerouslySetInnerHTML={{ __html: option.text }}
                                                                     />
                                                                 )}
@@ -342,13 +342,13 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                                                     <img
                                                                         src={`/storage/${option.image}`}
                                                                         className="mt-2 max-h-40 rounded-lg border border-gray-200"
-                                                                        alt="Option"
+                                                                        alt="Gambar pilihan"
                                                                     />
                                                                 )}
                                                             </div>
                                                             {isSelected && (
-                                                                <div className="absolute top-4 right-4 text-blue-500 animate-in fade-in zoom-in duration-300">
-                                                                    <CheckIcon className="w-6 h-6" />
+                                                                <div className="flex-shrink-0 self-center text-emerald-500">
+                                                                    <CheckIcon className="w-5 h-5" />
                                                                 </div>
                                                             )}
                                                         </div>
@@ -381,18 +381,18 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                         <button
                                             onClick={() => handleSubmit()}
                                             disabled={isSubmitting}
-                                            className="btn bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 active:scale-95"
+                                            className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-xl hover:bg-emerald-700 disabled:opacity-40 transition-colors"
                                         >
                                             Selesai
-                                            <PaperAirplaneIcon className="w-5 h-5 ml-2" />
+                                            <PaperAirplaneIcon className="w-4 h-4" />
                                         </button>
                                     ) : (
                                         <button
                                             onClick={() => goToQuestion(currentQuestionIndex + 1)}
-                                            className="btn bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 active:scale-95"
+                                            className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 text-white text-sm font-medium rounded-xl hover:bg-emerald-700 transition-colors"
                                         >
                                             Selanjutnya
-                                            <ChevronRightIcon className="w-5 h-5 ml-2" />
+                                            <ChevronRightIcon className="w-4 h-4" />
                                         </button>
                                     )}
                                 </div>
@@ -443,11 +443,11 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                                                     goToQuestion(index);
                                                     if (window.innerWidth < 1024) setShowNavigation(false);
                                                 }}
-                                                className={`relative aspect-square rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center shadow-sm hover:scale-105 active:scale-95 ${isCurrent
-                                                    ? 'bg-blue-600 text-white ring-4 ring-blue-100 shadow-blue-500/30 w-full h-full z-10'
+                                                className={`relative aspect-square rounded-lg text-xs font-semibold border transition-all flex items-center justify-center ${isCurrent
+                                                    ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
                                                     : isAnswered
-                                                        ? 'bg-emerald-500 text-white shadow-emerald-500/20'
-                                                        : 'bg-white border border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-600'
+                                                        ? 'border-emerald-300 bg-emerald-50 text-emerald-700'
+                                                        : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
                                                     }`}
                                             >
                                                 {index + 1}
@@ -463,23 +463,21 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                             </div>
 
                             {/* Legend */}
-                            <div className="p-6 bg-gray-50 border-t border-gray-200 text-xs font-medium text-gray-600 space-y-3">
-                                <div className="flex items-center gap-3">
-                                    <span className="w-3 h-3 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50" />
-                                    <span>Sudah Dikewajab</span>
+                            <div className="px-4 py-3 bg-gray-50 border-t border-gray-100 space-y-2">
+                                <div className="flex items-center gap-2.5 text-xs text-gray-500">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                                    <span>Sudah Dijawab</span>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="w-3 h-3 rounded-full bg-white border border-gray-300" />
+                                <div className="flex items-center gap-2.5 text-xs text-gray-500">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-white border border-gray-300" />
                                     <span>Belum Dijawab</span>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <span className="w-3 h-3 rounded-full bg-blue-600 shadow-sm shadow-blue-500/50" />
+                                <div className="flex items-center gap-2.5 text-xs text-gray-500">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
                                     <span>Sedang Dikerjakan</span>
                                 </div>
-                                <div className="flex items-center gap-3">
-                                    <div className="w-3 h-3 rounded-full bg-amber-500 flex items-center justify-center">
-                                        <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-                                    </div>
+                                <div className="flex items-center gap-2.5 text-xs text-gray-500">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400" />
                                     <span>Ragu-ragu</span>
                                 </div>
                             </div>
@@ -585,18 +583,18 @@ export default function Take({ session, tryout = {}, questions = [], answers: in
                             <div className="flex gap-4">
                                 <button
                                     onClick={() => setShowSubmitModal(false)}
-                                    className="btn flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 font-semibold py-3"
+                                    className="flex-1 py-3 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 text-sm font-medium rounded-xl transition-colors"
                                 >
                                     Kembali
                                 </button>
                                 <button
                                     onClick={() => handleSubmit(true)}
                                     disabled={isSubmitting}
-                                    className="btn flex-1 bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 font-semibold py-3"
+                                    className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-colors disabled:opacity-50"
                                 >
                                     {isSubmitting ? (
                                         <div className="flex items-center justify-center gap-2">
-                                            <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                             </svg>
