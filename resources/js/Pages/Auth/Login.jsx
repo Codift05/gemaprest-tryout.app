@@ -1,6 +1,6 @@
 import { Head, useForm, Link } from '@inertiajs/react';
 import { useState } from 'react';
-import { EyeIcon, EyeSlashIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon, CheckCircleIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
@@ -38,6 +38,15 @@ export default function Login() {
                 {/* Left Side - Form */}
                 <div className="flex-1 flex items-center justify-center px-4 py-6 sm:p-8 relative z-10">
                     <div className="w-full max-w-sm sm:max-w-md">
+                        {/* Back Button */}
+                        <Link
+                            href="/"
+                            className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 transition-colors"
+                        >
+                            <ArrowLeftIcon className="w-4 h-4" />
+                            Kembali ke Beranda
+                        </Link>
+
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-2 sm:gap-3 mb-5 sm:mb-8">
                             <img src="/logo.png" alt="Gemaprest" className="h-8 sm:h-10 w-auto" />
