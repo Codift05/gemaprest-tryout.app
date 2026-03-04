@@ -12,7 +12,7 @@ import {
 import { formatDistanceToNow } from 'date-fns';
 import { id } from 'date-fns/locale';
 
-export default function Dashboard({ availableTryouts = [], activeSession = null, recentResults = [], stats = { total_tryouts_completed: 0, average_score: 0, total_study_time: 0 } }) {
+export default function Dashboard({ auth, availableTryouts = [], activeSession = null, recentResults = [], stats = { total_tryouts_completed: 0, average_score: 0, total_study_time: 0 } }) {
     // Safe access to stats to avoid NaN
     const totalStudyTime = stats?.total_study_time || 0;
     const studyHours = Math.floor(totalStudyTime / 3600);
@@ -22,224 +22,170 @@ export default function Dashboard({ availableTryouts = [], activeSession = null,
     const remainingMinutes = Math.floor(remainingTime / 60);
 
     return (
-        <MainLayout title="Dashboard">
+        <MainLayout title="Dashboard" isFullWidth={true}>
             <Head title="Dashboard" />
 
-            {/* Removed duplicate px-4 padding — MainLayout already provides px-4 */}
-            <div className="space-y-6 md:space-y-10 max-w-7xl mx-auto overflow-hidden">
-                {/* Welcome Section */}
-                <div className="bg-indigo-600 rounded-2xl md:rounded-3xl p-5 md:p-12 shadow-xl shadow-indigo-200 relative overflow-hidden">
-                    {/* Subtle pattern */}
-                    <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-
-                    <div className="relative z-10 text-center md:text-left">
-                        <h1 className="text-xl md:text-4xl font-bold text-white mb-2 md:mb-4 tracking-tight leading-tight">
-                            Selamat Datang Kembali!
-                        </h1>
-                        <p className="text-indigo-100 text-xs md:text-lg leading-relaxed">
-                            Lanjutkan persiapan UTBK kamu hari ini dengan semangat baru.
-                        </p>
-                    </div>
-
-                    {/* Decoration/Icon - Hidden on mobile */}
-                    <div className="absolute z-10 right-4 bottom-4 hidden md:block opacity-20 transform rotate-12">
-                        <SparklesIcon className="w-32 h-32 md:w-48 md:h-48 text-white" />
-                    </div>
+            {/* Hero Section (Full Width, Emerald Background) */}
+            <div className="w-full bg-emerald-800 pb-24 md:pb-32 pt-10 md:pt-14 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                    <h1 className="text-2xl md:text-[28px] font-bold text-white mb-2 md:mb-3 tracking-tight">
+                        Selamat datang {auth?.user?.name}!
+                    </h1>
+                    <p className="text-emerald-100 text-sm md:text-base">
+                        Semoga aktivitas belajarmu menyenangkan.
+                    </p>
                 </div>
+            </div>
 
-                {/* Active Session Alert */}
-                {activeSession && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-xl md:rounded-2xl p-4 md:p-6 flex flex-col md:flex-row items-center justify-between shadow-sm gap-4 md:gap-6">
-                        <div className="flex flex-col md:flex-row items-center gap-3 text-center md:text-left w-full md:w-auto">
-                            <div className="w-10 h-10 md:w-12 md:h-12 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <PlayIcon className="w-5 h-5 md:w-6 md:h-6 text-amber-600" />
-                            </div>
+            {/* Overlapping Content Box (Status Langganan/Tryout) */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16 md:-mt-20 relative z-10 mb-8 md:mb-10">
+                <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6 md:p-8">
+                    <h2 className="text-[15px] font-bold text-gray-800 mb-5 border-b border-gray-100 pb-3">Status Aktivitas</h2>
+
+                    {activeSession ? (
+                        <div className="border border-amber-200 bg-amber-50/50 rounded-lg p-5 flex flex-col md:flex-row items-center justify-between gap-4">
                             <div>
-                                <h3 className="font-bold text-amber-900 text-sm md:text-lg">
-                                    Ujian Sedang Berlangsung
-                                </h3>
-                                <p className="text-amber-700 text-xs md:text-base">
-                                    {activeSession?.tryout_title} — Sisa waktu:{' '}
-                                    <span className="font-mono font-bold">
-                                        {remainingMinutes} menit
-                                    </span>
-                                </p>
+                                <h3 className="text-gray-900 font-semibold mb-1">Anda memiliki ujian yang sedang berlangsung: {activeSession?.tryout_title}</h3>
+                                <p className="text-gray-500 text-sm">Segera selesaikan sebelum waktu habis. Sisa waktu Anda: <span className="font-bold text-amber-600 font-mono">{remainingMinutes} menit</span></p>
                             </div>
-                        </div>
-                        <Link
-                            href={route('exam.take', activeSession.id)}
-                            className="w-full md:w-auto px-5 py-2.5 md:px-8 md:py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-semibold transition-all shadow-md hover:shadow-lg shadow-amber-200 hover:-translate-y-0.5 text-center text-sm md:text-base"
-                        >
-                            Lanjutkan Ujian
-                        </Link>
-                    </div>
-                )}
-
-                {/* Stats Grid — Always 3 columns, square cards on mobile */}
-                <div className="grid grid-cols-3 gap-2 md:gap-6">
-                    <div className="bg-white p-2.5 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 group">
-                        <div className="flex flex-col items-center justify-center text-center gap-1.5 md:gap-3 aspect-square md:aspect-auto">
-                            <div className="w-9 h-9 md:w-14 md:h-14 rounded-lg md:rounded-2xl bg-blue-50 flex items-center justify-center group-hover:bg-blue-600 transition-colors duration-300">
-                                <DocumentTextIcon className="w-4.5 h-4.5 md:w-7 md:h-7 text-blue-600 group-hover:text-white transition-colors duration-300" />
-                            </div>
-                            <div>
-                                <p className="text-base md:text-3xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors leading-none">
-                                    {stats?.total_tryouts_completed || 0}
-                                </p>
-                                <p className="text-[9px] md:text-sm font-medium text-gray-500 leading-tight mt-0.5">Tryout Selesai</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-white p-2.5 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 group">
-                        <div className="flex flex-col items-center justify-center text-center gap-1.5 md:gap-3 aspect-square md:aspect-auto">
-                            <div className="w-9 h-9 md:w-14 md:h-14 rounded-lg md:rounded-2xl bg-emerald-50 flex items-center justify-center group-hover:bg-emerald-600 transition-colors duration-300">
-                                <ChartBarIcon className="w-4.5 h-4.5 md:w-7 md:h-7 text-emerald-600 group-hover:text-white transition-colors duration-300" />
-                            </div>
-                            <div>
-                                <p className="text-base md:text-3xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors leading-none">
-                                    {stats?.average_score || 0}%
-                                </p>
-                                <p className="text-[9px] md:text-sm font-medium text-gray-500 leading-tight mt-0.5">Rata-rata Nilai</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-white p-2.5 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 group">
-                        <div className="flex flex-col items-center justify-center text-center gap-1.5 md:gap-3 aspect-square md:aspect-auto">
-                            <div className="w-9 h-9 md:w-14 md:h-14 rounded-lg md:rounded-2xl bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-600 transition-colors duration-300">
-                                <ClockIcon className="w-4.5 h-4.5 md:w-7 md:h-7 text-indigo-600 group-hover:text-white transition-colors duration-300" />
-                            </div>
-                            <div>
-                                <p className="text-base md:text-3xl font-bold text-gray-900 group-hover:text-indigo-600 transition-colors leading-none">
-                                    {studyHours} jam
-                                </p>
-                                <p className="text-[9px] md:text-sm font-medium text-gray-500 leading-tight mt-0.5">Waktu Belajar</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Available Tryouts */}
-                <section>
-                    <div className="flex items-center justify-between mb-4 md:mb-6">
-                        <h2 className="text-lg md:text-2xl font-bold text-gray-900">Tryout Tersedia</h2>
-                        <Link
-                            href={route('tryouts.index')}
-                            className="text-indigo-600 hover:text-indigo-700 text-xs md:text-sm font-semibold flex items-center gap-1 group bg-indigo-50 px-3 py-1.5 md:px-4 md:py-2 rounded-xl hover:bg-indigo-100 transition-colors"
-                        >
-                            Lihat Semua
-                            <ArrowRightIcon className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </div>
-
-                    {(availableTryouts || []).length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-8">
-                            {(availableTryouts || []).map((tryout) => (
-                                <TryoutCard key={tryout?.id || Math.random()} tryout={tryout || {}} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="bg-white border-2 border-dashed border-gray-100 p-8 md:p-12 rounded-2xl md:rounded-3xl text-center">
-                            <div className="w-14 h-14 md:w-20 md:h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
-                                <DocumentTextIcon className="w-7 h-7 md:w-10 md:h-10 text-gray-400" />
-                            </div>
-                            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">Belum Ada Tryout</h3>
-                            <p className="text-gray-500 text-xs md:text-base">Tidak ada tryout yang tersedia untukmu saat ini.</p>
-                        </div>
-                    )}
-                </section>
-
-                {/* Recent Results */}
-                <section>
-                    <div className="flex items-center justify-between mb-4 md:mb-6">
-                        <h2 className="text-lg md:text-2xl font-bold text-gray-900">Hasil Terbaru</h2>
-                        <Link
-                            href={route('history.index')}
-                            className="text-indigo-600 hover:text-indigo-700 text-xs md:text-sm font-semibold flex items-center gap-1 group bg-indigo-50 px-3 py-1.5 md:px-4 md:py-2 rounded-xl hover:bg-indigo-100 transition-colors"
-                        >
-                            Lihat Semua
-                            <ArrowRightIcon className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-                    </div>
-
-                    {recentResults.length > 0 ? (
-                        <div className="bg-white rounded-2xl md:rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300">
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full">
-                                    <thead className="bg-gray-50/50 border-b border-gray-100">
-                                        <tr>
-                                            <th className="px-4 py-3 md:px-8 md:py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                                                Tryout
-                                            </th>
-                                            <th className="px-4 py-3 md:px-8 md:py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                                                Skor
-                                            </th>
-                                            <th className="px-4 py-3 md:px-8 md:py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                                                Benar
-                                            </th>
-                                            <th className="px-4 py-3 md:px-8 md:py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                                                Waktu
-                                            </th>
-                                            <th className="px-4 py-3 md:px-8 md:py-5 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
-                                                Tanggal
-                                            </th>
-                                            <th className="px-4 py-3 md:px-8 md:py-5"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-gray-100">
-                                        {(recentResults || []).map((result) => (
-                                            <tr key={result?.id || Math.random()} className="hover:bg-gray-50 transition-colors group">
-                                                <td className="px-4 py-3 md:px-8 md:py-5">
-                                                    <div className="font-bold text-gray-900 group-hover:text-indigo-600 transition-colors text-sm md:text-base whitespace-nowrap">
-                                                        {result?.tryout?.title || '-'}
-                                                    </div>
-                                                </td>
-                                                <td className="px-4 py-3 md:px-8 md:py-5">
-                                                    <span className={`inline-flex items-center px-2 py-0.5 md:px-3 md:py-1 rounded-lg text-xs font-bold ${(result?.percentage || 0) >= 70 ? 'bg-emerald-100 text-emerald-700' :
-                                                        (result?.percentage || 0) >= 50 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'
-                                                        }`}>
-                                                        {result?.percentage || 0}%
-                                                    </span>
-                                                </td>
-                                                <td className="px-4 py-3 md:px-8 md:py-5 text-gray-600 font-medium text-sm whitespace-nowrap">
-                                                    {result?.correct_count || 0}/{result?.total_questions || 0}
-                                                </td>
-                                                <td className="px-4 py-3 md:px-8 md:py-5 text-gray-600 font-medium text-sm whitespace-nowrap">
-                                                    {result?.time_taken || '-'}
-                                                </td>
-                                                <td className="px-4 py-3 md:px-8 md:py-5 text-gray-600 text-sm whitespace-nowrap">
-                                                    {result?.finished_at ? formatDistanceToNow(new Date(result.finished_at), {
-                                                        addSuffix: true,
-                                                        locale: id,
-                                                    }) : '-'}
-                                                </td>
-                                                <td className="px-4 py-3 md:px-8 md:py-5 text-right whitespace-nowrap">
-                                                    <Link
-                                                        href={route('exam.result', result.id)}
-                                                        className="text-indigo-600 hover:text-indigo-700 text-sm font-semibold hover:underline"
-                                                    >
-                                                        Detail
-                                                    </Link>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="bg-white border-2 border-dashed border-gray-100 p-8 md:p-12 rounded-2xl md:rounded-3xl text-center">
-                            <div className="w-14 h-14 md:w-20 md:h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
-                                <SparklesIcon className="w-7 h-7 md:w-10 md:h-10 text-gray-400" />
-                            </div>
-                            <p className="text-gray-500 mb-4 md:mb-6 font-medium text-sm md:text-base">Belum ada riwayat tryout. Yuk mulai latihan!</p>
-                            <Link href={route('tryouts.index')} className="px-5 py-2.5 md:px-8 md:py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold inline-block shadow-md hover:shadow-lg shadow-indigo-200 transition-all hover:-translate-y-0.5 text-sm md:text-base">
-                                Mulai Tryout Sekarang
+                            <Link href={route('exam.take', activeSession.id)} className="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white rounded text-sm font-semibold whitespace-nowrap transition-colors">
+                                Lanjutkan ujian
                             </Link>
                         </div>
+                    ) : (
+                        <div className="border border-gray-200 rounded-lg p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+                            <p className="text-gray-500 text-sm">
+                                Anda belum memiliki aktivitas ujian yang sedang berlangsung. Pilih paket tryout yang tersedia dan mulailah perjalanan Anda meraih kampus impian.
+                            </p>
+                            <div className="flex gap-3">
+                                <Link href={route('tryouts.index')} className="px-5 py-2.5 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded text-sm font-semibold whitespace-nowrap transition-colors">
+                                    Lihat Paket Tryout
+                                </Link>
+                            </div>
+                        </div>
                     )}
-                </section>
+                </div>
+            </div>
+
+            {/* Main Grid Content (2 Columns Asymmetrical) */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+
+                    {/* Left Column (Aktivitas Belajar / Available Tryouts) */}
+                    <div className="lg:col-span-2">
+                        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                            <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
+                                <DocumentTextIcon className="w-5 h-5 text-gray-500" />
+                                <h2 className="text-[15px] font-bold text-gray-800">Aktivitas Belajar (Tryout)</h2>
+                            </div>
+
+                            <div className="p-6">
+                                {(availableTryouts || []).length > 0 ? (
+                                    <div className="space-y-4">
+                                        {(availableTryouts || []).map((tryout) => (
+                                            <div key={tryout?.id || Math.random()} className="border border-gray-200 rounded-lg p-4 md:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-emerald-200 hover:bg-emerald-50/30 transition-colors group">
+                                                <div>
+                                                    <p className="text-xs font-semibold text-gray-500 mb-1">Tryout Tersedia • {tryout.total_questions} Soal</p>
+                                                    <h3 className="text-[15px] font-bold text-gray-900 group-hover:text-emerald-700 transition-colors">
+                                                        {tryout.title}
+                                                    </h3>
+                                                    <p className="text-xs text-gray-500 mt-2">
+                                                        Kesempatan: {tryout.attempts_count}/{tryout.max_attempts} • Durasi: {tryout.duration_minutes} Menit
+                                                    </p>
+                                                </div>
+                                                <Link
+                                                    href={route('tryout.show', tryout.slug)}
+                                                    className={`px-6 py-2 rounded text-sm font-semibold transition-colors shrink-0 ${tryout.can_attempt
+                                                        ? 'text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50'
+                                                        : 'text-gray-400 cursor-not-allowed'
+                                                        }`}
+                                                >
+                                                    {tryout.can_attempt ? 'Mulai' : 'Lihat'}
+                                                </Link>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-10">
+                                        <p className="text-sm text-gray-500">Belum ada aktivitas tryout.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Right Column (Aktivitas Lain / Stats & History) */}
+                    <div className="space-y-6 md:space-y-8">
+                        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                            <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
+                                <ChartBarIcon className="w-5 h-5 text-gray-500" />
+                                <h2 className="text-[15px] font-bold text-gray-800">Capaian Anda</h2>
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <div className="border border-gray-100 bg-gray-50/50 rounded-lg p-4 flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded text-emerald-600 flex items-center justify-center shrink-0">
+                                        <DocumentTextIcon className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-medium text-gray-500 mb-0.5">Total Tryout Selesai</p>
+                                        <p className="text-lg font-bold text-gray-900">{stats?.total_tryouts_completed || 0} Paket</p>
+                                    </div>
+                                </div>
+                                <div className="border border-gray-100 bg-gray-50/50 rounded-lg p-4 flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded text-amber-600 flex items-center justify-center shrink-0">
+                                        <ChartBarIcon className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-medium text-gray-500 mb-0.5">Rata-rata Nilai</p>
+                                        <p className="text-lg font-bold text-gray-900">{stats?.average_score || 0}%</p>
+                                    </div>
+                                </div>
+                                <div className="border border-gray-100 bg-gray-50/50 rounded-lg p-4 flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded text-amber-600 flex items-center justify-center shrink-0">
+                                        <ClockIcon className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-medium text-gray-500 mb-0.5">Waktu Belajar</p>
+                                        <p className="text-lg font-bold text-gray-900">{studyHours} Jam</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Recent History Box */}
+                        <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                            <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-2">
+                                <ClipboardDocumentListIcon className="w-5 h-5 text-gray-500" />
+                                <h2 className="text-[15px] font-bold text-gray-800">Riwayat Terakhir</h2>
+                            </div>
+                            <div className="p-6">
+                                {recentResults.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {(recentResults || []).slice(0, 3).map((result) => (
+                                            <div key={result?.id || Math.random()} className="border border-gray-100 rounded-lg p-4 hover:bg-gray-50 transition-colors">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <h3 className="text-sm font-bold text-gray-900 line-clamp-1">{result?.tryout?.title}</h3>
+                                                    <span className={`inline-flex px-1.5 py-0.5 rounded text-[10px] font-bold ${(result?.percentage || 0) >= 70 ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>
+                                                        {result?.percentage || 0}%
+                                                    </span>
+                                                </div>
+                                                <div className="flex justify-between items-center text-xs text-gray-500">
+                                                    <span>{result?.correct_count || 0}/{result?.total_questions || 0} Benar</span>
+                                                    <Link href={route('exam.result', result.id)} className="text-emerald-600 font-semibold hover:underline">Detail</Link>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-6">
+                                        <p className="text-sm text-gray-500">Belum ada riwayat.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </MainLayout>
     );
@@ -274,33 +220,40 @@ function TryoutCard({ tryout }) {
 
 
     return (
-        <div className="bg-white rounded-xl md:rounded-2xl border border-gray-100 shadow-sm overflow-hidden group hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300 hover:-translate-y-1 flex flex-col h-full">
-            {/* Thumbnail */}
-            <div className="h-36 md:h-48 bg-indigo-50 relative overflow-hidden group-hover:bg-indigo-100/50 transition-colors">
-                {tryout.thumbnail ? (
+        <div className="bg-white rounded-xl md:rounded-2xl border border-gray-100 shadow-sm overflow-hidden group hover:shadow-md hover:border-emerald-200 transition-all duration-300 flex flex-col h-full relative">
+            {/* Minimalist Top Edge or Mini Thumbnail */}
+            {tryout.thumbnail && (
+                <div className="h-32 w-full overflow-hidden relative">
                     <img
                         src={`/storage/${tryout.thumbnail}`}
                         alt={tryout.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
-                ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                        <DocumentTextIcon className="w-10 h-10 md:w-16 md:h-16 text-indigo-200" />
+                    <div className="absolute top-3 right-3">
+                        {getStatusBadge()}
                     </div>
-                )}
-                <div className="absolute top-2.5 right-2.5 md:top-4 md:right-4">
-                    {getStatusBadge()}
                 </div>
-            </div>
+            )}
 
-            {/* Content */}
-            <div className="p-3.5 md:p-6 flex flex-col flex-1">
+            {/* Content flex-1 pushing elements gracefully */}
+            <div className="p-5 md:p-6 flex flex-col flex-1">
+                <div className="flex items-start justify-between mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0 text-emerald-600 border border-emerald-100/50">
+                        <DocumentTextIcon className="w-5 h-5" />
+                    </div>
+                    {!tryout.thumbnail && (
+                        <div>
+                            {getStatusBadge()}
+                        </div>
+                    )}
+                </div>
+
                 {tryout.categories && tryout.categories.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-2 md:mb-3">
+                    <div className="flex flex-wrap gap-1.5 mb-3">
                         {tryout.categories.slice(0, 2).map((cat) => (
                             <span
                                 key={cat.id}
-                                className="px-2 py-0.5 text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-md bg-gray-50 text-gray-600 border border-gray-100"
+                                className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-md bg-gray-50 text-gray-500 border border-gray-100"
                             >
                                 {cat.name}
                             </span>
@@ -308,35 +261,35 @@ function TryoutCard({ tryout }) {
                     </div>
                 )}
 
-                <h3 className="font-bold text-gray-900 text-sm md:text-lg leading-snug mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors">
+                <h3 className="font-bold text-gray-900 text-lg leading-snug mb-4 line-clamp-2 group-hover:text-emerald-700 transition-colors">
                     {tryout.title}
                 </h3>
 
-                <div className="flex items-center gap-2.5 md:gap-4 text-[11px] md:text-sm text-gray-500 mb-3 md:mb-6 mt-auto pt-2.5 md:pt-4">
-                    <div className="flex items-center gap-1">
-                        <ClipboardDocumentListIcon className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400" />
+                <div className="flex items-center gap-4 text-sm text-gray-500 mb-6 mt-auto">
+                    <div className="flex items-center gap-1.5">
+                        <ClipboardDocumentListIcon className="w-4 h-4 text-gray-400" />
                         <span>{tryout.total_questions} Soal</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                        <ClockIcon className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-400" />
+                    <div className="flex items-center gap-1.5">
+                        <ClockIcon className="w-4 h-4 text-gray-400" />
                         <span>{tryout.duration_minutes} Menit</span>
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between gap-2">
-                    <div className="text-[9px] md:text-xs font-medium text-gray-500 bg-gray-50 px-2 py-1 rounded-lg border border-gray-100 whitespace-nowrap">
-                        <span className="text-gray-900">{tryout.attempts_count}/{tryout.max_attempts}</span>
+                <div className="pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
+                    <div className="text-xs font-medium text-gray-500 flex items-center gap-1">
+                        <span className="text-gray-900 font-bold">{tryout.attempts_count}/{tryout.max_attempts}</span> Selesai
                     </div>
 
                     <Link
                         href={route('tryout.show', tryout.slug)}
-                        className={`flex-1 py-2 md:py-2.5 rounded-xl font-semibold text-xs md:text-sm transition-all flex items-center justify-center gap-1.5 group/btn ${tryout.can_attempt
-                            ? 'bg-white border border-gray-200 text-gray-700 hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50'
-                            : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-100'
+                        className={`px-5 py-2 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-1.5 group/btn ${tryout.can_attempt
+                            ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white'
+                            : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                             }`}
                     >
                         {tryout.can_attempt ? 'Mulai' : 'Lihat'}
-                        {tryout.can_attempt && <ArrowRightIcon className="w-3 h-3 md:w-4 md:h-4 group-hover/btn:translate-x-0.5 transition-transform" />}
+                        {tryout.can_attempt && <ArrowRightIcon className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />}
                     </Link>
                 </div>
             </div>
