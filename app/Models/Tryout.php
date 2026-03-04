@@ -41,6 +41,10 @@ class Tryout extends Model
         'start_time' => 'datetime',
         'end_time' => 'datetime',
         'passing_score' => 'decimal:2',
+        'duration_minutes' => 'integer',
+        'max_attempts' => 'integer',
+        'max_violations' => 'integer',
+        'total_questions' => 'integer',
     ];
 
     protected static function boot()

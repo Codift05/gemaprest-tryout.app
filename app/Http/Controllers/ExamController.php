@@ -115,7 +115,7 @@ class ExamController extends Controller
             'user_id' => $user->id,
             'tryout_id' => $tryout->id,
             'started_at' => now(),
-            'server_end_time' => now()->addMinutes($tryout->duration_minutes),
+            'server_end_time' => now()->addMinutes((int) $tryout->duration_minutes),
             'question_order' => $questions,
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
