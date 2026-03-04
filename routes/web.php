@@ -140,12 +140,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/subcategories/{subcategory}', [CategoryController::class, 'destroySubcategory'])
         ->name('subcategories.destroy');
 
-    // Questions
-    Route::resource('questions', QuestionController::class)->except(['show']);
+    // Questions - custom routes BEFORE resource
     Route::delete('/questions/bulk', [QuestionController::class, 'bulkDestroy'])->name('questions.bulk-destroy');
     Route::delete('/questions/by-category', [QuestionController::class, 'destroyByCategory'])->name('questions.destroy-by-category');
     Route::post('/questions/import', [QuestionController::class, 'import'])->name('questions.import');
     Route::post('/questions/import/preview', [QuestionController::class, 'previewImport'])->name('questions.import.preview');
+    Route::resource('questions', QuestionController::class)->except(['show']);
 
     // Tryouts
     Route::resource('tryouts', AdminTryoutController::class)->except(['show']);
