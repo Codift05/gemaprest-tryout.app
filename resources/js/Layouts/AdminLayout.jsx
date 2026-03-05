@@ -14,7 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 
-const navigation = [
+const navItems = [
     { name: 'Dashboard', href: 'admin.dashboard', icon: HomeIcon },
     { name: 'Paket Tryout', href: 'admin.tryouts.index', icon: DocumentTextIcon },
     { name: 'Bank Soal', href: 'admin.questions.index', icon: QuestionMarkCircleIcon },
@@ -41,41 +41,42 @@ export default function AdminLayout({ children, title }) {
             {/* Sidebar */}
             <aside
                 className={clsx(
-                    'fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-100 transform transition-transform duration-300 lg:translate-x-0 shadow-sm',
+                    'fixed inset-y-0 left-0 z-50 w-60 bg-white border-r border-gray-100 transform transition-transform duration-300 lg:translate-x-0',
                     sidebarOpen ? 'translate-x-0' : '-translate-x-full'
                 )}
             >
                 <div className="flex h-full flex-col">
                     {/* Logo */}
-                    <div className="flex h-16 items-center justify-between px-6 border-b border-gray-50">
-                        <Link href={route('admin.dashboard')} className="flex items-center gap-3">
-                            <img src="/kseunsrat.png" alt="Logo" className="h-10 w-auto" />
+                    <div className="flex h-14 items-center justify-between px-4 border-b border-gray-100">
+                        <Link href={route('admin.dashboard')} className="flex items-center gap-2">
+                            <img src="/kseunsrat.png" alt="Logo" className="h-8 w-auto" />
+                            <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Admin</span>
                         </Link>
                         <button
                             className="lg:hidden text-gray-400 hover:text-gray-600 transition-colors"
                             onClick={() => setSidebarOpen(false)}
                         >
-                            <XMarkIcon className="w-6 h-6" />
+                            <XMarkIcon className="w-5 h-5" />
                         </button>
                     </div>
 
                     {/* Navigation */}
-                    <nav className="flex-1 overflow-y-auto py-6 px-4">
-                        <ul className="space-y-1">
-                            {navigation.map((item) => {
+                    <nav className="flex-1 overflow-y-auto py-4 px-3">
+                        <ul className="space-y-0.5">
+                            {navItems.map((item) => {
                                 const isActive = route().current(item.href + '*') || route().current(item.href);
                                 return (
                                     <li key={item.name}>
                                         <Link
                                             href={route(item.href)}
                                             className={clsx(
-                                                'flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group',
+                                                'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 group',
                                                 isActive
-                                                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
-                                                    : 'text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
+                                                    ? 'bg-emerald-600 text-white'
+                                                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
                                             )}
                                         >
-                                            <item.icon className={clsx("w-5 h-5 transition-colors", isActive ? "text-white" : "text-gray-400 group-hover:text-indigo-600")} />
+                                            <item.icon className={clsx("w-4 h-4 flex-shrink-0 transition-colors", isActive ? "text-white" : "text-gray-400 group-hover:text-gray-600")} />
                                             {item.name}
                                         </Link>
                                     </li>
@@ -85,16 +86,16 @@ export default function AdminLayout({ children, title }) {
                     </nav>
 
                     {/* User info */}
-                    <div className="p-4 border-t border-gray-50 bg-gray-50/50">
-                        <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-white transition-colors border border-transparent hover:border-gray-100 hover:shadow-sm group cursor-pointer">
-                            <div className="w-9 h-9 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-sm">
+                    <div className="p-3 border-t border-gray-100">
+                        <div className="flex items-center gap-3 px-2 py-2 rounded-lg">
+                            <div className="w-8 h-8 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
                                 {auth.user?.name?.charAt(0).toUpperCase()}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-gray-900 truncate group-hover:text-indigo-600 transition-colors">
+                                <p className="text-sm font-semibold text-gray-800 truncate">
                                     {auth.user?.name}
                                 </p>
-                                <p className="text-xs text-gray-500 truncate">
+                                <p className="text-xs text-gray-400 truncate">
                                     {auth.user?.email}
                                 </p>
                             </div>
@@ -104,37 +105,37 @@ export default function AdminLayout({ children, title }) {
             </aside>
 
             {/* Main Content */}
-            <div className="lg:pl-64 flex flex-col min-h-screen">
+            <div className="lg:pl-60 flex flex-col min-h-screen">
                 {/* Top bar */}
-                <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 h-16">
+                <header className="sticky top-0 z-30 bg-white border-b border-gray-100 h-14">
                     <div className="flex h-full items-center justify-between px-4 sm:px-6 lg:px-8">
                         <button
                             type="button"
                             className="lg:hidden p-2 -ml-2 text-gray-500 hover:bg-gray-50 rounded-lg transition-colors"
                             onClick={() => setSidebarOpen(true)}
                         >
-                            <Bars3Icon className="w-6 h-6" />
+                            <Bars3Icon className="w-5 h-5" />
                         </button>
 
                         <div className="flex-1 lg:flex-none">
                             {title && (
-                                <h1 className="text-lg font-bold text-gray-900 lg:hidden">{title}</h1>
+                                <h1 className="text-base font-bold text-gray-900 lg:hidden">{title}</h1>
                             )}
                         </div>
 
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-3">
                             <Link
                                 href={route('dashboard')}
-                                className="hidden sm:inline-flex text-sm text-gray-600 hover:text-indigo-600 font-medium transition-colors"
+                                className="hidden sm:inline-flex text-sm text-gray-500 hover:text-emerald-600 font-medium transition-colors"
                             >
                                 Ke Halaman Siswa
                             </Link>
-                            <div className="h-6 w-px bg-gray-200 hidden sm:block"></div>
+                            <div className="h-4 w-px bg-gray-200 hidden sm:block"></div>
                             <Link
                                 href={route('logout')}
                                 method="post"
                                 as="button"
-                                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                             >
                                 <ArrowRightOnRectangleIcon className="w-4 h-4" />
                                 <span className="hidden sm:inline">Keluar</span>
@@ -144,7 +145,7 @@ export default function AdminLayout({ children, title }) {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 py-5 sm:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+                <main className="flex-1 py-5 sm:py-7 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
                     {children}
                 </main>
             </div>

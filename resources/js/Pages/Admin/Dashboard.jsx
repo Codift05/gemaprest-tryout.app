@@ -12,10 +12,10 @@ import {
 
 const StatCard = ({ title, value, icon: Icon, color, subValue }) => {
     const colorClasses = {
-        indigo: 'bg-indigo-50 text-indigo-600',
         emerald: 'bg-emerald-50 text-emerald-600',
+        teal: 'bg-teal-50 text-teal-600',
         amber: 'bg-amber-50 text-amber-600',
-        purple: 'bg-purple-50 text-purple-600',
+        gray: 'bg-gray-100 text-gray-600',
     };
 
     return (
@@ -59,47 +59,45 @@ export default function Dashboard({ stats = {}, recentSessions = [], popularTryo
             </div>
 
             {/* Active Sessions Banner */}
-            <div className="mb-6 sm:mb-8 relative overflow-hidden rounded-xl sm:rounded-2xl bg-indigo-600 p-5 sm:p-8 text-white shadow-xl shadow-indigo-200">
-                <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-
-                <div className="relative z-10 flex items-center justify-between gap-4">
-                    <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1 sm:mb-2 text-indigo-200 text-xs sm:text-sm font-medium">
-                            <span className="relative flex h-2 w-2 sm:h-3 sm:w-3">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 sm:h-3 sm:w-3 bg-white"></span>
+            <div className="mb-6 sm:mb-8 relative overflow-hidden rounded-xl bg-emerald-800 px-6 py-5 text-white">
+                <div className="flex items-center justify-between gap-4">
+                    <div>
+                        <div className="flex items-center gap-2 mb-1 text-emerald-300 text-xs font-medium">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
                             </span>
                             Realtime
                         </div>
-                        <h2 className="text-lg sm:text-3xl font-bold">Sesi Aktif</h2>
-                        <p className="text-indigo-100 text-xs sm:text-base hidden sm:block">Peserta yang sedang mengerjakan ujian.</p>
+                        <h2 className="text-xl font-bold">Sesi Aktif</h2>
+                        <p className="text-emerald-300 text-sm">Peserta yang sedang mengerjakan ujian.</p>
                     </div>
-                    <div className="text-right flex-shrink-0">
-                        <span className="text-4xl sm:text-6xl font-bold tracking-tighter">{stats.active_sessions || 0}</span>
-                        <span className="block text-xs font-medium text-indigo-200 uppercase tracking-widest">Peserta</span>
+                    <div className="text-right">
+                        <span className="text-5xl font-bold tracking-tight">{stats.active_sessions || 0}</span>
+                        <span className="block text-xs font-medium text-emerald-300 uppercase tracking-widest mt-1">Peserta</span>
                     </div>
                 </div>
             </div>
 
-            {/* Stats Grid - 2 columns on mobile, 4 on desktop */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-6 sm:mb-8">
                 <StatCard
                     title="Total Siswa"
                     value={stats.total_students || 0}
                     icon={UserGroupIcon}
-                    color="indigo"
+                    color="emerald"
                 />
                 <StatCard
                     title="Total Tryout"
                     value={stats.total_tryouts || 0}
                     icon={ClipboardDocumentListIcon}
-                    color="purple"
+                    color="teal"
                 />
                 <StatCard
                     title="Bank Soal"
                     value={stats.total_questions || 0}
                     icon={DocumentTextIcon}
-                    color="emerald"
+                    color="gray"
                 />
                 <StatCard
                     title="Ujian Selesai"
@@ -129,13 +127,13 @@ export default function Dashboard({ stats = {}, recentSessions = [], popularTryo
                                 <div key={session.id} className="p-3 sm:p-4 hover:bg-gray-50 transition-colors group">
                                     <div className="flex items-center justify-between mb-1">
                                         <div className="flex items-center gap-2 sm:gap-3">
-                                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xs ring-2 ring-white">
+                                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs ring-2 ring-white">
                                                 {session.user?.name?.charAt(0) || '?'}
                                             </div>
                                             <span className="font-semibold text-gray-900 text-sm sm:text-base truncate max-w-[120px] sm:max-w-none">{session.user?.name || 'Anonim'}</span>
                                         </div>
                                         <span className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg text-xs font-bold ${session.percentage >= 80 ? 'bg-emerald-50 text-emerald-600' :
-                                                session.percentage >= 60 ? 'bg-amber-50 text-amber-600' : 'bg-red-50 text-red-600'
+                                            session.percentage >= 60 ? 'bg-amber-50 text-amber-600' : 'bg-red-50 text-red-600'
                                             }`}>
                                             {session.percentage || 0}%
                                         </span>
