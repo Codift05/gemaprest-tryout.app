@@ -370,4 +370,15 @@ class TryoutController extends Controller
 
         return back()->with('success', 'Soal berhasil di-assign secara otomatis.');
     }
+
+    /**
+     * Remove a single question from tryout
+     */
+    public function removeQuestion(Tryout $tryout, Question $question): RedirectResponse
+    {
+        $tryout->questions()->detach($question->id);
+        $tryout->update(['total_questions' => $tryout->questions()->count()]);
+
+        return back()->with('success', 'Soal berhasil dihapus dari tryout.');
+    }
 }
