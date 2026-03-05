@@ -13,16 +13,19 @@ import {
     DocumentArrowUpIcon,
     XMarkIcon,
     ExclamationTriangleIcon,
+    TagIcon,
+    ArrowLeftIcon,
 } from '@heroicons/react/24/outline';
 import { useState, useCallback } from 'react';
 
 export default function Index({ questions, categories, filters }) {
     const [search, setSearch] = useState(filters.search || '');
     const [categoryFilter, setCategoryFilter] = useState(filters.category_id || '');
+    const [subcategoryFilter, setSubcategoryFilter] = useState(filters.subcategory_id || '');
     const [difficultyFilter, setDifficultyFilter] = useState(filters.difficulty || '');
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
-    
+
     // Import modal state
     const [showImportModal, setShowImportModal] = useState(false);
     const [importFile, setImportFile] = useState(null);
@@ -34,6 +37,16 @@ export default function Index({ questions, categories, filters }) {
     const [dragActive, setDragActive] = useState(false);
 
     const handleFilter = () => {
+        router.get(route('admin.questions.index'), {
+            search,
+            category_id: categoryFilter,
+            subcategory_id: subcategoryFilter,
+            difficulty: difficultyFilter,
+        }, { preserveState: true });
+    };
+
+    const clearSubcategoryFilter = () => {
+        setSubcategoryFilter('');
         router.get(route('admin.questions.index'), {
             search,
             category_id: categoryFilter,
@@ -56,8 +69,8 @@ export default function Index({ questions, categories, filters }) {
         });
     };
 
-    const selectedCategoryName = categoryFilter 
-        ? categories.find(c => c.id.toString() === categoryFilter.toString())?.name 
+    const selectedCategoryName = categoryFilter
+        ? categories.find(c => c.id.toString() === categoryFilter.toString())?.name
         : '';
 
     const handleDelete = (question) => {
@@ -99,7 +112,7 @@ export default function Index({ questions, categories, filters }) {
         e.preventDefault();
         e.stopPropagation();
         setDragActive(false);
-        
+
         if (e.dataTransfer.files && e.dataTransfer.files[0]) {
             const file = e.dataTransfer.files[0];
             if (file.type === 'application/pdf') {
@@ -122,16 +135,16 @@ export default function Index({ questions, categories, filters }) {
 
     const handlePreview = async () => {
         if (!importFile) return;
-        
+
         setIsPreviewLoading(true);
         setImportError(null);
-        
+
         const formData = new FormData();
         formData.append('file', importFile);
-        
+
         try {
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-            
+
             const response = await fetch(route('admin.questions.import.preview'), {
                 method: 'POST',
                 body: formData,
@@ -141,9 +154,9 @@ export default function Index({ questions, categories, filters }) {
                 },
                 credentials: 'same-origin',
             });
-            
+
             const data = await response.json();
-            
+
             if (response.ok && data.success) {
                 setPreviewQuestions(data.questions);
                 if (data.questions.length === 0) {
@@ -162,13 +175,13 @@ export default function Index({ questions, categories, filters }) {
 
     const handleImport = () => {
         if (!importFile || !importSubcategory) return;
-        
+
         setIsImporting(true);
-        
+
         const formData = new FormData();
         formData.append('file', importFile);
         formData.append('subcategory_id', importSubcategory);
-        
+
         router.post(route('admin.questions.import'), formData, {
             forceFormData: true,
             onSuccess: () => {
@@ -224,7 +237,58 @@ export default function Index({ questions, categories, filters }) {
                 </div>
             </div>
 
-            {/* Filters */}
+            {/* Subcategory Context Banner */}
+            {filters.subcategory_id && (() => {
+                // Find the subcategory info from categories
+                let subName = '';
+                let catName = '';
+                let catColor = '#6366f1';
+                categories.forEach(cat => {
+                    const found = cat.subcategories?.find(s => s.id?.toString() === filters.subcategory_id?.toString());
+                    if (found) {
+                        subName = found.name;
+                        catName = cat.name;
+                        catColor = cat.color || '#6366f1';
+                    }
+                });
+                return (
+                    <div
+                        className="mb-5 flex items-center gap-3 px-4 py-3 rounded-xl border"
+                        style={{ backgroundColor: `${catColor}10`, borderColor: `${catColor}30` }}
+                    >
+                        <div
+                            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                            style={{ backgroundColor: `${catColor}20`, color: catColor }}
+                        >
+                            <TagIcon className="w-4 h-4" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: catColor }}>
+                                {catName}
+                            </p>
+                            <p className="text-sm font-bold text-gray-900 truncate">{subName}</p>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                            <Link
+                                href={route('admin.categories.index')}
+                                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                            >
+                                <ArrowLeftIcon className="w-3.5 h-3.5" />
+                                Kembali ke Kategori
+                            </Link>
+                            <button
+                                onClick={clearSubcategoryFilter}
+                                className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                                title="Hapus filter subkategori"
+                            >
+                                <XMarkIcon className="w-3.5 h-3.5" />
+                                Semua Soal
+                            </button>
+                        </div>
+                    </div>
+                );
+            })()}
+
             <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 p-3 sm:p-4 mb-6 sm:mb-8">
                 <div className="flex flex-col gap-3 sm:gap-4">
                     {/* Search */}
@@ -459,7 +523,7 @@ export default function Index({ questions, categories, filters }) {
                 <div className="fixed inset-0 z-50 overflow-y-auto">
                     <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
                         <div className="fixed inset-0 bg-gray-900/50 transition-opacity" onClick={resetImportModal}></div>
-                        
+
                         <div className="relative inline-block w-full max-w-2xl bg-white rounded-2xl text-left shadow-xl transform transition-all my-8">
                             {/* Modal Header */}
                             <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
@@ -480,13 +544,12 @@ export default function Index({ questions, categories, filters }) {
                                     onDragLeave={handleDrag}
                                     onDragOver={handleDrag}
                                     onDrop={handleDrop}
-                                    className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
-                                        dragActive 
-                                            ? 'border-emerald-500 bg-emerald-50' 
-                                            : importFile 
-                                                ? 'border-emerald-300 bg-emerald-50' 
+                                    className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${dragActive
+                                            ? 'border-emerald-500 bg-emerald-50'
+                                            : importFile
+                                                ? 'border-emerald-300 bg-emerald-50'
                                                 : 'border-gray-300 hover:border-gray-400'
-                                    }`}
+                                        }`}
                                 >
                                     {importFile ? (
                                         <div className="space-y-3">
@@ -592,11 +655,10 @@ export default function Index({ questions, categories, filters }) {
                                                                 {q.options.map((opt) => (
                                                                     <span
                                                                         key={opt.key}
-                                                                        className={`text-xs px-2 py-0.5 rounded ${
-                                                                            opt.key === q.correct_answer
+                                                                        className={`text-xs px-2 py-0.5 rounded ${opt.key === q.correct_answer
                                                                                 ? 'bg-emerald-100 text-emerald-700 font-semibold'
                                                                                 : 'bg-gray-100 text-gray-600'
-                                                                        }`}
+                                                                            }`}
                                                                     >
                                                                         {opt.key}
                                                                     </span>

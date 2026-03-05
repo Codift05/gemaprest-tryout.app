@@ -1,4 +1,4 @@
-﻿import { Head, router, useForm } from '@inertiajs/react';
+﻿import { Head, Link, router, useForm } from '@inertiajs/react';
 import AdminLayout from '@/Layouts/AdminLayout';
 import {
     PlusIcon,
@@ -7,7 +7,9 @@ import {
     FolderIcon,
     ChevronDownIcon,
     ChevronRightIcon,
-    XMarkIcon
+    XMarkIcon,
+    ArrowRightIcon,
+    DocumentTextIcon,
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 
@@ -183,7 +185,7 @@ export default function Index({ categories }) {
                                                 {category.name}
                                             </h3>
                                             <p className="text-xs text-gray-500 mt-0.5">
-                                                {category.subcategories?.length || 0} subkategori ÔÇó {category.questions_count || 0} soal
+                                                {category.subcategories?.length || 0} subkategori <span className="mx-0.5 text-gray-300">·</span> {category.questions_count || 0} soal
                                             </p>
                                         </div>
 
@@ -222,28 +224,56 @@ export default function Index({ categories }) {
                                             {category.subcategories.map((subcategory) => (
                                                 <div
                                                     key={subcategory.id}
-                                                    className="pl-12 sm:pl-20 pr-3 sm:pr-4 py-2.5 sm:py-3 flex items-center gap-3 sm:gap-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors group/sub"
+                                                    className="pl-12 sm:pl-20 pr-3 sm:pr-4 py-2.5 sm:py-3 flex items-center gap-3 sm:gap-4 border-b border-gray-100 last:border-0 hover:bg-blue-50/40 transition-colors group/sub"
                                                 >
+                                                    {/* Clickable subcategory name */}
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="font-medium text-gray-900 text-sm truncate">
-                                                            {subcategory.name}
-                                                        </p>
-                                                        <p className="text-xs text-gray-500 mt-0.5">
-                                                            {subcategory.questions_count || 0} soal
-                                                        </p>
+                                                        <Link
+                                                            href={route('admin.questions.index', { subcategory_id: subcategory.id })}
+                                                            className="group/link flex items-center gap-2 hover:text-emerald-700 transition-colors"
+                                                        >
+                                                            <span className="font-medium text-gray-800 group-hover/link:text-emerald-700 text-sm truncate">
+                                                                {subcategory.name}
+                                                            </span>
+                                                            <ArrowRightIcon className="w-3.5 h-3.5 text-gray-300 group-hover/link:text-emerald-500 shrink-0 transition-colors" />
+                                                        </Link>
+                                                        <div className="flex items-center gap-1.5 mt-0.5">
+                                                            <DocumentTextIcon className="w-3 h-3 text-gray-400" />
+                                                            <span
+                                                                className={`text-xs font-medium ${subcategory.questions_count > 0
+                                                                    ? 'text-emerald-600'
+                                                                    : 'text-gray-400'
+                                                                    }`}
+                                                            >
+                                                                {subcategory.questions_count || 0} soal
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                    <div className="flex items-center gap-1 sm:gap-2 sm:opacity-0 sm:group-hover/sub:opacity-100 transition-opacity">
+
+                                                    {/* Actions */}
+                                                    <div className="flex items-center gap-1 sm:gap-2">
+                                                        {/* Quick add button */}
+                                                        <Link
+                                                            href={route('admin.questions.create', { subcategory_id: subcategory.id })}
+                                                            className="hidden sm:flex items-center gap-1 px-2.5 py-1 bg-emerald-50 text-emerald-600 text-xs font-semibold rounded-lg hover:bg-emerald-100 transition-colors sm:opacity-0 sm:group-hover/sub:opacity-100"
+                                                            title="Tambah soal ke subkategori ini"
+                                                        >
+                                                            <PlusIcon className="w-3 h-3" />
+                                                            Tambah Soal
+                                                        </Link>
                                                         <button
                                                             onClick={() =>
                                                                 openSubcategoryModal(subcategory, category.id)
                                                             }
-                                                            className="p-1.5 sm:p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                                                            className="p-1.5 sm:p-2 text-gray-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors sm:opacity-0 sm:group-hover/sub:opacity-100"
+                                                            title="Edit subkategori"
                                                         >
                                                             <PencilIcon className="w-4 h-4" />
                                                         </button>
                                                         <button
                                                             onClick={() => handleDeleteSubcategory(subcategory)}
-                                                            className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                                            className="p-1.5 sm:p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors sm:opacity-0 sm:group-hover/sub:opacity-100"
+                                                            title="Hapus subkategori"
                                                         >
                                                             <TrashIcon className="w-4 h-4" />
                                                         </button>
