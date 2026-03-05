@@ -38,7 +38,7 @@ export default function useAntiCheat(sessionId, onViolation, maxViolations = 3, 
 
         const handleVisibilityChange = () => {
             if (document.hidden) {
-                reportViolation('tab_switch', { 
+                reportViolation('tab_switch', {
                     action: 'left_page',
                     timestamp: new Date().toISOString(),
                 });
@@ -132,8 +132,8 @@ export default function useAntiCheat(sessionId, onViolation, maxViolations = 3, 
 
                 if (keyMatch && ctrlMatch) {
                     e.preventDefault();
-                    reportViolation('blocked_shortcut', { 
-                        key: e.key, 
+                    reportViolation('blocked_shortcut', {
+                        key: e.key,
                         ctrl: e.ctrlKey,
                         shift: e.shiftKey,
                         alt: e.altKey,
@@ -153,8 +153,8 @@ export default function useAntiCheat(sessionId, onViolation, maxViolations = 3, 
 
         const handleContextMenu = (e) => {
             e.preventDefault();
-            reportViolation('context_menu', { 
-                x: e.clientX, 
+            reportViolation('context_menu', {
+                x: e.clientX,
                 y: e.clientY,
             });
         };
@@ -163,9 +163,15 @@ export default function useAntiCheat(sessionId, onViolation, maxViolations = 3, 
         return () => document.removeEventListener('contextmenu', handleContextMenu);
     }, [enabled, reportViolation]);
 
-    // DevTools detection (size-based)
+    // DevTools detection (size-based) — desktop only
+    // On mobile, outerHeight - innerHeight is always large due to browser chrome,
+    // virtual keyboard, and OS UI elements — causing false positives.
     useEffect(() => {
         if (!enabled) return;
+
+        // Skip on mobile/touch devices — size-based detection is unreliable there
+        const isMobile = navigator.maxTouchPoints > 0 || /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+        if (isMobile) return;
 
         const threshold = 160;
 
