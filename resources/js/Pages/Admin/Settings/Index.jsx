@@ -59,8 +59,8 @@ export default function SettingsIndex({ settings = {} }) {
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
                                         className={`flex-shrink-0 flex items-center px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-medium rounded-lg sm:rounded-xl transition-all whitespace-nowrap ${isActive
-                                                ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200'
-                                                : 'text-gray-600 hover:bg-white hover:text-emerald-600 bg-gray-50 lg:bg-transparent'
+                                            ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200'
+                                            : 'text-gray-600 hover:bg-white hover:text-emerald-600 bg-gray-50 lg:bg-transparent'
                                             }`}
                                     >
                                         <Icon className={`w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-emerald-600'}`} />
@@ -303,11 +303,11 @@ export default function SettingsIndex({ settings = {} }) {
                                             <div>
                                                 <h3 className="text-sm font-bold text-rose-800">Proteksi Aktif</h3>
                                                 <ul className="mt-2 space-y-1 text-xs text-rose-700 font-medium">
-                                                    <li>ÔÇó Deteksi perpindahan tab/window</li>
-                                                    <li>ÔÇó Blokir copy, paste, cut</li>
-                                                    <li>ÔÇó Blokir shortcut keyboard (Ctrl+C, F12, dll)</li>
-                                                    <li>ÔÇó Deteksi DevTools</li>
-                                                    <li>ÔÇó Sinkronisasi timer dengan server</li>
+                                                    <li>✓ Deteksi perpindahan tab/window</li>
+                                                    <li>✓ Blokir copy, paste, cut</li>
+                                                    <li>✓ Blokir shortcut keyboard (Ctrl+C, F12, dll)</li>
+                                                    <li>✓ Deteksi DevTools</li>
+                                                    <li>✓ Sinkronisasi timer dengan server</li>
                                                 </ul>
                                             </div>
                                         </div>

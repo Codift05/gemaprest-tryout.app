@@ -93,7 +93,7 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                         <div>
                             <h1 className="text-2xl font-bold text-gray-900">{tryout.title}</h1>
                             <p className="text-gray-600">
-                                {assignedQuestions.length} soal ÔÇó Durasi {tryout.duration_minutes} menit
+                                {assignedQuestions.length} soal <span className="mx-0.5 text-gray-400">·</span> Durasi {tryout.duration_minutes} menit
                             </p>
                         </div>
                         <button
@@ -224,15 +224,15 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                                     }}
                                     className="px-3 py-1.5 text-xs font-medium text-emerald-600 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors"
                                 >
-                                    {selectedQuestions.length === filteredAvailable.length && filteredAvailable.length > 0 
-                                        ? 'Batal Pilih Semua' 
+                                    {selectedQuestions.length === filteredAvailable.length && filteredAvailable.length > 0
+                                        ? 'Batal Pilih Semua'
                                         : 'Pilih Semua'}
                                 </button>
                                 <button
                                     onClick={() => setShowAddModal(false)}
                                     className="p-2 text-gray-400 hover:text-gray-600"
                                 >
-                                    Ô£ò
+                                    ✕
                                 </button>
                             </div>
                         </div>
@@ -247,7 +247,7 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                                 placeholder="Cari soal..."
                                 className="w-full px-4 py-2 bg-white border border-gray-200 rounded-xl focus:border-emerald-500 focus:ring-emerald-500 text-sm transition-all"
                             />
-                            
+
                             <div className="flex gap-3">
                                 {/* Category Filter */}
                                 <select
@@ -280,7 +280,7 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                                     ))}
                                 </select>
                             </div>
-                            
+
                             <p className="text-xs text-gray-500">
                                 {filteredAvailable.length} soal ditemukan
                             </p>
@@ -317,7 +317,7 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                                                 <div className="flex-1 min-w-0">
                                                     <div className="flex items-center gap-2 mb-2 flex-wrap">
                                                         {question.subcategory?.category && (
-                                                            <span 
+                                                            <span
                                                                 className="px-2 py-0.5 rounded text-xs font-medium"
                                                                 style={{
                                                                     backgroundColor: `${question.subcategory.category.color}20`,
@@ -332,13 +332,12 @@ export default function Questions({ tryout, assignedQuestions, availableQuestion
                                                                 {question.subcategory.name}
                                                             </span>
                                                         )}
-                                                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${
-                                                            question.difficulty === 'easy' ? 'bg-emerald-100 text-emerald-700' :
-                                                            question.difficulty === 'medium' ? 'bg-amber-100 text-amber-700' :
-                                                            'bg-red-100 text-red-700'
-                                                        }`}>
-                                                            {question.difficulty === 'easy' ? 'Mudah' : 
-                                                             question.difficulty === 'medium' ? 'Sedang' : 'Sulit'}
+                                                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${question.difficulty === 'easy' ? 'bg-emerald-100 text-emerald-700' :
+                                                                question.difficulty === 'medium' ? 'bg-amber-100 text-amber-700' :
+                                                                    'bg-red-100 text-red-700'
+                                                            }`}>
+                                                            {question.difficulty === 'easy' ? 'Mudah' :
+                                                                question.difficulty === 'medium' ? 'Sedang' : 'Sulit'}
                                                         </span>
                                                     </div>
                                                     <div
