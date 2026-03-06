@@ -237,14 +237,6 @@ Untuk menjalankan automated testing:
 php artisan test
 ```
 
-## Akun Default
-
-> **Note:** Password default untuk semua akun adalah `password`.
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@tryout.test | password |
-| Siswa | ahmad@tryout.test | password |
 
 ## Struktur Folder
 
